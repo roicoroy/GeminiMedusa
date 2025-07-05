@@ -30,16 +30,7 @@ struct PaymentProvider: Codable, Identifiable {
         description = try container.decodeIfPresent(String.self, forKey: .description)
         isEnabled = try container.decodeIfPresent(Bool.self, forKey: .isEnabled)
         
-        // Handle metadata as flexible dictionary
-        if container.contains(.metadata) {
-            if let metadataDict = try? container.decode([String: AnyCodable].self, forKey: .metadata) {
-                metadata = metadataDict.mapValues { $0.value }
-            } else {
-                metadata = nil
-            }
-        } else {
-            metadata = nil
-        }
+        metadata = try container.decodeIfPresent([String: AnyCodable].self, forKey: .metadata)
     }
     
     // Custom encoder

@@ -2,7 +2,6 @@ import Foundation
 import Combine
 
 class ProductService: ObservableObject {
-    @Published var products: [Product] = []
     @Published var productsWithPrice: [ProductWithPrice] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
@@ -15,44 +14,6 @@ class ProductService: ObservableObject {
     
     deinit {
         cancellables.removeAll()
-    }
-    
-    func fetchProducts(limit: Int = 50, offset: Int = 0, categoryId: String? = nil, collectionId: String? = nil) {
-        isLoading = true
-        errorMessage = nil
-        
-        var endpoint = "products?limit=\(limit)&offset=\(offset)"
-        if let categoryId = categoryId {
-            endpoint += "&category_id[]=\(categoryId)"
-        }
-        if let collectionId = collectionId {
-            endpoint += "&collection_id[]=\(collectionId)"
-        }
-        
-        NetworkManager.shared.request(endpoint: endpoint)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                self?.isLoading = false
-                if case .failure(let error) = completion {
-                    self?.errorMessage = "Failed to fetch products: \(error.localizedDescription)"
-                }
-            }, receiveValue: { [weak self] (response: ProductsResponse) in
-                self?.products = response.products
-            })
-            .store(in: &cancellables)
-    }
-    
-    func fetchProduct(id: String, completion: @escaping (Product?) -> Void) {
-        NetworkManager.shared.request(endpoint: "products/\(id)")
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                if case .failure(let error) = completion {
-                    
-                }
-            }, receiveValue: { (response: ProductResponse) in
-                completion(response.product)
-            })
-            .store(in: &cancellables)
     }
     
     func fetchProductsWithPrice(regionId: String, limit: Int = 50, offset: Int = 0) {

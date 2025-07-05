@@ -40,7 +40,7 @@ public struct Cart: Codable, Identifiable {
     public let creditLineSubtotal: Int
     public let creditLineTaxTotal: Int
     public let creditLineTotal: Int
-    public let metadata: [String: Any]?
+    public let metadata: [String: AnyCodable]?
     public let salesChannelId: String?
     public let items: [CartLineItem]?
     public let promotions: [CartPromotion]?
@@ -94,29 +94,29 @@ public struct Cart: Codable, Identifiable {
         currencyCode = try container.decode(String.self, forKey: .currencyCode)
 
         // Handle flexible numeric types for all price fields
-        total = try Cart.decodeFlexibleInt(from: container, forKey: .total) ?? 0
-        subtotal = try Cart.decodeFlexibleInt(from: container, forKey: .subtotal) ?? 0
-        taxTotal = try Cart.decodeFlexibleInt(from: container, forKey: .taxTotal) ?? 0
-        discountTotal = try Cart.decodeFlexibleInt(from: container, forKey: .discountTotal) ?? 0
-        discountSubtotal = try Cart.decodeFlexibleInt(from: container, forKey: .discountSubtotal) ?? 0
-        discountTaxTotal = try Cart.decodeFlexibleInt(from: container, forKey: .discountTaxTotal) ?? 0
-        originalTotal = try Cart.decodeFlexibleInt(from: container, forKey: .originalTotal) ?? 0
-        originalTaxTotal = try Cart.decodeFlexibleInt(from: container, forKey: .originalTaxTotal) ?? 0
-        itemTotal = try Cart.decodeFlexibleInt(from: container, forKey: .itemTotal) ?? 0
-        itemSubtotal = try Cart.decodeFlexibleInt(from: container, forKey: .itemSubtotal) ?? 0
-        itemTaxTotal = try Cart.decodeFlexibleInt(from: container, forKey: .itemTaxTotal) ?? 0
-        originalItemTotal = try Cart.decodeFlexibleInt(from: container, forKey: .originalItemTotal) ?? 0
-        originalItemSubtotal = try Cart.decodeFlexibleInt(from: container, forKey: .originalItemSubtotal) ?? 0
-        originalItemTaxTotal = try Cart.decodeFlexibleInt(from: container, forKey: .originalItemTaxTotal) ?? 0
-        shippingTotal = try Cart.decodeFlexibleInt(from: container, forKey: .shippingTotal) ?? 0
-        shippingSubtotal = try Cart.decodeFlexibleInt(from: container, forKey: .shippingSubtotal) ?? 0
-        shippingTaxTotal = try Cart.decodeFlexibleInt(from: container, forKey: .shippingTaxTotal) ?? 0
-        originalShippingTaxTotal = try Cart.decodeFlexibleInt(from: container, forKey: .originalShippingTaxTotal) ?? 0
-        originalShippingSubtotal = try Cart.decodeFlexibleInt(from: container, forKey: .originalShippingSubtotal) ?? 0
-        originalShippingTotal = try Cart.decodeFlexibleInt(from: container, forKey: .originalShippingTotal) ?? 0
-        creditLineSubtotal = try Cart.decodeFlexibleInt(from: container, forKey: .creditLineSubtotal) ?? 0
-        creditLineTaxTotal = try Cart.decodeFlexibleInt(from: container, forKey: .creditLineTaxTotal) ?? 0
-        creditLineTotal = try Cart.decodeFlexibleInt(from: container, forKey: .creditLineTotal) ?? 0
+        total = try decodeFlexibleInt(from: container, forKey: .total) ?? 0
+        subtotal = try decodeFlexibleInt(from: container, forKey: .subtotal) ?? 0
+        taxTotal = try decodeFlexibleInt(from: container, forKey: .taxTotal) ?? 0
+        discountTotal = try decodeFlexibleInt(from: container, forKey: .discountTotal) ?? 0
+        discountSubtotal = try decodeFlexibleInt(from: container, forKey: .discountSubtotal) ?? 0
+        discountTaxTotal = try decodeFlexibleInt(from: container, forKey: .discountTaxTotal) ?? 0
+        originalTotal = try decodeFlexibleInt(from: container, forKey: .originalTotal) ?? 0
+        originalTaxTotal = try decodeFlexibleInt(from: container, forKey: .originalTaxTotal) ?? 0
+        itemTotal = try decodeFlexibleInt(from: container, forKey: .itemTotal) ?? 0
+        itemSubtotal = try decodeFlexibleInt(from: container, forKey: .itemSubtotal) ?? 0
+        itemTaxTotal = try decodeFlexibleInt(from: container, forKey: .itemTaxTotal) ?? 0
+        originalItemTotal = try decodeFlexibleInt(from: container, forKey: .originalItemTotal) ?? 0
+        originalItemSubtotal = try decodeFlexibleInt(from: container, forKey: .originalItemSubtotal) ?? 0
+        originalItemTaxTotal = try decodeFlexibleInt(from: container, forKey: .originalItemTaxTotal) ?? 0
+        shippingTotal = try decodeFlexibleInt(from: container, forKey: .shippingTotal) ?? 0
+        shippingSubtotal = try decodeFlexibleInt(from: container, forKey: .shippingSubtotal) ?? 0
+        shippingTaxTotal = try decodeFlexibleInt(from: container, forKey: .shippingTaxTotal) ?? 0
+        originalShippingTaxTotal = try decodeFlexibleInt(from: container, forKey: .originalShippingTaxTotal) ?? 0
+        originalShippingSubtotal = try decodeFlexibleInt(from: container, forKey: .originalShippingSubtotal) ?? 0
+        originalShippingTotal = try decodeFlexibleInt(from: container, forKey: .originalShippingTotal) ?? 0
+        creditLineSubtotal = try decodeFlexibleInt(from: container, forKey: .creditLineSubtotal) ?? 0
+        creditLineTaxTotal = try decodeFlexibleInt(from: container, forKey: .creditLineTaxTotal) ?? 0
+        creditLineTotal = try decodeFlexibleInt(from: container, forKey: .creditLineTotal) ?? 0
         
         // Optional fields
         customerId = try container.decodeIfPresent(String.self, forKey: .customerId)
@@ -135,45 +135,11 @@ public struct Cart: Codable, Identifiable {
         billingAddress = try container.decodeIfPresent(CartAddress.self, forKey: .billingAddress)
         paymentCollection = try container.decodeIfPresent(PaymentCollection.self, forKey: .paymentCollection) // Decoded paymentCollection
         
-        // Handle metadata as flexible dictionary - can be null or object
-        if container.contains(.metadata) {
-            if let metadataDict = try? container.decode([String: AnyCodable].self, forKey: .metadata) {
-                metadata = metadataDict.mapValues { $0.value }
-            } else {
-                metadata = nil
-            }
-        } else {
-            metadata = nil
-        }
+        metadata = try container.decodeIfPresent([String: AnyCodable].self, forKey: .metadata)
     }
     
-    // Helper method to decode flexible numeric types (Int, Double, String)
-    private static func decodeFlexibleInt(from container: KeyedDecodingContainer<CodingKeys>, forKey key: CodingKeys) throws -> Int? {
-        // Try to decode as Int first
-        if let intValue = try? container.decodeIfPresent(Int.self, forKey: key) {
-            return intValue
-        }
-        
-        // Try to decode as Double and convert to Int (multiply by 100 for cents)
-        if let doubleValue = try? container.decodeIfPresent(Double.self, forKey: key) {
-            // Convert to cents (multiply by 100 and round)
-            return Int(round(doubleValue * 100))
-        }
-        
-        // Try to decode as String and convert
-        if let stringValue = try? container.decodeIfPresent(String.self, forKey: key) {
-            if let doubleValue = Double(stringValue) {
-                // Convert to cents (multiply by 100 and round)
-                return Int(round(doubleValue * 100))
-            }
-            if let intValue = Int(stringValue) {
-                return intValue
-            }
-        }
-        
-        // If all fail, return nil (will use default value of 0)
-        return nil
-    }
+    
+    
     
     // Custom encoder
     public func encode(to encoder: Encoder) throws {
@@ -220,54 +186,7 @@ public struct Cart: Codable, Identifiable {
     }
 }
 
-// MARK: - Helper struct for flexible JSON decoding
-public struct AnyCodable: Codable {
-    public let value: Any
-    
-    public init(_ value: Any) {
-        self.value = value
-    }
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        
-        if let bool = try? container.decode(Bool.self) {
-            value = bool
-        } else if let int = try? container.decode(Int.self) {
-            value = int
-        } else if let double = try? container.decode(Double.self) {
-            value = double
-        } else if let string = try? container.decode(String.self) {
-            value = string
-        } else if container.decodeNil() {
-            value = NSNull()
-        } else if let array = try? container.decode([AnyCodable].self) {
-            value = array.map { $0.value }
-        } else if let dictionary = try? container.decode([String: AnyCodable].self) {
-            value = dictionary.mapValues { $0.value }
-        } else {
-            throw DecodingError.typeMismatch(AnyCodable.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unsupported type"))
-        }
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        
-        if let bool = value as? Bool {
-            try container.encode(bool)
-        } else if let int = value as? Int {
-            try container.encode(int)
-        } else if let double = value as? Double {
-            try container.encode(double)
-        } else if let string = value as? String {
-            try container.encode(string)
-        } else if value is NSNull {
-            try container.encodeNil()
-        } else {
-            throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: encoder.codingPath, debugDescription: "Unsupported type"))
-        }
-    }
-}
+
 
 // MARK: - Cart Address Model
 public struct CartAddress: Codable, Identifiable {
@@ -282,7 +201,7 @@ public struct CartAddress: Codable, Identifiable {
     public let province: String?
     public let postalCode: String?
     public let phone: String?
-    public let metadata: [String: Any]?
+    public let metadata: [String: AnyCodable]?
     
     enum CodingKeys: String, CodingKey {
         case id, company, city, phone, metadata
@@ -298,7 +217,7 @@ public struct CartAddress: Codable, Identifiable {
     // Custom decoder to handle flexible metadata
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         id = try container.decodeIfPresent(String.self, forKey: .id)
         firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
         lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
@@ -310,17 +229,7 @@ public struct CartAddress: Codable, Identifiable {
         province = try container.decodeIfPresent(String.self, forKey: .province)
         postalCode = try container.decodeIfPresent(String.self, forKey: .postalCode)
         phone = try container.decodeIfPresent(String.self, forKey: .phone)
-        
-        // Handle metadata as flexible dictionary
-        if container.contains(.metadata) {
-            if let metadataDict = try? container.decode([String: AnyCodable].self, forKey: .metadata) {
-                metadata = metadataDict.mapValues { $0.value }
-            } else {
-                metadata = nil
-            }
-        } else {
-            metadata = nil
-        }
+        metadata = try container.decodeIfPresent([String: AnyCodable].self, forKey: .metadata)
     }
     
     // Custom encoder
@@ -341,7 +250,7 @@ public struct CartAddress: Codable, Identifiable {
         
         // Skip metadata encoding for simplicity
     }
-}
+
 
 public struct CartRegion: Codable, Identifiable {
     public let id: String
@@ -431,18 +340,8 @@ public struct CartLineItem: Codable, Identifiable {
     public let variantBarcode: String?
     public let variantTitle: String?
     public let requiresShipping: Bool
-    public let metadata: [String: Any]?
-    public let createdAt: String?
-    public let updatedAt: String?
-    public let title: String
-    public let quantity: Int
-    public let unitPrice: Int
-    public let compareAtUnitPrice: Int?
-    public let isTaxInclusive: Bool
-    public let taxLines: [TaxLine]?
-    public let adjustments: [Adjustment]?
-    public let product: CartProduct?
-    
+    public let metadata: [String: AnyCodable]?
+
     enum CodingKeys: String, CodingKey {
         case id, thumbnail, title, quantity, metadata, product
         case variantId = "variant_id"
@@ -470,7 +369,7 @@ public struct CartLineItem: Codable, Identifiable {
     // Custom decoder to handle flexible numeric types and exact API response structure
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         // Required fields
         id = try container.decode(String.self, forKey: .id)
         title = try container.decode(String.self, forKey: .title)
@@ -479,11 +378,11 @@ public struct CartLineItem: Codable, Identifiable {
         quantity = try container.decode(Int.self, forKey: .quantity)
         requiresShipping = try container.decode(Bool.self, forKey: .requiresShipping)
         isTaxInclusive = try container.decode(Bool.self, forKey: .isTaxInclusive)
-        
+
         // Handle flexible numeric types for price fields
-        unitPrice = try CartLineItem.decodeFlexibleInt(from: container, forKey: .unitPrice) ?? 0
-        compareAtUnitPrice = try CartLineItem.decodeFlexibleInt(from: container, forKey: .compareAtUnitPrice)
-        
+        unitPrice = try decodeFlexibleInt(from: container, forKey: .unitPrice) ?? 0
+        compareAtUnitPrice = try decodeFlexibleInt(from: container, forKey: .compareAtUnitPrice)
+
         // Optional fields
         thumbnail = try container.decodeIfPresent(String.self, forKey: .thumbnail)
         productTypeId = try container.decodeIfPresent(String.self, forKey: .productTypeId)
@@ -501,81 +400,11 @@ public struct CartLineItem: Codable, Identifiable {
         taxLines = try container.decodeIfPresent([TaxLine].self, forKey: .taxLines)
         adjustments = try container.decodeIfPresent([Adjustment].self, forKey: .adjustments)
         product = try container.decodeIfPresent(CartProduct.self, forKey: .product)
-        
-        // Handle metadata as flexible dictionary
-        if container.contains(.metadata) {
-            if let metadataDict = try? container.decode([String: AnyCodable].self, forKey: .metadata) {
-                metadata = metadataDict.mapValues { $0.value }
-            } else {
-                metadata = nil
-            }
-        } else {
-            metadata = nil
-        }
+
+        metadata = try container.decodeIfPresent([String: AnyCodable].self, forKey: .metadata)
     }
     
-    // Helper method to decode flexible numeric types (Int, Double, String)
-    private static func decodeFlexibleInt(from container: KeyedDecodingContainer<CodingKeys>, forKey key: CodingKeys) throws -> Int? {
-        // Try to decode as Int first
-        if let intValue = try? container.decodeIfPresent(Int.self, forKey: key) {
-            return intValue
-        }
-        
-        // Try to decode as Double and convert to Int (multiply by 100 for cents)
-        if let doubleValue = try? container.decodeIfPresent(Double.self, forKey: key) {
-            // Convert to cents (multiply by 100 and round)
-            return Int(round(doubleValue * 100))
-        }
-        
-        // Try to decode as String and convert
-        if let stringValue = try? container.decodeIfPresent(String.self, forKey: key) {
-            if let doubleValue = Double(stringValue) {
-                // Convert to cents (multiply by 100 and round)
-                return Int(round(doubleValue * 100))
-            }
-            if let intValue = Int(stringValue) {
-                return intValue
-            }
-        }
-        
-        // If all fail, return nil
-        return nil
-    }
     
-    // Custom encoder
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try container.encode(id, forKey: .id)
-        try container.encode(title, forKey: .title)
-        try container.encode(variantId, forKey: .variantId)
-        try container.encode(productId, forKey: .productId)
-        try container.encode(quantity, forKey: .quantity)
-        try container.encode(unitPrice, forKey: .unitPrice)
-        try container.encode(requiresShipping, forKey: .requiresShipping)
-        try container.encode(isTaxInclusive, forKey: .isTaxInclusive)
-        
-        try container.encodeIfPresent(thumbnail, forKey: .thumbnail)
-        try container.encodeIfPresent(productTypeId, forKey: .productTypeId)
-        try container.encodeIfPresent(productTitle, forKey: .productTitle)
-        try container.encodeIfPresent(productDescription, forKey: .productDescription)
-        try container.encodeIfPresent(productSubtitle, forKey: .productSubtitle)
-        try container.encodeIfPresent(productType, forKey: .productType)
-        try container.encodeIfPresent(productCollection, forKey: .productCollection)
-        try container.encodeIfPresent(productHandle, forKey: .productHandle)
-        try container.encodeIfPresent(variantSku, forKey: .variantSku)
-        try container.encodeIfPresent(variantBarcode, forKey: .variantBarcode)
-        try container.encodeIfPresent(variantTitle, forKey: .variantTitle)
-        try container.encodeIfPresent(createdAt, forKey: .createdAt)
-        try container.encodeIfPresent(updatedAt, forKey: .updatedAt)
-        try container.encodeIfPresent(compareAtUnitPrice, forKey: .compareAtUnitPrice)
-        try container.encodeIfPresent(taxLines, forKey: .taxLines)
-        try container.encodeIfPresent(adjustments, forKey: .adjustments)
-        try container.encodeIfPresent(product, forKey: .product)
-        
-        // Skip metadata encoding for simplicity
-    }
-}
 
 public struct TaxLine: Codable {
     // Add tax line properties as needed

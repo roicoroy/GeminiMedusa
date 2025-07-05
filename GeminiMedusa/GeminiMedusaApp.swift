@@ -25,7 +25,8 @@ struct GeminiMedusaApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SplashScreenView()
+                .environmentObject(RegionService())
         }
         .modelContainer(sharedModelContainer)
     }

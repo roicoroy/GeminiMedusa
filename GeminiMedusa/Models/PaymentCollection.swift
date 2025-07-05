@@ -45,16 +45,7 @@ public struct PaymentCollection: Codable, Identifiable {
         updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt)
         completedAt = try container.decodeIfPresent(String.self, forKey: .completedAt)
         
-        // Handle metadata as flexible dictionary
-        if container.contains(.metadata) {
-            if let metadataDict = try? container.decode([String: AnyCodable].self, forKey: .metadata) {
-                metadata = metadataDict
-            } else {
-                metadata = nil
-            }
-        } else {
-            metadata = nil
-        }
+        metadata = try container.decodeIfPresent([String: AnyCodable].self, forKey: .metadata)
     }
     
     // Custom encoder

@@ -59,8 +59,12 @@ class NetworkManager {
 //                    print("response::::::: \(response)")
                     
                     if httpResponse.statusCode >= 400 {
-                        throw URLError(.badServerResponse)
+                    print("NetworkManager Error: Status Code \(httpResponse.statusCode)")
+                    if let responseString = String(data: data, encoding: .utf8) {
+                        print("NetworkManager Error: Response Data \(responseString)")
                     }
+                    throw URLError(.badServerResponse)
+                }
                 }
                 return data
             }

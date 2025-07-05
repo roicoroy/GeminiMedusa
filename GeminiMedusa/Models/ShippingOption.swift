@@ -73,16 +73,7 @@ struct ShippingOption: Codable, Identifiable {
             data = nil
         }
         
-        // Handle flexible metadata dictionary
-        if container.contains(.metadata) {
-            if let metadataDict = try? container.decode([String: AnyCodable].self, forKey: .metadata) {
-                metadata = metadataDict.mapValues { $0.value }
-            } else {
-                metadata = nil
-            }
-        } else {
-            metadata = nil
-        }
+        metadata = try container.decodeIfPresent([String: AnyCodable].self, forKey: .metadata)
     }
     
     // Custom encoder
