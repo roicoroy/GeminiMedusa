@@ -108,23 +108,23 @@ public struct Order: Codable, Identifiable {
     
     // Helper for formatted total
     public var formattedTotal: String {
-        formatPrice(Int(total ?? 0), currencyCode: currencyCode)
+        PriceFormatter.formatPrice(Int(total ?? 0), currencyCode: currencyCode)
     }
     
     public var formattedSubtotal: String {
-        formatPrice(Int(subtotal ?? 0), currencyCode: currencyCode)
+        PriceFormatter.formatPrice(Int(subtotal ?? 0), currencyCode: currencyCode)
     }
     
     public var formattedShippingTotal: String {
-        formatPrice(Int(shippingTotal ?? 0), currencyCode: currencyCode)
+        PriceFormatter.formatPrice(Int(shippingTotal ?? 0), currencyCode: currencyCode)
     }
     
     public var formattedTaxTotal: String {
-        formatPrice(Int(taxTotal ?? 0), currencyCode: currencyCode)
+        PriceFormatter.formatPrice(Int(taxTotal ?? 0), currencyCode: currencyCode)
     }
     
     public var formattedDiscountTotal: String {
-        formatPrice(Int(discountTotal ?? 0), currencyCode: currencyCode)
+        PriceFormatter.formatPrice(Int(discountTotal ?? 0), currencyCode: currencyCode)
     }
     
     public var displayStatus: String {
@@ -229,11 +229,11 @@ public struct OrderLineItem: Codable, Identifiable {
     }
     
     public func formattedUnitPrice(currencyCode: String) -> String {
-        formatPrice(unitPrice, currencyCode: currencyCode)
+        PriceFormatter.formatPrice(unitPrice, currencyCode: currencyCode)
     }
     
     public func formattedTotal(currencyCode: String) -> String {
-        formatPrice(Int(total ?? 0), currencyCode: currencyCode)
+        PriceFormatter.formatPrice(Int(total ?? 0), currencyCode: currencyCode)
     }
 }
 
@@ -314,7 +314,7 @@ public struct OrderShippingMethod: Codable, Identifiable {
     public var formattedAmount: String {
         // Assuming currency code is available from the parent Order
         // For simplicity, we'll use a placeholder or require it from context
-        formatPrice(amount, currencyCode: "USD") // Placeholder, ideally from Order
+        PriceFormatter.formatPrice(amount, currencyCode: "USD") // Placeholder, ideally from Order
     }
 }
 

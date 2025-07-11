@@ -166,38 +166,38 @@ extension ShippingOption {
     func formattedAmount(currencyCode: String) -> String {
         // Check if we have a calculated price first
         if let calculatedPrice = calculatedPrice {
-            return formatPrice(calculatedPrice.calculatedAmount, currencyCode: calculatedPrice.currencyCode)
+            return  PriceFormatter.formatPrice(calculatedPrice.calculatedAmount, currencyCode: calculatedPrice.currencyCode)
         }
         
         // Check if we have a specific price for this currency
         if let prices = prices,
            let price = prices.first(where: { $0.currencyCode.lowercased() == currencyCode.lowercased() }) {
-            return formatPrice(price.amount, currencyCode: price.currencyCode)
+            return  PriceFormatter.formatPrice(price.amount, currencyCode: price.currencyCode)
         }
         
         // Fall back to the base amount
         guard let amount = amount else {
             return "Contact for pricing"
         }
-        return formatPrice(amount, currencyCode: currencyCode)
+        return  PriceFormatter.formatPrice(amount, currencyCode: currencyCode)
     }
     
     var formattedAmount: String {
         // Check if we have a calculated price first
         if let calculatedPrice = calculatedPrice {
-            return formatPrice(calculatedPrice.calculatedAmount, currencyCode: calculatedPrice.currencyCode)
+            return  PriceFormatter.formatPrice(calculatedPrice.calculatedAmount, currencyCode: calculatedPrice.currencyCode)
         }
         
         // Check if we have any prices
         if let prices = prices, let firstPrice = prices.first {
-            return formatPrice(firstPrice.amount, currencyCode: firstPrice.currencyCode)
+            return  PriceFormatter.formatPrice(firstPrice.amount, currencyCode: firstPrice.currencyCode)
         }
         
         // Fall back to the base amount
         guard let amount = amount else {
             return "Contact for pricing"
         }
-        return formatPrice(amount, currencyCode: "USD")
+        return  PriceFormatter.formatPrice(amount, currencyCode: "USD")
     }
     
     var displayName: String {
@@ -367,27 +367,27 @@ extension ShippingOption {
 // MARK: - Price Extensions
 extension ShippingPrice {
     func formattedAmount() -> String {
-        return formatPrice(amount, currencyCode: currencyCode)
+        return  PriceFormatter.formatPrice(amount, currencyCode: currencyCode)
     }
 }
 
 extension CalculatedPrice {
     func formattedCalculatedAmount() -> String {
-        return formatPrice(calculatedAmount, currencyCode: currencyCode)
+        return  PriceFormatter.formatPrice(calculatedAmount, currencyCode: currencyCode)
     }
     
     func formattedOriginalAmount() -> String {
-        return formatPrice(originalAmount, currencyCode: currencyCode)
+        return  PriceFormatter.formatPrice(originalAmount, currencyCode: currencyCode)
     }
     
     func formattedOriginalAmountWithTax() -> String? {
         guard let amount = originalAmountWithTax else { return nil }
-        return formatPrice(amount, currencyCode: currencyCode)
+        return  PriceFormatter.formatPrice(amount, currencyCode: currencyCode)
     }
     
     func formattedOriginalAmountWithoutTax() -> String? {
         guard let amount = originalAmountWithoutTax else { return nil }
-        return formatPrice(amount, currencyCode: currencyCode)
+        return  PriceFormatter.formatPrice(amount, currencyCode: currencyCode)
     }
 }
 
