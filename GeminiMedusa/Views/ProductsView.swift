@@ -59,7 +59,7 @@ struct ProductsView: View {
                                     .foregroundColor(.gray)
                                 if let price = product.variants?.first?.calculatedPrice?.calculatedAmount,
                                    let currencyCode = product.variants?.first?.calculatedPrice?.currencyCode {
-                                    Text("Price: \(PriceFormatter.formatPrice(price, currencyCode: currencyCode))")
+                                    Text("Price: \(formatPrice(price, currencyCode: currencyCode))")
                                         .font(.footnote)
                                         .fontWeight(.bold)
                                 }

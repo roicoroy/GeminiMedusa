@@ -1,2 +1,0 @@
-Target dependency graph (1 target)
-Target 'GeminiMedusa' in project 'GeminiMedusa' (no dependencies)

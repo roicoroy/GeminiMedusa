@@ -1,7 +1,7 @@
 import Foundation
 
 
-import FlexibleDecoder
+
 
 // MARK: - Cart Models
 public struct Cart: Codable, Identifiable {
@@ -40,6 +40,7 @@ public struct Cart: Codable, Identifiable {
     public let salesChannelId: String?
     public let items: [CartLineItem]?
     public let promotions: [CartPromotion]?
+    public let region: CartRegion?
     
     public let shippingAddress: CartAddress?
     public let billingAddress: CartAddress?
@@ -246,6 +247,7 @@ public struct CartAddress: Codable, Identifiable {
         
         // Skip metadata encoding for simplicity
     }
+}
 
 
 

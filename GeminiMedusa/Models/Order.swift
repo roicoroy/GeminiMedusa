@@ -108,23 +108,23 @@ public struct Order: Codable, Identifiable {
     
     // Helper for formatted total
     public var formattedTotal: String {
-        PriceFormatter.formatPrice(Int(total ?? 0), currencyCode: currencyCode)
+        formatPrice(Int(total ?? 0), currencyCode: currencyCode)
     }
     
     public var formattedSubtotal: String {
-        PriceFormatter.formatPrice(Int(subtotal ?? 0), currencyCode: currencyCode)
+        formatPrice(Int(subtotal ?? 0), currencyCode: currencyCode)
     }
     
     public var formattedShippingTotal: String {
-        PriceFormatter.formatPrice(Int(shippingTotal ?? 0), currencyCode: currencyCode)
+        formatPrice(Int(shippingTotal ?? 0), currencyCode: currencyCode)
     }
     
     public var formattedTaxTotal: String {
-        PriceFormatter.formatPrice(Int(taxTotal ?? 0), currencyCode: currencyCode)
+        formatPrice(Int(taxTotal ?? 0), currencyCode: currencyCode)
     }
     
     public var formattedDiscountTotal: String {
-        PriceFormatter.formatPrice(Int(discountTotal ?? 0), currencyCode: currencyCode)
+        formatPrice(Int(discountTotal ?? 0), currencyCode: currencyCode)
     }
     
     public var displayStatus: String {
@@ -216,8 +216,94 @@ public struct OrderLineItem: Codable, Identifiable {
         case discountTotal = "discount_total"
         case discountTaxTotal = "discount_tax_total"
         case refundableTotal = "refundable_total"
-        case refundableTotalPerUnit = "refundable_total_per_unit"
+        case refundableTotalPerUnit = "refundable_total_per_per_unit"
         case productTypeId = "product_type_id"
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        title = try container.decode(String.self, forKey: .title)
+        subtitle = try container.decodeIfPresent(String.self, forKey: .subtitle)
+        thumbnail = try container.decodeIfPresent(String.self, forKey: .thumbnail)
+        variantId = try container.decodeIfPresent(String.self, forKey: .variantId)
+        productId = try container.decodeIfPresent(String.self, forKey: .productId)
+        productTitle = try container.decodeIfPresent(String.self, forKey: .productTitle)
+        productDescription = try container.decodeIfPresent(String.self, forKey: .productDescription)
+        productSubtitle = try container.decodeIfPresent(String.self, forKey: .productSubtitle)
+        productType = try container.decodeIfPresent(String.self, forKey: .productType)
+        productCollection = try container.decodeIfPresent(String.self, forKey: .productCollection)
+        productHandle = try container.decodeIfPresent(String.self, forKey: .productHandle)
+        variantSku = try container.decodeIfPresent(String.self, forKey: .variantSku)
+        variantBarcode = try container.decodeIfPresent(String.self, forKey: .variantBarcode)
+        variantTitle = try container.decodeIfPresent(String.self, forKey: .variantTitle)
+        variantOptionValues = try container.decodeIfPresent([String: String].self, forKey: .variantOptionValues)
+        requiresShipping = try container.decode(Bool.self, forKey: .requiresShipping)
+        isDiscountable = try container.decode(Bool.self, forKey: .isDiscountable)
+        isTaxInclusive = try container.decode(Bool.self, forKey: .isTaxInclusive)
+        unitPrice = try container.decode(Int.self, forKey: .unitPrice)
+        quantity = try container.decode(Int.self, forKey: .quantity)
+        detail = try container.decodeIfPresent(OrderLineItemDetail.self, forKey: .detail)
+        createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt)
+        updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt)
+        metadata = try container.decodeIfPresent([String: AnyCodable].self, forKey: .metadata)
+        originalTotal = try container.decodeIfPresent(Int.self, forKey: .originalTotal)
+        originalSubtotal = try container.decodeIfPresent(Int.self, forKey: .originalSubtotal)
+        originalTaxTotal = try container.decodeIfPresent(Int.self, forKey: .originalTaxTotal)
+        itemTotal = try container.decodeIfPresent(Int.self, forKey: .itemTotal)
+        itemSubtotal = try container.decodeIfPresent(Int.self, forKey: .itemSubtotal)
+        itemTaxTotal = try container.decodeIfPresent(Int.self, forKey: .itemTaxTotal)
+        total = try container.decodeIfPresent(Int.self, forKey: .total)
+        subtotal = try container.decodeIfPresent(Int.self, forKey: .subtotal)
+        taxTotal = try container.decodeIfPresent(Int.self, forKey: .taxTotal)
+        discountTotal = try container.decodeIfPresent(Int.self, forKey: .discountTotal)
+        discountTaxTotal = try container.decodeIfPresent(Int.self, forKey: .discountTaxTotal)
+        refundableTotal = try container.decodeIfPresent(Int.self, forKey: .refundableTotal)
+        refundableTotalPerUnit = try container.decodeIfPresent(Int.self, forKey: .refundableTotalPerUnit)
+        productTypeId = try container.decodeIfPresent(String.self, forKey: .productTypeId)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(title, forKey: .title)
+        try container.encodeIfPresent(subtitle, forKey: .subtitle)
+        try container.encodeIfPresent(thumbnail, forKey: .thumbnail)
+        try container.encodeIfPresent(variantId, forKey: .variantId)
+        try container.encodeIfPresent(productId, forKey: .productId)
+        try container.encodeIfPresent(productTitle, forKey: .productTitle)
+        try container.encodeIfPresent(productDescription, forKey: .productDescription)
+        try container.encodeIfPresent(productSubtitle, forKey: .productSubtitle)
+        try container.encodeIfPresent(productType, forKey: .productType)
+        try container.encodeIfPresent(productCollection, forKey: .productCollection)
+        try container.encodeIfPresent(productHandle, forKey: .productHandle)
+        try container.encodeIfPresent(variantSku, forKey: .variantSku)
+        try container.encodeIfPresent(variantBarcode, forKey: .variantBarcode)
+        try container.encodeIfPresent(variantTitle, forKey: .variantTitle)
+        try container.encodeIfPresent(variantOptionValues, forKey: .variantOptionValues)
+        try container.encode(requiresShipping, forKey: .requiresShipping)
+        try container.encode(isDiscountable, forKey: .isDiscountable)
+        try container.encode(isTaxInclusive, forKey: .isTaxInclusive)
+        try container.encode(unitPrice, forKey: .unitPrice)
+        try container.encode(quantity, forKey: .quantity)
+        try container.encodeIfPresent(detail, forKey: .detail)
+        try container.encodeIfPresent(createdAt, forKey: .createdAt)
+        try container.encodeIfPresent(updatedAt, forKey: .updatedAt)
+        try container.encodeIfPresent(metadata, forKey: .metadata)
+        try container.encodeIfPresent(originalTotal, forKey: .originalTotal)
+        try container.encodeIfPresent(originalSubtotal, forKey: .originalSubtotal)
+        try container.encodeIfPresent(originalTaxTotal, forKey: .originalTaxTotal)
+        try container.encodeIfPresent(itemTotal, forKey: .itemTotal)
+        try container.encodeIfPresent(itemSubtotal, forKey: .itemSubtotal)
+        try container.encodeIfPresent(itemTaxTotal, forKey: .itemTaxTotal)
+        try container.encodeIfPresent(total, forKey: .total)
+        try container.encodeIfPresent(subtotal, forKey: .subtotal)
+        try container.encodeIfPresent(taxTotal, forKey: .taxTotal)
+        try container.encodeIfPresent(discountTotal, forKey: .discountTotal)
+        try container.encodeIfPresent(discountTaxTotal, forKey: .discountTaxTotal)
+        try container.encodeIfPresent(refundableTotal, forKey: .refundableTotal)
+        try container.encodeIfPresent(refundableTotalPerUnit, forKey: .refundableTotalPerUnit)
+        try container.encodeIfPresent(productTypeId, forKey: .productTypeId)
     }
     
     public var displayTitle: String {
@@ -229,11 +315,11 @@ public struct OrderLineItem: Codable, Identifiable {
     }
     
     public func formattedUnitPrice(currencyCode: String) -> String {
-        PriceFormatter.formatPrice(unitPrice, currencyCode: currencyCode)
+        formatPrice(unitPrice, currencyCode: currencyCode)
     }
     
     public func formattedTotal(currencyCode: String) -> String {
-        PriceFormatter.formatPrice(Int(total ?? 0), currencyCode: currencyCode)
+        formatPrice(Int(total ?? 0), currencyCode: currencyCode)
     }
 }
 
@@ -314,7 +400,7 @@ public struct OrderShippingMethod: Codable, Identifiable {
     public var formattedAmount: String {
         // Assuming currency code is available from the parent Order
         // For simplicity, we'll use a placeholder or require it from context
-        PriceFormatter.formatPrice(amount, currencyCode: "USD") // Placeholder, ideally from Order
+        formatPrice(amount, currencyCode: "USD") // Placeholder, ideally from Order
     }
 }
 
