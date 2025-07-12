@@ -12,6 +12,10 @@ struct ProductsView: View {
     @EnvironmentObject var regionService: RegionService
     @StateObject var viewModel = ProductsViewModel()
     @State private var showingRegionSelection = false
+
+    init(regionService: RegionService) {
+        _regionService = EnvironmentObject(wrappedValue: regionService)
+    }
     
     var body: some View {
         NavigationView {
@@ -80,7 +84,7 @@ struct ProductsView: View {
                 }
             }
             .sheet(isPresented: $showingRegionSelection) {
-                RegionSelectionView()
+                RegionSelectionView(regionService: regionService)
             }
             .onAppear {
                 if let regionId = regionService.selectedRegionId {
@@ -100,7 +104,7 @@ struct ProductsView: View {
 
 struct ProductsView_Previews: PreviewProvider {
     static var previews: some View {
-        ProductsView()
+        ProductsView(regionService: RegionService())
             .environmentObject(RegionService())
     }
 }

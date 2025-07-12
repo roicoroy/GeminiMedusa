@@ -145,3 +145,17 @@ class RegionService: ObservableObject {
         return selectedCountry?.country.lowercased() == "gb"
     }
 }
+
+public struct CountrySelection: Codable, Identifiable {
+    public let id = UUID()
+    public let country: String
+    public let label: String
+    public let currencyCode: String
+    public let regionId: String
+    
+    enum CodingKeys: String, CodingKey {
+        case country, label
+        case currencyCode = "currency_code"
+        case regionId = "region_id"
+    }
+}

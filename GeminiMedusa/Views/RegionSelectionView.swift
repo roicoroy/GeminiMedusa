@@ -1,4 +1,3 @@
-
 //
 //  RegionSelectionView.swift
 //  GeminiMedusa
@@ -9,30 +8,34 @@
 import SwiftUI
 
 struct RegionSelectionView: View {
-    @EnvironmentObject var regionService: RegionService
     @Environment(\.dismiss) var dismiss
+    @StateObject var viewModel: RegionSelectionViewModel
+    
+    init(regionService: RegionService) {
+        _viewModel = StateObject(wrappedValue: RegionSelectionViewModel(regionService: regionService))
+    }
     
     var body: some View {
         NavigationView {
             List {
-                if regionService.isLoading {
+                if viewModel.isLoading {
                     ProgressView("Loading Regions...")
-                } else if let errorMessage = regionService.errorMessage {
+                } else if let errorMessage = viewModel.errorMessage {
                     Text("Error: \(errorMessage)")
                         .foregroundColor(.red)
-                } else if regionService.countryList.isEmpty {
+                } else if viewModel.regions.isEmpty {
                     Text("No regions available.")
                         .foregroundColor(.gray)
                 } else {
-                    ForEach(regionService.countryList) { country in
+                    ForEach(viewModel.regions) { region in
                         Button(action: {
-                            regionService.selectCountry(country)
+                            viewModel.regionService.selectCountry(RegionService.Country(id: region.id, name: region.name, currencyCode: region.currencyCode))
                             dismiss()
                         }) {
                             HStack {
-                                Text(country.displayText)
+                                Text(region.name)
                                 Spacer()
-                                if regionService.selectedCountry?.id == country.id {
+                                if viewModel.regionService.selectedCountry?.id == region.id {
                                     Image(systemName: "checkmark")
                                         .foregroundColor(.accentColor)
                                 }
@@ -50,8 +53,13 @@ struct RegionSelectionView: View {
                 }
             }
             .onAppear {
-                if regionService.regions.isEmpty {
-                    regionService.fetchRegions()
+                if viewModel.regions.isEmpty {
+                    viewModel.fetchRegions()
+                }
+            }
+            .onChange(of: viewModel.regionService.selectedRegionId) { newRegionId in
+                if let regionId = newRegionId {
+                    viewModel.fetchRegions()
                 }
             }
         }
@@ -60,7 +68,7 @@ struct RegionSelectionView: View {
 
 struct RegionSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        RegionSelectionView()
+        RegionSelectionView(regionService: RegionService())
             .environmentObject(RegionService())
     }
 }
