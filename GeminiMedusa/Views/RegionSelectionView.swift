@@ -1,4 +1,3 @@
-
 //
 //  RegionSelectionView.swift
 //  GeminiMedusa
@@ -24,24 +23,19 @@ struct RegionSelectionView: View {
                 } else if let errorMessage = viewModel.errorMessage {
                     Text("Error: \(errorMessage)")
                         .foregroundColor(.red)
-                } else if viewModel.regions.isEmpty {
+                } else if viewModel.countries.isEmpty {
                     Text("No regions available.")
                         .foregroundColor(.gray)
                 } else {
-                    ForEach(viewModel.regions) { region in
+                    ForEach(viewModel.countries) { country in
                         Button(action: {
-                            viewModel.selectCountry(CountrySelection(
-                                country: region.countries?.first?.iso2 ?? "",
-                                label: region.name,
-                                currencyCode: region.currencyCode,
-                                regionId: region.id
-                            ))
+                            viewModel.selectCountry(country)
                             dismiss()
                         }) {
                             HStack {
-                                Text(region.name)
+                                Text(country.displayText)
                                 Spacer()
-                                if viewModel.selectedRegion?.id == region.id {
+                                if viewModel.isSelected(country: country) {
                                     Image(systemName: "checkmark")
                                         .foregroundColor(.accentColor)
                                 }
@@ -59,12 +53,9 @@ struct RegionSelectionView: View {
                 }
             }
             .onAppear {
-                if viewModel.regions.isEmpty {
+                if viewModel.countries.isEmpty {
                     viewModel.fetchRegions()
                 }
-            }
-            .onChange(of: viewModel.selectedRegion?.id) { newRegionId in
-                // Handle region change if needed
             }
         }
     }

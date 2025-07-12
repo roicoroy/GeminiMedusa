@@ -2,11 +2,10 @@ import Foundation
 import Combine
 
 class RegionSelectionViewModel: ObservableObject {
-    @Published var regions: [Region] = []
+    @Published var countries: [CountrySelection] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
-    @Published var searchText: String = ""
-    @Published var selectedRegion: Region?
+    @Published var selectedCountry: CountrySelection?
 
     private var regionService: RegionService
     private var cancellables = Set<AnyCancellable>()
@@ -17,8 +16,8 @@ class RegionSelectionViewModel: ObservableObject {
     }
 
     private func setupBindings() {
-        regionService.$regions
-            .assign(to: \.regions, on: self)
+        regionService.$countryList
+            .assign(to: \.countries, on: self)
             .store(in: &cancellables)
         
         regionService.$isLoading
@@ -30,37 +29,19 @@ class RegionSelectionViewModel: ObservableObject {
             .store(in: &cancellables)
         
         regionService.$selectedCountry
-            .sink { [weak self] country in
-                if let country = country {
-                    self?.selectedRegion = self?.regions.first(where: { $0.id == country.regionId })
-                } else {
-                    self?.selectedRegion = nil
-                }
-            }
-            .store(in: &cancellables)
-        
-        $searchText
-            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
-            .removeDuplicates()
-            .sink { [weak self] searchText in
-                // In a real app, you might re-fetch or re-filter based on search text
-                // For now, filtering is done in filteredRegions computed property
-            }
+            .assign(to: \.selectedCountry, on: self)
             .store(in: &cancellables)
     }
 
     func fetchRegions() {
         regionService.fetchRegions()
     }
-
-    var filteredRegions: [Region] {
-        guard !searchText.isEmpty else {
-            return regions
-        }
-        return regions.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
-    }
     
     func selectCountry(_ country: CountrySelection) {
         regionService.selectCountry(country)
+    }
+    
+    func isSelected(country: CountrySelection) -> Bool {
+        return selectedCountry?.id == country.id
     }
 }
