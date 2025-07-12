@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import FlexibleDecoder
 
 // MARK: - Payment Collection Models
 public struct PaymentCollection: Codable, Identifiable {

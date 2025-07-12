@@ -1,5 +1,5 @@
 import Foundation
-//import FlexibleDecoder
+import FlexibleDecoder
 
 public struct CartLineItem: Codable, Identifiable {
     public let id: String
