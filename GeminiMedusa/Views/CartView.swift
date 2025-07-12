@@ -6,17 +6,14 @@ struct CartView: View {
     var body: some View {
         NavigationView {
             List {
-                if cartService.cartItems.isEmpty {
-                    Text("Your cart is empty.")
-                        .foregroundColor(.gray)
-                } else {
-                    ForEach(cartService.cartItems.keys.sorted(), id: \.self) { productId in
+                if let items = cartService.currentCart?.items, !items.isEmpty {
+                    ForEach(items) { item in
                         HStack {
-                            Text("Product ID: \(productId)")
+                            Text(item.title ?? "Unknown Item")
                             Spacer()
-                            Text("Quantity: \(cartService.cartItems[productId] ?? 0)")
+                            Text("Quantity: \(item.quantity)")
                             Button(action: {
-                                cartService.removeProduct(productId: productId)
+                                cartService.removeLineItem(lineItemId: item.id)
                             }) {
                                 Image(systemName: "minus.circle.fill")
                                     .foregroundColor(.red)
@@ -24,6 +21,9 @@ struct CartView: View {
                         }
                     }
                     .onDelete(perform: removeItems)
+                } else {
+                    Text("Your cart is empty.")
+                        .foregroundColor(.gray)
                 }
             }
             .navigationTitle("Shopping Cart")
@@ -43,12 +43,11 @@ struct CartView: View {
     }
 
     private func removeItems(at offsets: IndexSet) {
-        // This is a simplified removal. In a real app, you'd map product IDs to indices.
-        // For now, we'll just clear the whole cart if any item is swiped.
-        // A more robust solution would involve passing the actual product ID to removeProduct.
-        for index in offsets {
-            let productId = cartService.cartItems.keys.sorted()[index]
-            cartService.removeProduct(productId: productId, quantity: cartService.cartItems[productId] ?? 0)
+        if let items = cartService.currentCart?.items {
+            for index in offsets {
+                let lineItem = items[index]
+                cartService.removeLineItem(lineItemId: lineItem.id)
+            }
         }
     }
 }

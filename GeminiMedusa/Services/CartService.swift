@@ -1,27 +1,147 @@
 import Foundation
 
-class CartService: ObservableObject {
-    @Published var cartItems: [String: Int] = [:] // [productId: quantity]
+import Combine
 
-    func addProduct(productId: String, quantity: Int = 1) {
-        cartItems[productId, default: 0] += quantity
-        print("Added \(quantity) of product \(productId). Current cart: \(cartItems)")
+class CartService: ObservableObject {
+    @Published var currentCart: Cart?
+    @Published var isLoading = false
+    @Published var errorMessage: String?
+
+    private var cancellables = Set<AnyCancellable>()
+
+    init() {
+        loadCartFromStorage()
     }
 
-    func removeProduct(productId: String, quantity: Int = 1) {
-        if let currentQuantity = cartItems[productId] {
-            let newQuantity = currentQuantity - quantity
-            if newQuantity <= 0 {
-                cartItems[productId] = nil
-            } else {
-                cartItems[productId] = newQuantity
-            }
-            print("Removed \(quantity) of product \(productId). Current cart: \(cartItems)")
+    deinit {
+        cancellables.removeAll()
+    }
+
+    func createCart(regionId: String, completion: @escaping (Bool) -> Void = { _ in }) {
+        isLoading = true
+        errorMessage = nil
+
+        let request = CreateCartRequest(regionId: regionId)
+        guard let body = try? JSONEncoder().encode(request) else {
+            errorMessage = "Failed to encode cart request"
+            isLoading = false
+            completion(false)
+            return
         }
+
+        NetworkManager.shared.request(endpoint: "carts", method: "POST", body: body)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completionResult in
+                self?.isLoading = false
+                if case .failure(let error) = completionResult {
+                    self?.errorMessage = "Failed to create cart: \(error.localizedDescription)"
+                    completion(false)
+                }
+            }, receiveValue: { [weak self] (response: CartResponse) in
+                self?.currentCart = response.cart
+                self?.saveCartToStorage()
+                completion(true)
+            })
+            .store(in: &cancellables)
+    }
+
+    func addLineItem(variantId: String, quantity: Int = 1, regionId: String, completion: @escaping (Bool) -> Void = { _ in }) {
+        guard let cart = currentCart else {
+            createCart(regionId: regionId) { [weak self] success in
+                if success {
+                    self?.addLineItem(variantId: variantId, quantity: quantity, regionId: regionId, completion: completion)
+                } else {
+                    completion(false)
+                }
+            }
+            return
+        }
+
+        isLoading = true
+        errorMessage = nil
+
+        let request = AddLineItemRequest(variantId: variantId, quantity: quantity)
+        guard let body = try? JSONEncoder().encode(request) else {
+            completion(false)
+            return
+        }
+
+        NetworkManager.shared.request(endpoint: "carts/\(cart.id)/line-items", method: "POST", body: body)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completionResult in
+                self?.isLoading = false
+                if case .failure(let error) = completionResult {
+                    self?.errorMessage = "Failed to add item to cart: \(error.localizedDescription)"
+                    completion(false)
+                }
+            }, receiveValue: { [weak self] (response: CartResponse) in
+                self?.currentCart = response.cart
+                self?.saveCartToStorage()
+                completion(true)
+            })
+            .store(in: &cancellables)
+    }
+
+    func removeLineItem(lineItemId: String, completion: @escaping (Bool) -> Void = { _ in }) {
+        guard let cart = currentCart else {
+            completion(false)
+            return
+        }
+
+        isLoading = true
+        errorMessage = nil
+
+        NetworkManager.shared.request(endpoint: "carts/\(cart.id)/line-items/\(lineItemId)", method: "DELETE")
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completionResult in
+                self?.isLoading = false
+                if case .failure(let error) = completionResult {
+                    self?.errorMessage = "Failed to remove item: \(error.localizedDescription)"
+                    completion(false)
+                }
+            }, receiveValue: { [weak self] (response: CartResponse) in
+                self?.currentCart = response.cart
+                self?.saveCartToStorage()
+                completion(true)
+            })
+            .store(in: &cancellables)
+    }
+
+    func fetchCart(cartId: String) {
+        isLoading = true
+        errorMessage = nil
+
+        NetworkManager.shared.request(endpoint: "carts/\(cartId)")
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completionResult in
+                self?.isLoading = false
+                if case .failure(let error) = completionResult {
+                    self?.errorMessage = "Failed to fetch cart: \(error.localizedDescription)"
+                }
+            }, receiveValue: { [weak self] (response: CartResponse) in
+                self?.currentCart = response.cart
+                self?.saveCartToStorage()
+            })
+            .store(in: &cancellables)
     }
 
     func clearCart() {
-        cartItems = [:]
-        print("Cart cleared.")
+        currentCart = nil
+        UserDefaults.standard.removeObject(forKey: "medusa_cart")
+    }
+
+    private func saveCartToStorage() {
+        if let encoded = try? JSONEncoder().encode(currentCart) {
+            UserDefaults.standard.set(encoded, forKey: "medusa_cart")
+        }
+    }
+
+    private func loadCartFromStorage() {
+        if let cartData = UserDefaults.standard.data(forKey: "medusa_cart"),
+           let cart = try? JSONDecoder().decode(Cart.self, from: cartData) {
+            currentCart = cart
+        }
     }
 }
+
+

@@ -4,6 +4,7 @@ import Foundation
 
 struct ProductDetailsView: View {
     @EnvironmentObject var cartService: CartService
+    @EnvironmentObject var regionService: RegionService
     @StateObject var viewModel = ProductDetailsViewModel()
     let productId: String
 
@@ -51,7 +52,9 @@ struct ProductDetailsView: View {
                     }
 
                     Button(action: {
-                        cartService.addProduct(productId: product.id)
+                        if let product = viewModel.product, let variantId = product.variants?.first?.id, let regionId = regionService.selectedRegionId {
+                            cartService.addLineItem(variantId: variantId, quantity: 1, regionId: regionId)
+                        }
                     }) {
                         Text("Add to Cart")
                             .font(.headline)
