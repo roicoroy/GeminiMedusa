@@ -1,3 +1,4 @@
+
 //
 //  RegionSelectionView.swift
 //  GeminiMedusa
@@ -29,13 +30,18 @@ struct RegionSelectionView: View {
                 } else {
                     ForEach(viewModel.regions) { region in
                         Button(action: {
-                            viewModel.regionService.selectCountry(RegionService.Country(id: region.id, name: region.name, currencyCode: region.currencyCode))
+                            viewModel.selectCountry(CountrySelection(
+                                country: region.countries?.first?.iso2 ?? "",
+                                label: region.name,
+                                currencyCode: region.currencyCode,
+                                regionId: region.id
+                            ))
                             dismiss()
                         }) {
                             HStack {
                                 Text(region.name)
                                 Spacer()
-                                if viewModel.regionService.selectedCountry?.id == region.id {
+                                if viewModel.selectedRegion?.id == region.id {
                                     Image(systemName: "checkmark")
                                         .foregroundColor(.accentColor)
                                 }
@@ -57,10 +63,8 @@ struct RegionSelectionView: View {
                     viewModel.fetchRegions()
                 }
             }
-            .onChange(of: viewModel.regionService.selectedRegionId) { newRegionId in
-                if let regionId = newRegionId {
-                    viewModel.fetchRegions()
-                }
+            .onChange(of: viewModel.selectedRegion?.id) { newRegionId in
+                // Handle region change if needed
             }
         }
     }

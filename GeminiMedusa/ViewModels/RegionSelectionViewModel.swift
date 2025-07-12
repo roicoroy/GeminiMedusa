@@ -60,7 +60,7 @@ class RegionSelectionViewModel: ObservableObject {
         return regions.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
     }
     
-    func selectCountry(_ country: RegionService.CountrySelection) {
+    func selectCountry(_ country: CountrySelection) {
         regionService.selectCountry(country)
     }
 }
