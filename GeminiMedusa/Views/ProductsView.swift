@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct ProductsView: View {
     @EnvironmentObject var regionService: RegionService
@@ -27,41 +28,42 @@ struct ProductsView: View {
                 } else {
                     List(viewModel.products) {
                         product in
-                        HStack(alignment: .top) {
-                            if let thumbnailURLString = product.thumbnail,
-                               let url = URL(string: thumbnailURLString) {
-                                AsyncImage(url: url) { image in
-                                    image.resizable()
+                        NavigationLink(destination: ProductDetailsView(productId: product.id)) {
+                            HStack(alignment: .top) {
+                                if let thumbnailURLString = product.thumbnail,
+                                   let url = URL(string: thumbnailURLString) {
+                                    AsyncImage(url: url) { image in
+                                        image.resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 80, height: 80)
+                                            .cornerRadius(8)
+                                    } placeholder: {
+                                        ProgressView()
+                                            .frame(width: 80, height: 80)
+                                            .background(Color.gray.opacity(0.2))
+                                            .cornerRadius(8)
+                                    }
+                                } else {
+                                    Image(systemName: "photo")
+                                        .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .frame(width: 80, height: 80)
-                                        .cornerRadius(8)
-                                } placeholder: {
-                                    ProgressView()
-                                        .frame(width: 80, height: 80)
+                                        .foregroundColor(.gray)
                                         .background(Color.gray.opacity(0.2))
                                         .cornerRadius(8)
                                 }
-                            } else {
-                                Image(systemName: "photo")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 80, height: 80)
-                                    .foregroundColor(.gray)
-                                    .background(Color.gray.opacity(0.2))
-                                    .cornerRadius(8)
-                            }
 
-                            VStack(alignment: .leading) {
-                                Text(product.title)
-                                    .font(.headline)
-                                Text(product.description ?? "No description")
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
-                                if let price = product.variants?.first?.calculatedPrice?.calculatedAmount,
-                                   let currencyCode = product.variants?.first?.calculatedPrice?.currencyCode {
-                                    Text("Price: \(formatPrice(price, currencyCode: currencyCode))")
-                                        .font(.footnote)
-                                        .fontWeight(.bold)
+                                VStack(alignment: .leading) {
+                                    Text(product.title)
+                                        .font(.headline)
+                                    Text(product.description ?? "No description")
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                    if let calculatedPrice = product.variants?.first?.calculatedPrice {
+                                        Text("Price: \(formatPrice(calculatedPrice.calculatedAmount, currencyCode: calculatedPrice.currencyCode))")
+                                            .font(.footnote)
+                                            .fontWeight(.bold)
+                                    }
                                 }
                             }
                         }

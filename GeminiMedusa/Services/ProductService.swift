@@ -38,36 +38,25 @@ class ProductService: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func searchProducts(query: String, regionId: String, limit: Int = 50, categoryId: String? = nil, collectionId: String? = nil) {
-        isLoading = true
-        errorMessage = nil
-        
-        guard let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-            errorMessage = "Invalid search query"
-            isLoading = false
-            return
-        }
-        
-        var endpoint = "products?fields=*variants.calculated_price&region_id=\(regionId)&q=\(encodedQuery)&limit=\(limit)"
-        if let categoryId = categoryId {
-            endpoint += "&category_id[]=\(categoryId)"
-        }
-        if let collectionId = collectionId {
-            endpoint += "&collection_id[]=\(collectionId)"
-        }
-        
+    
+
+    func getProduct(withId id: String, completion: @escaping (Result<Product, Error>) -> Void) {
+        let endpoint = "products/\(id)"
         NetworkManager.shared.request(endpoint: endpoint)
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                self?.isLoading = false
-                if case .failure(let error) = completion {
-                    self?.errorMessage = "Failed to search products: \(error.localizedDescription)"
-                    print("DEBUG: Failed to search products: \(error.localizedDescription)")
+            .sink(receiveCompletion: { comp in
+                if case .failure(let error) = comp {
+                    completion(.failure(error))
                 }
-            }, receiveValue: { [weak self] (response: ProductWithPriceResponse) in
-                self?.productsWithPrice = response.products
+            }, receiveValue: { (response: ProductResponse) in
+                completion(.success(response.product))
             })
             .store(in: &cancellables)
     }
 }
+
+struct ProductResponse: Codable {
+    let product: Product
+}
+        
 

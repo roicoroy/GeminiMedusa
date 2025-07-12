@@ -12,9 +12,44 @@ import Foundation
 // where 'Product' type is referenced but 'ProductWithPrice' is the primary model.
 struct Product: Codable, Identifiable {
     let id: String
-    let title: String
-    // Add other minimal properties if absolutely necessary for compilation
-    // For now, we'll keep it minimal.
+    let title: String?
+    let subtitle: String?
+    let description: String?
+    let handle: String?
+    let isGiftcard: Bool?
+    let discountable: Bool?
+    let thumbnail: String?
+    let collectionId: String?
+    let typeId: String?
+    let weight: String?
+    let length: Int?
+    let height: Int?
+    let width: Int?
+    let hsCode: String?
+    let originCountry: String?
+    let midCode: String?
+    let material: String?
+    let createdAt: String?
+    let updatedAt: String?
+    let type: ProductWithPriceType?
+    let collection: ProductWithPriceCollection?
+    let options: [ProductWithPriceOption]?
+    let tags: [ProductWithPriceTag]?
+    let images: [ProductWithPriceImage]?
+    let variants: [ProductWithPriceVariant]?
+
+    enum CodingKeys: String, CodingKey {
+        case id, title, subtitle, description, handle, thumbnail, type, collection, options, tags, images, variants, weight, length, height, width, material
+        case isGiftcard = "is_giftcard"
+        case discountable
+        case collectionId = "collection_id"
+        case typeId = "type_id"
+        case hsCode = "hs_code"
+        case originCountry = "origin_country"
+        case midCode = "mid_code"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
 }
 
 // Placeholder API Response Models if they are still referenced
@@ -25,6 +60,4 @@ struct ProductsResponse: Codable {
     let limit: Int
 }
 
-struct ProductResponse: Codable {
-    let product: Product
-}
+
