@@ -8,7 +8,7 @@ class PaymentProvidersService: ObservableObject {
     @Published var errorMessage: String?
     
     private var cancellables = Set<AnyCancellable>()
-    weak var cartService: CartServiceReview?
+    
     
     deinit {
         cancellables.removeAll()
@@ -57,16 +57,6 @@ class PaymentProvidersService: ObservableObject {
                     completion(false, nil)
                 }
             }, receiveValue: { [weak self] (response: PaymentCollectionResponse) in
-                if let cartService = self?.cartService, var currentCart = cartService.currentCart {
-                    currentCart.paymentCollection = response.paymentCollection
-                    cartService.currentCart = currentCart
-                    cartService.fetchCart(cartId: currentCart.id)
-                    
-                    if let providerId = self?.paymentProviders.first?.id {
-                        self?.initializePaymentSession(paymentCollectionId: response.paymentCollection.id, providerId: providerId) { success in
-                        }
-                    }
-                }
                 completion(true, response.paymentCollection)
             })
             .store(in: &cancellables)
@@ -86,10 +76,6 @@ class PaymentProvidersService: ObservableObject {
                     completion(false)
                 }
             }, receiveValue: { [weak self] (response: PaymentCollectionResponse) in
-                if let cartService = self?.cartService, var currentCart = cartService.currentCart {
-                    currentCart.paymentCollection = response.paymentCollection
-                    cartService.fetchCart(cartId: currentCart.id)
-                }
                 completion(true)
             })
             .store(in: &cancellables)

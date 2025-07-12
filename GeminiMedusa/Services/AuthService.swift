@@ -9,21 +9,12 @@ class AuthService: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    // Cart service reference for handling cart association
-    weak var cartService: CartServiceReview?
-    
     init() {
         checkAuthenticationStatus()
     }
     
     deinit {
         cancellables.removeAll()
-    }
-    
-    // MARK: - Cart Service Integration
-    
-    func setCartService(_ cartService: CartServiceReview) {
-        self.cartService = cartService
     }
     
     private func checkAuthenticationStatus() {
@@ -175,7 +166,6 @@ class AuthService: ObservableObject {
                 self.currentCustomer = response.customer
                 self.isAuthenticated = true
                 self.saveCustomerData(response.customer)
-                self.cartService?.handleUserLogin()
             })
             .store(in: &cancellables)
     }
@@ -360,7 +350,7 @@ class AuthService: ObservableObject {
         UserDefaults.standard.removeObject(forKey: "customer")
         UserDefaults.standard.removeObject(forKey: "auth_token")
         
-        cartService?.handleUserLogout()
+        
         
         cancellables.removeAll()
     }

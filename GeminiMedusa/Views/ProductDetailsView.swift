@@ -3,6 +3,7 @@ import SwiftUI
 import Foundation
 
 struct ProductDetailsView: View {
+    @EnvironmentObject var cartService: CartService
     @StateObject var viewModel = ProductDetailsViewModel()
     let productId: String
 
@@ -47,6 +48,18 @@ struct ProductDetailsView: View {
                         Text("Price: \(formatPrice(calculatedPrice.calculatedAmount, currencyCode: calculatedPrice.currencyCode))")
                             .font(.title2)
                             .fontWeight(.semibold)
+                    }
+
+                    Button(action: {
+                        cartService.addProduct(productId: product.id)
+                    }) {
+                        Text("Add to Cart")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.blue)
+                            .cornerRadius(10)
                     }
 
                     // Add more product details here as needed

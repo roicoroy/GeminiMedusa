@@ -25,9 +25,19 @@ struct GeminiMedusaApp: App {
 
     var body: some Scene {
         WindowGroup {
-            SplashScreenView()
-                .environmentObject(RegionService())
-                .environmentObject(ProductsViewModel())
+            TabView {
+                ProductsView()
+                    .tabItem {
+                        Label("Products", systemImage: "list.bullet")
+                    }
+                CartView()
+                    .tabItem {
+                        Label("Cart", systemImage: "cart.fill")
+                    }
+            }
+            .environmentObject(RegionService())
+            .environmentObject(ProductsViewModel())
+            .environmentObject(CartService())
         }
         .modelContainer(sharedModelContainer)
     }
