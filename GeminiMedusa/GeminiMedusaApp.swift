@@ -24,6 +24,8 @@ struct GeminiMedusaApp: App {
     }()
 
     @StateObject var cartService = CartService()
+    @StateObject var regionService = RegionService()
+    @StateObject var productsViewModel = ProductsViewModel()
 
     var body: some Scene {
         WindowGroup {
@@ -42,9 +44,14 @@ struct GeminiMedusaApp: App {
                         Label("Debug", systemImage: "ant.fill")
                     }
             }
-            .environmentObject(RegionService())
-            .environmentObject(ProductsViewModel())
-            .environmentObject(CartService())
+            .environmentObject(regionService)
+            .environmentObject(productsViewModel)
+            .environmentObject(cartService)
+            .onChange(of: regionService.selectedRegionId) { newRegionId in
+                if let regionId = newRegionId {
+                    productsViewModel.fetchProducts(regionId: regionId)
+                }
+            }
         }
         .modelContainer(sharedModelContainer)
     }

@@ -4,7 +4,7 @@ import Combine
 class NetworkManager {
     static let shared = NetworkManager()
     
-    private let baseURL = "https://c78f-2a00-23c7-dc88-f401-34e7-2fab-9e9a-f265.ngrok-free.app"
+    private let baseURL = "http://localhost:9000"
     private let publishableKey = "pk_7b9a964b0ae6d083f0d2e70a5db350e2d6a7d93aceea46949373ff2872ead0fc"
     
     private init() {}
