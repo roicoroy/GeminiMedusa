@@ -20,6 +20,14 @@
       },
       {
         "comment": "",
+        "key": "%@ - %@",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 16
+        }
+      },
+      {
+        "comment": "",
         "key": "Add to Cart",
         "location": {
           "startingColumn": 22,

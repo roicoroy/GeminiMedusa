@@ -13,7 +13,7 @@ struct ProductInteractionView: View {
             if product.variants?.count ?? 0 > 1 {
                 Picker("Select Variant", selection: $selectedVariant) {
                     ForEach(product.variants ?? [], id: \.id) { variant in
-                        Text(variant.title ?? "Unknown Variant")
+                        Text("\(variant.title ?? "Unknown Variant") - \(formatPrice(variant.calculatedPrice?.calculatedAmount ?? 0, currencyCode: variant.calculatedPrice?.currencyCode ?? "USD"))")
                             .tag(variant as ProductWithPriceVariant?)
                     }
                 }

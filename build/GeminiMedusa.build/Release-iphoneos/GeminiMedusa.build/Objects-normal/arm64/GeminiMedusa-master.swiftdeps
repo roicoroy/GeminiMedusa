@@ -1,7 +1,7 @@
 version: "Apple Swift version 6.1.2 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)"
 options: "3fe092d2a7a9a24dc218192ed7ea531cd54458ec50594d640c69e023738fe65a"
-build_start_time: [1752412257, 295470000]
-build_end_time: [1752412263, 775090000]
+build_start_time: [1752412682, 384286000]
+build_end_time: [1752412688, 687211000]
 inputs:
   "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/ContentView.swift": [1751652155, 905901145]
   "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/GeminiMedusaApp.swift": [1752411660, 672054706]
@@ -33,7 +33,7 @@ inputs:
   "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/PaymentProvidersService.swift": [1752347159, 340559497]
   "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/ProductCategoryService.swift": [1751558683, 539973497]
   "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/ProductCollectionService.swift": [1751558683, 540234327]
-  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/ProductService.swift": [1752409798, 908850452]
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/ProductService.swift": [1752412473, 963554813]
   "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/RegionService.swift": [1752409116, 610224684]
   "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/ShippingService.swift": [1751541236, 740132689]
   "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/SplashScreenView.swift": [1752402995, 868143748]
@@ -46,9 +46,9 @@ inputs:
   "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Views/DebugView.swift": [1752403379, 833455334]
   "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Views/ProductDetailsView.swift": [1752411446, 147502738]
   "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Views/ProductImageView.swift": [1752410121, 949073292]
-  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Views/ProductInteractionView.swift": [1752410399, 906841516]
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Views/ProductInteractionView.swift": [1752412649, 739061268]
   "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Views/ProductRowView.swift": [1752407621, 769712776]
   "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Views/ProductsView.swift": [1752407983, 287677052]
   "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Views/RegionSelectionView.swift": [1752403050, 755419613]
   ? "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/DerivedSources/GeneratedAssetSymbols.swift"
-  : [1752412257, 144263973]
+  : [1752412682, 299059829]
