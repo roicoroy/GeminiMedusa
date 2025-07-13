@@ -9,6 +9,7 @@ struct ProductDetailsView: View {
     let productId: String
     
     @State private var showingAddToCartAlert = false
+    @State private var selectedVariant: ProductVariant?
     
     var body: some View {
         ScrollView {
@@ -47,28 +48,43 @@ struct ProductDetailsView: View {
                             .foregroundColor(.gray)
                     }
                     
-                    if let calculatedPrice = product.variants?.first?.calculatedPrice {
-                        Text("Price: \(formatPrice(calculatedPrice.calculatedAmount, currencyCode: calculatedPrice.currencyCode))")
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                    }
-                    
-                    Button(action: {
-                        if let product = viewModel.product, let variantId = product.variants?.first?.id, let regionId = regionService.selectedRegionId {
-                            cartService.addLineItem(variantId: variantId, quantity: 1, regionId: regionId) { success in
-                                if success {
-                                    showingAddToCartAlert = true
+                    if let product = viewModel.product {
+                        if product.variants?.count ?? 0 > 1 {
+                            Picker("Select Variant", selection: $selectedVariant) {
+                                ForEach(product.variants ?? [], id: \.id) { variant in
+                                    Text(variant.title ?? "Unknown Variant")
+                                        .tag(variant as ProductVariant?)
                                 }
                             }
+                            .pickerStyle(.menu)
+                            .onChange(of: selectedVariant) { newVariant in
+                                // Update price display based on newVariant
+                            }
                         }
-                    }) {
-                        Text("Add to Cart")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.blue)
-                            .cornerRadius(10)
+                        
+                        if let price = selectedVariant?.calculatedPrice ?? product.variants?.first?.calculatedPrice {
+                            Text("Price: \(formatPrice(price.calculatedAmount, currencyCode: price.currencyCode))")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                        }
+                        
+                        Button(action: {
+                            if let variant = selectedVariant ?? product.variants?.first, let regionId = regionService.selectedRegionId {
+                                cartService.addLineItem(variantId: variant.id, quantity: 1, regionId: regionId) { success in
+                                    if success {
+                                        showingAddToCartAlert = true
+                                    }
+                                }
+                            }
+                        }) {
+                            Text("Add to Cart")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color.blue)
+                                .cornerRadius(10)
+                        }
                     }
                     
                     // Add more product details here as needed
@@ -82,6 +98,11 @@ struct ProductDetailsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             viewModel.fetchProduct(withId: productId)
+        }
+        .onChange(of: viewModel.product) {
+            if let product = viewModel.product, let firstVariant = product.variants?.first {
+                selectedVariant = firstVariant
+            }
         }
         .alert("Success", isPresented: $showingAddToCartAlert) {
             Button("OK") { }
