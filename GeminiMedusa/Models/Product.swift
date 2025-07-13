@@ -10,7 +10,7 @@ import Foundation
 
 // This is a placeholder struct to satisfy compilation requirements
 // where 'Product' type is referenced but 'ProductWithPrice' is the primary model.
-struct Product: Codable, Identifiable {
+struct Product: Codable, Identifiable, Equatable {
     let id: String
     let title: String?
     let subtitle: String?
@@ -49,6 +49,10 @@ struct Product: Codable, Identifiable {
         case midCode = "mid_code"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
+    }
+
+    static func == (lhs: Product, rhs: Product) -> Bool {
+        lhs.id == rhs.id
     }
 }
 

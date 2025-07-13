@@ -1,4 +1,3 @@
-
 //
 //  ProductWithPrice.swift
 //  BoltMedusaAuth
@@ -9,7 +8,7 @@
 import Foundation
 
 // MARK: - ProductWithPrice Models
-struct ProductWithPrice: Codable, Identifiable {
+struct ProductWithPrice: Codable, Identifiable, Hashable, Equatable {
     let id: String
     let title: String
     let subtitle: String?
@@ -48,6 +47,14 @@ struct ProductWithPrice: Codable, Identifiable {
         case midCode = "mid_code"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
+    }
+
+    static func == (lhs: ProductWithPrice, rhs: ProductWithPrice) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
 
@@ -144,7 +151,7 @@ struct ProductWithPriceImage: Codable, Identifiable {
     }
 }
 
-struct ProductWithPriceVariant: Codable, Identifiable {
+struct ProductWithPriceVariant: Codable, Identifiable, Hashable, Equatable {
     let id: String
     let title: String
     let sku: String?
@@ -183,6 +190,14 @@ struct ProductWithPriceVariant: Codable, Identifiable {
         case updatedAt = "updated_at"
         case deletedAt = "deleted_at"
         case calculatedPrice = "calculated_price"
+    }
+
+    static func == (lhs: ProductWithPriceVariant, rhs: ProductWithPriceVariant) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
 

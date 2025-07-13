@@ -9,7 +9,7 @@ struct ProductDetailsView: View {
     let productId: String
     
     @State private var showingAddToCartAlert = false
-    @State private var selectedVariant: ProductVariant?
+    @State private var selectedVariant: ProductWithPriceVariant?
     
     var body: some View {
         ScrollView {
@@ -20,23 +20,7 @@ struct ProductDetailsView: View {
                     Text("Error: \(errorMessage)")
                         .foregroundColor(.red)
                 } else if let product = viewModel.product {
-                    if let imageUrl = product.thumbnail, let url = URL(string: imageUrl) {
-                        AsyncImage(url: url) { image in
-                            image.resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(maxWidth: .infinity, maxHeight: 300)
-                                .cornerRadius(10)
-                        } placeholder: {
-                            ProgressView()
-                        }
-                    } else {
-                        Image(systemName: "photo")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxWidth: .infinity, maxHeight: 300)
-                            .cornerRadius(10)
-                            .foregroundColor(.gray)
-                    }
+                    ProductImageView(thumbnail: product.thumbnail)
                     
                     Text(product.title ?? "Unknown Product")
                         .font(.largeTitle)
@@ -48,44 +32,7 @@ struct ProductDetailsView: View {
                             .foregroundColor(.gray)
                     }
                     
-                    if let product = viewModel.product {
-                        if product.variants?.count ?? 0 > 1 {
-                            Picker("Select Variant", selection: $selectedVariant) {
-                                ForEach(product.variants ?? [], id: \.id) { variant in
-                                    Text(variant.title ?? "Unknown Variant")
-                                        .tag(variant as ProductVariant?)
-                                }
-                            }
-                            .pickerStyle(.menu)
-                            .onChange(of: selectedVariant) { newVariant in
-                                // Update price display based on newVariant
-                            }
-                        }
-                        
-                        if let price = selectedVariant?.calculatedPrice ?? product.variants?.first?.calculatedPrice {
-                            Text("Price: \(formatPrice(price.calculatedAmount, currencyCode: price.currencyCode))")
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                        }
-                        
-                        Button(action: {
-                            if let variant = selectedVariant ?? product.variants?.first, let regionId = regionService.selectedRegionId {
-                                cartService.addLineItem(variantId: variant.id, quantity: 1, regionId: regionId) { success in
-                                    if success {
-                                        showingAddToCartAlert = true
-                                    }
-                                }
-                            }
-                        }) {
-                            Text("Add to Cart")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.blue)
-                                .cornerRadius(10)
-                        }
-                    }
+                    ProductInteractionView(product: product, selectedVariant: $selectedVariant, showingAddToCartAlert: $showingAddToCartAlert)
                     
                     // Add more product details here as needed
                 } else {
