@@ -10,9 +10,11 @@ import SwiftUI
 struct RegionSelectionView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel: RegionSelectionViewModel
+    @Binding var isPresented: Bool
     
-    init(regionService: RegionService) {
+    init(regionService: RegionService, isPresented: Binding<Bool>) {
         _viewModel = StateObject(wrappedValue: RegionSelectionViewModel(regionService: regionService))
+        _isPresented = isPresented
     }
     
     var body: some View {
@@ -63,7 +65,7 @@ struct RegionSelectionView: View {
 
 struct RegionSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        RegionSelectionView(regionService: RegionService())
+        RegionSelectionView(regionService: RegionService(), isPresented: .constant(true))
             .environmentObject(RegionService())
     }
 }

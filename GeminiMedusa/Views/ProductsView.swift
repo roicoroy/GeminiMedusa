@@ -29,43 +29,7 @@ struct ProductsView: View {
                     List(viewModel.products) {
                         product in
                         NavigationLink(destination: ProductDetailsView(productId: product.id)) {
-                            HStack(alignment: .top) {
-                                if let thumbnailURLString = product.thumbnail,
-                                   let url = URL(string: thumbnailURLString) {
-                                    AsyncImage(url: url) { image in
-                                        image.resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 80, height: 80)
-                                            .cornerRadius(8)
-                                    } placeholder: {
-                                        ProgressView()
-                                            .frame(width: 80, height: 80)
-                                            .background(Color.gray.opacity(0.2))
-                                            .cornerRadius(8)
-                                    }
-                                } else {
-                                    Image(systemName: "photo")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 80, height: 80)
-                                        .foregroundColor(.gray)
-                                        .background(Color.gray.opacity(0.2))
-                                        .cornerRadius(8)
-                                }
-
-                                VStack(alignment: .leading) {
-                                    Text(product.title)
-                                        .font(.headline)
-                                    Text(product.description ?? "No description")
-                                        .font(.subheadline)
-                                        .foregroundColor(.gray)
-                                    if let calculatedPrice = product.variants?.first?.calculatedPrice {
-                                        Text("Price: \(formatPrice(calculatedPrice.calculatedAmount, currencyCode: calculatedPrice.currencyCode))")
-                                            .font(.footnote)
-                                            .fontWeight(.bold)
-                                    }
-                                }
-                            }
+                            ProductRowView(product: product)
                         }
                     }
                 }
@@ -82,7 +46,7 @@ struct ProductsView: View {
                 }
             }
             .sheet(isPresented: $showingRegionSelection) {
-                RegionSelectionView(regionService: regionService)
+                RegionSelectionView(regionService: regionService, isPresented: $showingRegionSelection)
             }
             .onAppear {
                 if let regionId = regionService.selectedRegionId {

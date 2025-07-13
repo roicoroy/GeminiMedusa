@@ -1,3 +1,4 @@
+
 import Foundation
 import Combine
 
@@ -6,6 +7,7 @@ class RegionService: ObservableObject {
     @Published var regions: [Region] = []
     @Published var countryList: [CountrySelection] = []
     @Published var selectedCountry: CountrySelection?
+    @Published var selectedRegion: Region?
     @Published var isLoading = false
     @Published var errorMessage: String?
     
@@ -14,8 +16,10 @@ class RegionService: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
-        loadSelectedCountryFromStorage()
-        fetchRegions()
+        loadSelectionFromStorage()
+        if selectedCountry == nil || selectedRegion == nil {
+            fetchRegions()
+        }
     }
     
     deinit {
@@ -38,8 +42,20 @@ class RegionService: ObservableObject {
                     }
                 },
                 receiveValue: { [weak self] (response: RegionsResponse) in
-                    self?.regions = response.regions
-                    self?.processCountries(from: response.regions)
+                    guard let self = self else { return }
+                    self.regions = response.regions
+                    self.processCountries(from: response.regions)
+
+                    // After fetching regions, ensure selected country/region is valid
+                    if let selectedCountry = self.selectedCountry, let selectedRegion = self.selectedRegion {
+                        if !self.regions.contains(where: { $0.id == selectedRegion.id }) || !self.countryList.contains(where: { $0.country == selectedCountry.country }) {
+                            // Stored selection is no longer valid, clear it
+                            self.clearSelection()
+                            self.setDefaultCountryIfNeeded()
+                        }
+                    } else {
+                        self.setDefaultCountryIfNeeded()
+                    }
                 }
             )
             .store(in: &cancellables)
@@ -68,80 +84,85 @@ class RegionService: ObservableObject {
     
     private func setDefaultCountryIfNeeded() {
         guard selectedCountry == nil else { return }
-        
+
         if let defaultCountry = countryList.first(where: { $0.country.lowercased() == defaultCountryCode }) {
             selectCountry(defaultCountry)
             return
         }
-        
+
         if let firstCountry = countryList.first {
             selectCountry(firstCountry)
         }
     }
-    
+
     func selectCountry(_ country: CountrySelection) {
         DispatchQueue.main.async { [weak self] in
             self?.selectedCountry = country
-        }
-        saveSelectedCountryToStorage(country)
-    }
-    
-    // MARK: - Storage
-    
-    private func saveSelectedCountryToStorage(_ country: CountrySelection) {
-        if let encoded = try? JSONEncoder().encode(country) {
-            UserDefaults.standard.set(encoded, forKey: "selected_country")
+            self?.selectedRegion = self?.regions.first { $0.id == country.regionId }
+            self?.saveSelectionToStorage()
         }
     }
-    
-    private func loadSelectedCountryFromStorage() {
-        if let countryData = UserDefaults.standard.data(forKey: "selected_country"),
-           let country = try? JSONDecoder().decode(CountrySelection.self, from: countryData) {
-            DispatchQueue.main.async { [weak self] in
-                self?.selectedCountry = country
-            }
-            fetchRegions() // Refresh regions after loading selected country
-        }
-    }
-    
-    // MARK: - Utility Methods
-    
-    func refreshRegions() {
-        fetchRegions()
-    }
-    
-    var hasSelectedRegion: Bool {
-        return selectedCountry != nil
-    }
-    
-    var selectedRegionId: String? {
-        return selectedCountry?.regionId
-    }
-    
-    var selectedRegionCurrency: String? {
-        return selectedCountry?.currencyCode
-    }
-    
-    // MARK: - Backward compatibility properties for existing views
-    
-    var selectedRegion: Region? {
-        guard let selectedCountry = selectedCountry else { return nil }
-        return regions.first { $0.id == selectedCountry.regionId }
-    }
-    
+
     func selectRegion(_ region: Region) {
         if let firstCountry = region.toCountrySelections().first {
             selectCountry(firstCountry)
         }
     }
-    
+
+    // MARK: - Storage
+
+    private func saveSelectionToStorage() {
+        if let encodedCountry = try? JSONEncoder().encode(selectedCountry) {
+            UserDefaults.standard.set(encodedCountry, forKey: "selected_country")
+        }
+        if let encodedRegion = try? JSONEncoder().encode(selectedRegion) {
+            UserDefaults.standard.set(encodedRegion, forKey: "selected_region")
+        }
+    }
+
+    private func loadSelectionFromStorage() {
+        if let countryData = UserDefaults.standard.data(forKey: "selected_country"),
+           let country = try? JSONDecoder().decode(CountrySelection.self, from: countryData) {
+            self.selectedCountry = country
+        }
+        if let regionData = UserDefaults.standard.data(forKey: "selected_region"),
+           let region = try? JSONDecoder().decode(Region.self, from: regionData) {
+            self.selectedRegion = region
+        }
+    }
+
+    // MARK: - Utility Methods
+
+    func refreshRegions() {
+        fetchRegions()
+    }
+
+    var hasSelectedRegion: Bool {
+        return selectedCountry != nil
+    }
+
+    var selectedRegionId: String? {
+        return selectedCountry?.regionId
+    }
+
+    var selectedRegionCurrency: String? {
+        return selectedCountry?.currencyCode
+    }
+
+    func clearSelection() {
+        selectedCountry = nil
+        selectedRegion = nil
+        UserDefaults.standard.removeObject(forKey: "selected_country")
+        UserDefaults.standard.removeObject(forKey: "selected_region")
+    }
+
     // MARK: - Country-specific helpers
-    
+
     func getCountriesForSelectedRegion() -> [Country] {
         guard let selectedRegion = selectedRegion else { return [] }
         return selectedRegion.countries ?? []
     }
-    
+
     func hasUKInSelectedRegion() -> Bool {
         return selectedCountry?.country.lowercased() == "gb"
     }

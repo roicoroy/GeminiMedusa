@@ -9,13 +9,16 @@
 import SwiftUI
 
 struct SplashScreenView: View {
+    @EnvironmentObject var regionService: RegionService
     @State private var isActive = false
+    @State private var showingRegionSelection = false
     @State private var size = 0.8
     @State private var opacity = 0.5
     
     var body: some View {
         if isActive {
-            ContentView()
+            // This view will be dismissed by the parent (GeminiMedusaApp) once isActive is true
+            EmptyView()
         } else {
             VStack {
                 VStack {
@@ -38,9 +41,16 @@ struct SplashScreenView: View {
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                     withAnimation {
-                        self.isActive = true
+                        if regionService.selectedCountry == nil {
+                            self.showingRegionSelection = true
+                        } else {
+                            self.isActive = true
+                        }
                     }
                 }
+            }
+            .sheet(isPresented: $showingRegionSelection) {
+                RegionSelectionView(regionService: regionService, isPresented: $showingRegionSelection)
             }
         }
     }
