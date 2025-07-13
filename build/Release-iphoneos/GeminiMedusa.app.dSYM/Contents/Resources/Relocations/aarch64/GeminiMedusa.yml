@@ -1,5 +1,0 @@
----
-triple:          'arm64-apple-darwin'
-binary-path:     '/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/Release-iphoneos/GeminiMedusa.app/GeminiMedusa'
-relocations:     []
-...
