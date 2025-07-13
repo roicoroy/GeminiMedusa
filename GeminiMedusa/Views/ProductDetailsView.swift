@@ -7,7 +7,9 @@ struct ProductDetailsView: View {
     @EnvironmentObject var regionService: RegionService
     @StateObject var viewModel = ProductDetailsViewModel()
     let productId: String
-
+    
+    @State private var showingAddToCartAlert = false
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
@@ -34,26 +36,30 @@ struct ProductDetailsView: View {
                             .cornerRadius(10)
                             .foregroundColor(.gray)
                     }
-
+                    
                     Text(product.title ?? "Unknown Product")
                         .font(.largeTitle)
                         .fontWeight(.bold)
-
+                    
                     if let description = product.description {
                         Text(description)
                             .font(.body)
                             .foregroundColor(.gray)
                     }
-
+                    
                     if let calculatedPrice = product.variants?.first?.calculatedPrice {
                         Text("Price: \(formatPrice(calculatedPrice.calculatedAmount, currencyCode: calculatedPrice.currencyCode))")
                             .font(.title2)
                             .fontWeight(.semibold)
                     }
-
+                    
                     Button(action: {
                         if let product = viewModel.product, let variantId = product.variants?.first?.id, let regionId = regionService.selectedRegionId {
-                            cartService.addLineItem(variantId: variantId, quantity: 1, regionId: regionId)
+                            cartService.addLineItem(variantId: variantId, quantity: 1, regionId: regionId) { success in
+                                if success {
+                                    showingAddToCartAlert = true
+                                }
+                            }
                         }
                     }) {
                         Text("Add to Cart")
@@ -64,7 +70,7 @@ struct ProductDetailsView: View {
                             .background(Color.blue)
                             .cornerRadius(10)
                     }
-
+                    
                     // Add more product details here as needed
                 } else {
                     Text("Product not found.")
@@ -77,13 +83,18 @@ struct ProductDetailsView: View {
         .onAppear {
             viewModel.fetchProduct(withId: productId)
         }
+        .alert("Success", isPresented: $showingAddToCartAlert) {
+            Button("OK") { }
+        } message: {
+            Text("Product added to cart!")
+        }
     }
-}
-
-struct ProductDetailsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            ProductDetailsView(productId: "prod_01J12Y0G0G0G0G0G0G0G0G0G0G") // Replace with a valid product ID for preview
+    
+    struct ProductDetailsView_Previews: PreviewProvider {
+        static var previews: some View {
+            NavigationView {
+                ProductDetailsView(productId: "prod_01J12Y0G0G0G0G0G0G0G0G0G0G") // Replace with a valid product ID for preview
+            }
         }
     }
 }

@@ -23,6 +23,8 @@ struct GeminiMedusaApp: App {
         }
     }()
 
+    @StateObject var cartService = CartService()
+
     var body: some Scene {
         WindowGroup {
             TabView {
@@ -34,6 +36,7 @@ struct GeminiMedusaApp: App {
                     .tabItem {
                         Label("Cart", systemImage: "cart.fill")
                     }
+                    .badge(cartService.currentCart?.itemCount ?? 0)
                 DebugView()
                     .tabItem {
                         Label("Debug", systemImage: "ant.fill")

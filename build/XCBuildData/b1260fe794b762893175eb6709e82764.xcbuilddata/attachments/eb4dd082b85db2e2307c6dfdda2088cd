@@ -1,0 +1,240 @@
+{
+  "" : {
+    "const-values" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/GeminiMedusa-master.swiftconstvalues",
+    "dependencies" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/GeminiMedusa-master.d",
+    "diagnostics" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/GeminiMedusa-master.dia",
+    "emit-module-dependencies" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/GeminiMedusa-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/GeminiMedusa-master-emit-module.dia",
+    "swift-dependencies" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/GeminiMedusa-master.swiftdeps"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/ContentView.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ContentView.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ContentView.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ContentView.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/GeminiMedusaApp.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/GeminiMedusaApp.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/GeminiMedusaApp.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/GeminiMedusaApp.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Item.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Item.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Item.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Item.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/Address.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Address.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Address.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Address.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/AnyCodable.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/AnyCodable.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/AnyCodable.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/AnyCodable.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/Cart.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Cart.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Cart.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Cart.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/CartLineItem.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartLineItem.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartLineItem.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartLineItem.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/CartPromotion.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartPromotion.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartPromotion.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartPromotion.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/CartRegion.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartRegion.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartRegion.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartRegion.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/CountrySelection.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CountrySelection.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CountrySelection.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CountrySelection.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/Customer.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Customer.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Customer.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Customer.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/Order.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Order.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Order.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Order.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/PaymentCollection.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/PaymentCollection.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/PaymentCollection.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/PaymentCollection.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/PaymentProvider.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/PaymentProvider.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/PaymentProvider.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/PaymentProvider.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/PaymentSession.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/PaymentSession.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/PaymentSession.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/PaymentSession.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/Product.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Product.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Product.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Product.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/ProductCategory.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductCategory.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductCategory.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductCategory.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/ProductCollection.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductCollection.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductCollection.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductCollection.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/ProductWithPrice.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductWithPrice.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductWithPrice.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductWithPrice.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/Region.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Region.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Region.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Region.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/ShippingOption.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ShippingOption.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ShippingOption.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ShippingOption.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Models/TaxLine.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/TaxLine.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/TaxLine.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/TaxLine.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/AuthService.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/AuthService.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/AuthService.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/AuthService.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/CartService.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartService.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartService.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartService.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/FlexibleDecoder.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/FlexibleDecoder.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/FlexibleDecoder.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/FlexibleDecoder.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/NetworkManager.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/NetworkManager.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/NetworkManager.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/NetworkManager.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/OrdersService.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/OrdersService.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/OrdersService.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/OrdersService.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/PaymentProvidersService.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/PaymentProvidersService.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/PaymentProvidersService.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/PaymentProvidersService.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/ProductCategoryService.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductCategoryService.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductCategoryService.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductCategoryService.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/ProductCollectionService.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductCollectionService.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductCollectionService.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductCollectionService.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/ProductService.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductService.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductService.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductService.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/RegionService.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/RegionService.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/RegionService.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/RegionService.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Services/ShippingService.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ShippingService.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ShippingService.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ShippingService.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/SplashScreenView.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/SplashScreenView.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/SplashScreenView.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/SplashScreenView.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Utils/Formatters.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Formatters.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Formatters.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/Formatters.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/ViewModels/CartViewModel.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartViewModel.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartViewModel.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartViewModel.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/ViewModels/ProductDetailsViewModel.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductDetailsViewModel.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductDetailsViewModel.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductDetailsViewModel.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/ViewModels/ProductsViewModel.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductsViewModel.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductsViewModel.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductsViewModel.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/ViewModels/RegionSelectionViewModel.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/RegionSelectionViewModel.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/RegionSelectionViewModel.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/RegionSelectionViewModel.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Views/CartView.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartView.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartView.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/CartView.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Views/DebugView.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/DebugView.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/DebugView.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/DebugView.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Views/ProductDetailsView.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductDetailsView.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductDetailsView.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductDetailsView.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Views/ProductRowView.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductRowView.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductRowView.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductRowView.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Views/ProductsView.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductsView.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductsView.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/ProductsView.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Views/RegionSelectionView.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/RegionSelectionView.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/RegionSelectionView.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/RegionSelectionView.o"
+  },
+  "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "index-unit-output-path" : "/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/build/GeminiMedusa.build/Release-iphoneos/GeminiMedusa.build/Objects-normal/arm64/GeneratedAssetSymbols.o"
+  }
+}

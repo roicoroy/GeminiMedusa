@@ -1,4 +1,3 @@
-
 import Foundation
 import Combine
 
@@ -7,7 +6,8 @@ class RegionService: ObservableObject {
     @Published var regions: [Region] = []
     @Published var countryList: [CountrySelection] = []
     @Published var selectedCountry: CountrySelection?
-    @Published var selectedRegion: Region?
+    @Published var selectedRegion: Region? // Now a stored property
+
     @Published var isLoading = false
     @Published var errorMessage: String?
     
@@ -45,17 +45,7 @@ class RegionService: ObservableObject {
                     guard let self = self else { return }
                     self.regions = response.regions
                     self.processCountries(from: response.regions)
-
-                    // After fetching regions, ensure selected country/region is valid
-                    if let selectedCountry = self.selectedCountry, let selectedRegion = self.selectedRegion {
-                        if !self.regions.contains(where: { $0.id == selectedRegion.id }) || !self.countryList.contains(where: { $0.country == selectedCountry.country }) {
-                            // Stored selection is no longer valid, clear it
-                            self.clearSelection()
-                            self.setDefaultCountryIfNeeded()
-                        }
-                    } else {
-                        self.setDefaultCountryIfNeeded()
-                    }
+                    self.setDefaultCountryIfNeeded()
                 }
             )
             .store(in: &cancellables)
