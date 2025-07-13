@@ -20,7 +20,7 @@ struct CartView: View {
                             }
                         }
                     }
-                    .onDelete(perform: removeItems)
+                    
                 } else {
                     Text("Your cart is empty.")
                         .foregroundColor(.gray)
@@ -28,9 +28,6 @@ struct CartView: View {
             }
             .navigationTitle("Shopping Cart")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
                         cartService.clearCart()
@@ -42,14 +39,7 @@ struct CartView: View {
         }
     }
 
-    private func removeItems(at offsets: IndexSet) {
-        if let items = cartService.currentCart?.items {
-            for index in offsets {
-                let lineItem = items[index]
-                cartService.removeLineItem(lineItemId: lineItem.id)
-            }
-        }
-    }
+    
 }
 
 struct CartView_Previews: PreviewProvider {

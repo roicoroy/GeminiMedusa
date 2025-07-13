@@ -34,6 +34,10 @@ struct GeminiMedusaApp: App {
                     .tabItem {
                         Label("Cart", systemImage: "cart.fill")
                     }
+                DebugView()
+                    .tabItem {
+                        Label("Debug", systemImage: "ant.fill")
+                    }
             }
             .environmentObject(RegionService())
             .environmentObject(ProductsViewModel())

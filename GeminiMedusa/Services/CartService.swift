@@ -1,6 +1,6 @@
 import Foundation
-
 import Combine
+
 
 class CartService: ObservableObject {
     @Published var currentCart: Cart?
@@ -40,6 +40,8 @@ class CartService: ObservableObject {
             }, receiveValue: { [weak self] (response: CartResponse) in
                 self?.currentCart = response.cart
                 self?.saveCartToStorage()
+                self?.objectWillChange.send()
+                self?.fetchCart(cartId: response.cart.id) // Re-fetch cart to ensure latest state
                 completion(true)
             })
             .store(in: &cancellables)
@@ -77,36 +79,51 @@ class CartService: ObservableObject {
             }, receiveValue: { [weak self] (response: CartResponse) in
                 self?.currentCart = response.cart
                 self?.saveCartToStorage()
+                self?.objectWillChange.send()
+                self?.fetchCart(cartId: response.cart.id) // Re-fetch cart to ensure latest state
                 completion(true)
             })
             .store(in: &cancellables)
     }
 
-    func removeLineItem(lineItemId: String, completion: @escaping (Bool) -> Void = { _ in }) {
+    func removeLineItem(lineItemId: String, onComplete: @escaping (Bool) -> Void = { _ in }) {
         guard let cart = currentCart else {
-            completion(false)
+            onComplete(false)
             return
         }
-
+        
         isLoading = true
         errorMessage = nil
-
-        NetworkManager.shared.request(endpoint: "carts/\(cart.id)/line-items/\(lineItemId)", method: "DELETE")
+        
+        NetworkManager.shared.requestData(endpoint: "carts/\(cart.id)/line-items/\(lineItemId)", method: "DELETE", requiresAuth: true)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completionResult in
                 self?.isLoading = false
                 if case .failure(let error) = completionResult {
                     self?.errorMessage = "Failed to remove item: \(error.localizedDescription)"
-                    completion(false)
+                    onComplete(false)
                 }
-            }, receiveValue: { [weak self] (response: CartResponse) in
-                self?.currentCart = response.cart
-                self?.saveCartToStorage()
-                completion(true)
+            }, receiveValue: { [weak self] (data: Data) in
+                self?.handleRemoveLineItemResponse(data: data, onComplete: onComplete)
             })
             .store(in: &cancellables)
     }
 
+    private func handleRemoveLineItemResponse(data: Data, onComplete: @escaping (Bool) -> Void) {
+        do {
+            let response = try JSONDecoder().decode(CartResponse.self, from: data)
+            self.currentCart = response.cart
+            self.saveCartToStorage()
+            onComplete(true)
+            return
+        } catch {}
+        
+        if let cart = currentCart {
+            fetchCart(cartId: cart.id)
+        }
+        onComplete(true)
+    }
+    
     func fetchCart(cartId: String) {
         isLoading = true
         errorMessage = nil
@@ -121,6 +138,8 @@ class CartService: ObservableObject {
             }, receiveValue: { [weak self] (response: CartResponse) in
                 self?.currentCart = response.cart
                 self?.saveCartToStorage()
+                self?.objectWillChange.send()
+                print("DEBUG: Fetched cart: \(response.cart)")
             })
             .store(in: &cancellables)
     }
@@ -128,6 +147,7 @@ class CartService: ObservableObject {
     func clearCart() {
         currentCart = nil
         UserDefaults.standard.removeObject(forKey: "medusa_cart")
+        objectWillChange.send()
     }
 
     private func saveCartToStorage() {
