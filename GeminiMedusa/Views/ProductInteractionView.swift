@@ -15,6 +15,7 @@ struct ProductInteractionView: View {
                     ForEach(product.variants ?? [], id: \.id) { variant in
                         Text("\(variant.title ?? "Unknown Variant") - \(formatPrice(variant.calculatedPrice?.calculatedAmount ?? 0, currencyCode: variant.calculatedPrice?.currencyCode ?? "USD"))")
                             .tag(variant as ProductWithPriceVariant?)
+//                        print("DEBUG: Variant: \(variant.title), Amount: \(variant.calculatedPrice?.calculatedAmount ?? 0), Currency: \(variant.calculatedPrice?.currencyCode ?? "N/A")")
                     }
                 }
                 .pickerStyle(.menu)
