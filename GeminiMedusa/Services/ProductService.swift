@@ -41,7 +41,7 @@ class ProductService: ObservableObject {
     
 
     func getProduct(withId id: String, completion: @escaping (Result<Product, Error>) -> Void) {
-        let endpoint = "products/\(id)?fields=*variants.calculated_price"
+        let endpoint = "products/\(id)"
         NetworkManager.shared.request(endpoint: endpoint)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { comp in
