@@ -14,6 +14,7 @@ struct ProductPriceSelectComponent: View {
                 Picker("Select Variant", selection: $selectedVariant) {
                     ForEach(product.variants ?? [], id: \.id) { variant in
                         Text("\(variant.title ?? "Unknown Variant") - \(formatPrice(variant.calculatedPrice?.calculatedAmount ?? 0, currencyCode: regionService.selectedRegionCurrency ?? "USD"))")
+                        print("DEBUG: Formatting price - Amount: \(variant.calculatedPrice?.calculatedAmount ?? 0), Currency: \(regionService.selectedRegionCurrency ?? "USD")")
                             .tag(variant as ProductWithPriceVariant?)
                     }
                 }
