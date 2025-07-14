@@ -5,8 +5,11 @@ import Foundation
 struct ProductDetailsView: View {
     @EnvironmentObject var cartService: CartService
     @EnvironmentObject var regionService: RegionService
-    @StateObject var viewModel = ProductDetailsViewModel()
-    let productId: String
+    @StateObject var viewModel = ProductDetailsViewModel(allProducts: <#[ProductWithPrice]#>)
+    init(productId: String) {
+        self.productId = productId
+        _viewModel = StateObject(wrappedValue: ProductDetailsViewModel(allProducts: []))
+    }
     
     @State private var showingAddToCartAlert = false
     @State private var selectedVariant: ProductWithPriceVariant?
@@ -61,8 +64,11 @@ struct ProductDetailsView: View {
     struct ProductDetailsView_Previews: PreviewProvider {
         static var previews: some View {
             NavigationView {
-                ProductDetailsView(productId: "prod_01J12Y0G0G0G0G0G0G0G0G0G0G") // Replace with a valid product ID for preview
+                ProductDetailsView(productId: "prod_01J12Y0G0G0G0G0G0G0G0G0G0G", productsViewModel: ProductsViewModel()) // Replace with a valid product ID for preview
             }
+            .environmentObject(CartService())
+            .environmentObject(RegionService())
+            .environmentObject(ProductsViewModel())
         }
     }
 }

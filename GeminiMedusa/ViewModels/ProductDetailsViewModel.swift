@@ -2,25 +2,25 @@
 import Foundation
 
 class ProductDetailsViewModel: ObservableObject {
-    @Published var product: Product?
+    @Published var product: ProductWithPrice?
     @Published var isLoading = false
     @Published var errorMessage: String?
 
-    private let productService = ProductService()
+    var allProducts: [ProductWithPrice] = []
+
+    init(allProducts: [ProductWithPrice]) {
+        self.allProducts = allProducts
+    }
 
     func fetchProduct(withId id: String) {
         isLoading = true
         errorMessage = nil
-        productService.getProduct(withId: id) { [weak self] result in
-            DispatchQueue.main.async {
-                self?.isLoading = false
-                switch result {
-                case .success(let product):
-                    self?.product = product
-                case .failure(let error):
-                    self?.errorMessage = error.localizedDescription
-                }
-            }
+        if let product = allProducts.first(where: { $0.id == id }) {
+            self.product = product
+            self.isLoading = false
+        } else {
+            self.errorMessage = "Product not found in local cache."
+            self.isLoading = false
         }
     }
 }

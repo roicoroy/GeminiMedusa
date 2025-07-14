@@ -28,7 +28,7 @@ struct ProductsView: View {
                 } else {
                     List(viewModel.products) {
                         product in
-                        NavigationLink(destination: ProductDetailsView(productId: product.id)) {
+                        NavigationLink(destination: ProductDetailsView(productId: product.id, productsViewModel: viewModel)) {
                             ProductRowView(product: product)
                         }
                     }

@@ -114,10 +114,12 @@ class RegionService: ObservableObject {
         if let countryData = UserDefaults.standard.data(forKey: "selected_country"),
            let country = try? JSONDecoder().decode(CountrySelection.self, from: countryData) {
             self.selectedCountry = country
+            print("DEBUG: Loaded Country from Storage: \(country.label), Region ID: \(country.regionId), Currency: \(country.currencyCode)")
         }
         if let regionData = UserDefaults.standard.data(forKey: "selected_region"),
            let region = try? JSONDecoder().decode(Region.self, from: regionData) {
             self.selectedRegion = region
+            print("DEBUG: Loaded Region from Storage: \(region.name ?? "N/A"), ID: \(region.id), Currency: \(region.currencyCode ?? "N/A")")
         }
     }
 

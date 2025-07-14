@@ -2,7 +2,7 @@
 import SwiftUI
 
 struct ProductPriceSelectComponent: View {
-    let product: Product
+    let product: ProductWithPrice
     @Binding var selectedVariant: ProductWithPriceVariant?
     @EnvironmentObject var cartService: CartService
     @EnvironmentObject var regionService: RegionService
@@ -49,4 +49,4 @@ struct ProductPriceSelectComponent: View {
             }
         }
     }
-}
+
