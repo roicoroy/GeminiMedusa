@@ -210,36 +210,6 @@
             endingLineNumber = "15"
             landmarkName = "fetchProduct(withId:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "A71058F1-1387-4CDE-B2D9-073B121090C5 - 74a999789a0bcded"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "GeminiMedusa.ProductDetailsViewModel.fetchProduct(withId: Swift.String) -&gt; ()"
-                  moduleName = "GeminiMedusa.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/ViewModels/ProductDetailsViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "15"
-                  endingLineNumber = "15">
-               </Location>
-               <Location
-                  uuid = "A71058F1-1387-4CDE-B2D9-073B121090C5 - 74a999789a0bcc0a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "GeminiMedusa.ProductDetailsViewModel.fetchProduct(withId: Swift.String) -&gt; ()"
-                  moduleName = "GeminiMedusa.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/ViewModels/ProductDetailsViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "16"
-                  endingLineNumber = "16">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -272,36 +242,22 @@
             endingLineNumber = "18"
             landmarkName = "fetchProduct(withId:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "A0E933C6-54B5-49C5-8477-56933205652F - 74a999789a0bcc48"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "GeminiMedusa.ProductDetailsViewModel.fetchProduct(withId: Swift.String) -&gt; ()"
-                  moduleName = "GeminiMedusa.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/ViewModels/ProductDetailsViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "18"
-                  endingLineNumber = "18">
-               </Location>
-               <Location
-                  uuid = "A0E933C6-54B5-49C5-8477-56933205652F - b5e0633937e7416a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (GeminiMedusa.ProductWithPrice) -&gt; Swift.Bool in GeminiMedusa.ProductDetailsViewModel.fetchProduct(withId: Swift.String) -&gt; ()"
-                  moduleName = "GeminiMedusa.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/ViewModels/ProductDetailsViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "18"
-                  endingLineNumber = "18">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E3EB44F0-F4ED-465B-94FC-28E1F852FABC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GeminiMedusa/Utils/Formatters.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "10"
+            endingLineNumber = "10"
+            landmarkName = "formatPrice(_:currencyCode:)"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
