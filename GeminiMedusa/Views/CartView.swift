@@ -1,7 +1,5 @@
 import SwiftUI
 
-import SwiftUI
-
 struct CartView: View {
     @EnvironmentObject var cartService: CartService
     @EnvironmentObject var regionService: RegionService
@@ -12,19 +10,68 @@ struct CartView: View {
             VStack {
                 List {
                     if let items = cartService.currentCart?.items, !items.isEmpty {
-                        ForEach(items) { item in
-                            HStack {
-                                Text(item.title ?? "Unknown Item")
-                                Spacer()
-                                Text("Quantity: \(item.quantity)")
-                                if let currencyCode = regionService.selectedRegionCurrency {
-                                    Text(formatPrice(item.unitPrice * item.quantity, currencyCode: currencyCode))
+                        Section(header: Text("Items")) {
+                            ForEach(items) { item in
+                                HStack {
+                                    Text(item.title ?? "Unknown Item")
+                                    Spacer()
+                                    Text("Quantity: \(item.quantity)")
+                                    if let currencyCode = regionService.selectedRegionCurrency {
+                                        Text(formatPrice(item.unitPrice * item.quantity, currencyCode: currencyCode))
+                                    }
+                                    Button(action: {
+                                        cartService.removeLineItem(lineItemId: item.id)
+                                    }) {
+                                        Image(systemName: "minus.circle.fill")
+                                            .foregroundColor(.red)
+                                    }
                                 }
-                                Button(action: {
-                                    cartService.removeLineItem(lineItemId: item.id)
-                                }) {
-                                    Image(systemName: "minus.circle.fill")
-                                        .foregroundColor(.red)
+                            }
+                        }
+
+                        if let cart = cartService.currentCart {
+                            Section(header: Text("Order Summary")) {
+                                HStack {
+                                    Text("Subtotal:")
+                                    Spacer()
+                                    Text(cart.formattedSubtotal(currencyCode: regionService.selectedRegionCurrency))
+                                }
+                                HStack {
+                                    Text("Shipping:")
+                                    Spacer()
+                                    Text(cart.formattedShippingTotal(currencyCode: regionService.selectedRegionCurrency))
+                                }
+                                HStack {
+                                    Text("Tax:")
+                                    Spacer()
+                                    Text(cart.formattedTaxTotal(currencyCode: regionService.selectedRegionCurrency))
+                                }
+                                HStack {
+                                    Text("Total:")
+                                    Spacer()
+                                    Text(cart.formattedTotal(currencyCode: regionService.selectedRegionCurrency))
+                                        .font(.headline)
+                                }
+                            }
+
+                            Section(header: Text("Customer Information")) {
+                                Text("Email: \(cart.email ?? "N/A")")
+                                Text("Status: \(cart.customerStatus)")
+                            }
+
+                            if let shippingAddress = cart.shippingAddress {
+                                Section(header: Text("Shipping Address")) {
+                                    Text(shippingAddress.fullName)
+                                    Text(shippingAddress.fullAddress)
+                                    Text(shippingAddress.phone ?? "N/A")
+                                }
+                            }
+
+                            if let billingAddress = cart.billingAddress {
+                                Section(header: Text("Billing Address")) {
+                                    Text(billingAddress.fullName)
+                                    Text(billingAddress.fullAddress)
+                                    Text(billingAddress.phone ?? "N/A")
                                 }
                             }
                         }
