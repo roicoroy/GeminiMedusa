@@ -56,20 +56,12 @@ class NetworkManager {
             .tryMap { data, response -> Data in
                 if let httpResponse = response as? HTTPURLResponse {
                     if httpResponse.statusCode >= 400 {
-                        print("NetworkManager Error: Status Code \(httpResponse.statusCode)")
-                        if let responseString = String(data: data, encoding: .utf8) {
-                            print("NetworkManager Error: Response Data \(responseString)")
-                        }
                         throw URLError(.badServerResponse)
                     }
-                }
-                if let responseString = String(data: data, encoding: .utf8) {
-                    print("DEBUG: Raw API Response: \(responseString)")
                 }
                 return data
             }
             .mapError { error in
-                print("NetworkManager Error (catch): \(error.localizedDescription)")
                 return error
             }
             .eraseToAnyPublisher()

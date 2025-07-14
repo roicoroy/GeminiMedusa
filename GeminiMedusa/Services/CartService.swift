@@ -140,7 +140,7 @@ class CartService: ObservableObject {
                 self?.currentCart = response.cart
                 self?.saveCartToStorage()
                 self?.objectWillChange.send()
-                print("DEBUG: Fetched cart: \(response.cart)")
+                
             })
             .store(in: &cancellables)
     }

@@ -28,11 +28,9 @@ class ProductService: ObservableObject {
                 self?.isLoading = false
                 if case .failure(let error) = completion {
                     self?.errorMessage = "Failed to fetch products with price: \(error.localizedDescription)"
-                    print("DEBUG: Failed to fetch products with price: \(error.localizedDescription)")
                 }
             }, receiveValue: { [weak self] (response: ProductWithPriceResponse) in
                 self?.productsWithPrice = response.products
-                print("DEBUG: Fetched products with price: \(response.products.count) items.")
             })
             .store(in: &cancellables)
     }

@@ -20,7 +20,6 @@ struct ProductPriceSelectComponent: View {
                 .pickerStyle(.menu)
                 .onChange(of: selectedVariant) { newVariant in
                     // Update price display based on newVariant
-                    print(newVariant ?? "No variant selected")
                 }
             }
             

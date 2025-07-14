@@ -240,20 +240,20 @@ class AuthService: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completionResult in
                 if case .failure(let error) = completionResult {
-                    print("DEBUG: Add Address API call failed: \(error.localizedDescription)")
+                    
                     completion(false, "Failed to add address: \(error.localizedDescription)")
                 }
             }, receiveValue: { [weak self] (data: Data) in
-                print("DEBUG: Add Address Raw Response: \(String(data: data, encoding: .utf8) ?? "Invalid Data")")
+                
                 do {
                     let response = try JSONDecoder().decode(Address.self, from: data)
-                    print("DEBUG: Add Address Decoded Response: \(response)")
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         self?.fetchCustomerProfile()
                     }
                     completion(true, nil)
                 } catch {
-                    print("DEBUG: Add Address Decoding Error: \(error)")
+                    
                     completion(false, "Failed to decode address response: \(error.localizedDescription)")
                 }
             })
@@ -304,20 +304,20 @@ class AuthService: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completionResult in
                 if case .failure(let error) = completionResult {
-                    print("DEBUG: Update Customer Address API call failed: \(error.localizedDescription)")
+                    
                     completion(false, "Failed to update address: \(error.localizedDescription)")
                 }
             }, receiveValue: { [weak self] (data: Data) in
-                print("DEBUG: Update Customer Address Raw Response: \(String(data: data, encoding: .utf8) ?? "Invalid Data")")
+                
                 do {
                     let response = try JSONDecoder().decode(AddressResponse.self, from: data)
-                    print("DEBUG: Update Customer Address Decoded Response: \(response.address)")
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         self?.fetchCustomerProfile()
                     }
                     completion(true, nil)
                 } catch {
-                    print("DEBUG: Update Customer Address Decoding Error: \(error)")
+                    
                     completion(false, "Failed to decode address response: \(error.localizedDescription)")
                 }
             })
@@ -332,7 +332,7 @@ class AuthService: ObservableObject {
                     completion(false, "Failed to delete address: \(error.localizedDescription)")
                 }
             }, receiveValue: { [weak self] (data: Data) in
-                print("DEBUG: Delete Address Raw Response: \(String(data: data, encoding: .utf8) ?? "Invalid Data")")
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self?.fetchCustomerProfile()
                 }

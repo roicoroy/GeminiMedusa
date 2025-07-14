@@ -52,7 +52,7 @@ public struct AnyCodable: Codable {
         } else {
             // Fallback for types that are not directly encodable
             // This might require more sophisticated handling depending on expected types
-            print("Warning: AnyCodable encoding unsupported type: \(type(of: value))")
+            
             // Attempt to encode as a custom string representation or throw an error
             try container.encode(String(describing: value))
         }

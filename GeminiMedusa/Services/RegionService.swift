@@ -103,23 +103,22 @@ class RegionService: ObservableObject {
 
     private func saveSelectionToStorage() {
         if let encodedCountry = try? JSONEncoder().encode(selectedCountry) {
-            UserDefaults.standard.set(encodedCountry, forKey: "selected_country")
+            UserDefaults.standard.set(encodedCountry, forKey: "medusa_country")
         }
         if let encodedRegion = try? JSONEncoder().encode(selectedRegion) {
-            UserDefaults.standard.set(encodedRegion, forKey: "selected_region")
+            UserDefaults.standard.set(encodedRegion, forKey: "medusa_region")
         }
     }
 
     private func loadSelectionFromStorage() {
-        if let countryData = UserDefaults.standard.data(forKey: "selected_country"),
+        if let countryData = UserDefaults.standard.data(forKey: "medusa_country"),
            let country = try? JSONDecoder().decode(CountrySelection.self, from: countryData) {
-            self.selectedCountry = country
-            print("DEBUG: Loaded Country from Storage: \(country.label), Region ID: \(country.regionId), Currency: \(country.currencyCode)")
+            selectedCountry = country
         }
-        if let regionData = UserDefaults.standard.data(forKey: "selected_region"),
+
+        if let regionData = UserDefaults.standard.data(forKey: "medusa_region"),
            let region = try? JSONDecoder().decode(Region.self, from: regionData) {
-            self.selectedRegion = region
-            print("DEBUG: Loaded Region from Storage: \(region.name ?? "N/A"), ID: \(region.id), Currency: \(region.currencyCode ?? "N/A")")
+            selectedRegion = region
         }
     }
 
@@ -144,8 +143,8 @@ class RegionService: ObservableObject {
     func clearSelection() {
         selectedCountry = nil
         selectedRegion = nil
-        UserDefaults.standard.removeObject(forKey: "selected_country")
-        UserDefaults.standard.removeObject(forKey: "selected_region")
+        UserDefaults.standard.removeObject(forKey: "medusa_country")
+        UserDefaults.standard.removeObject(forKey: "medusa_region")
     }
 
     // MARK: - Country-specific helpers
