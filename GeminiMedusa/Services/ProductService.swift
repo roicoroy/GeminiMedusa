@@ -34,7 +34,7 @@ class ProductService: ObservableObject {
                 }
             }, receiveValue: { (response: ProductWithPriceResponse) in
                 // Log the response for now as requested
-                self.productsWithPrice = response.products
+//                self.productsWithPrice = response.products
                 print("DEBUG: Fetch products with price: \(response.products)")
             })
             .store(in: &cancellables)

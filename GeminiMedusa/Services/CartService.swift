@@ -6,6 +6,7 @@ class CartService: ObservableObject {
     @Published var currentCart: Cart?
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var completedOrder: Order?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -161,6 +162,29 @@ class CartService: ObservableObject {
            let cart = try? JSONDecoder().decode(Cart.self, from: cartData) {
             currentCart = cart
         }
+    }
+    
+    func completeCart() {
+        guard let cartId = currentCart?.id else {
+            errorMessage = "No cart to complete."
+            return
+        }
+
+        isLoading = true
+        errorMessage = nil
+
+        NetworkManager.shared.request(endpoint: "carts/\(cartId)/complete", method: "POST")
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completionResult in
+                self?.isLoading = false
+                if case .failure(let error) = completionResult {
+                    self?.errorMessage = "Failed to complete cart: \(error.localizedDescription)"
+                }
+            }, receiveValue: { [weak self] (response: OrderResponse) in
+                self?.completedOrder = response.order
+                self?.clearCart()
+            })
+            .store(in: &cancellables)
     }
 }
 
