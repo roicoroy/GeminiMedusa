@@ -205,11 +205,11 @@ struct ProductWithPriceCalculatedPrice: Codable, Identifiable {
     let id: String
     let isCalculatedPricePriceList: Bool
     let isCalculatedPriceTaxInclusive: Bool
-    let calculatedAmount: Int
+    let calculatedAmount: Double
     let rawCalculatedAmount: ProductWithPriceRawAmount
     let isOriginalPricePriceList: Bool
     let isOriginalPriceTaxInclusive: Bool
-    let originalAmount: Int
+    let originalAmount: Double
     let rawOriginalAmount: ProductWithPriceRawAmount
     let currencyCode: String
     let calculatedPrice: ProductWithPricePrice?
@@ -228,6 +228,34 @@ struct ProductWithPriceCalculatedPrice: Codable, Identifiable {
         case currencyCode = "currency_code"
         case calculatedPrice = "calculated_price"
         case originalPrice = "original_price"
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        isCalculatedPricePriceList = try container.decode(Bool.self, forKey: .isCalculatedPricePriceList)
+        isCalculatedPriceTaxInclusive = try container.decode(Bool.self, forKey: .isCalculatedPriceTaxInclusive)
+        rawCalculatedAmount = try container.decode(ProductWithPriceRawAmount.self, forKey: .rawCalculatedAmount)
+        isOriginalPricePriceList = try container.decode(Bool.self, forKey: .isOriginalPricePriceList)
+        isOriginalPriceTaxInclusive = try container.decode(Bool.self, forKey: .isOriginalPriceTaxInclusive)
+        rawOriginalAmount = try container.decode(ProductWithPriceRawAmount.self, forKey: .rawOriginalAmount)
+        currencyCode = try container.decode(String.self, forKey: .currencyCode)
+        calculatedPrice = try container.decodeIfPresent(ProductWithPricePrice.self, forKey: .calculatedPrice)
+        originalPrice = try container.decodeIfPresent(ProductWithPricePrice.self, forKey: .originalPrice)
+
+        // Handle flexible decoding for calculatedAmount and originalAmount
+        calculatedAmount = try Self.decodeFlexibleDouble(from: container, forKey: .calculatedAmount) ?? 0.0
+        originalAmount = try Self.decodeFlexibleDouble(from: container, forKey: .originalAmount) ?? 0.0
+    }
+
+    private static func decodeFlexibleDouble(from container: KeyedDecodingContainer<CodingKeys>, forKey key: CodingKeys) throws -> Double? {
+        if let doubleValue = try? container.decode(Double.self, forKey: key) {
+            return doubleValue
+        } else if let intValue = try? container.decode(Int.self, forKey: key) {
+            return Double(intValue)
+        } else {
+            return nil
+        }
     }
 }
 

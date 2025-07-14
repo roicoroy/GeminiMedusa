@@ -21,7 +21,7 @@ struct Product: Codable, Identifiable, Equatable {
     let thumbnail: String?
     let collectionId: String?
     let typeId: String?
-    let weight: String?
+    let weight: Int?
     let length: Int?
     let height: Int?
     let width: Int?

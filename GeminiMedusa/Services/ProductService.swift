@@ -20,11 +20,9 @@ class ProductService: ObservableObject {
         isLoading = true
         errorMessage = nil
         
-        let myEnd = "products/?fields=*variants.calculated_price&region_id=\(regionId)"
-        
         let endpoint = "products?fields=*variants.calculated_price&region_id=\(regionId)&limit=\(limit)&offset=\(offset)"
         
-        NetworkManager.shared.request(endpoint: myEnd)
+        NetworkManager.shared.request(endpoint: endpoint)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 self?.isLoading = false
@@ -32,10 +30,9 @@ class ProductService: ObservableObject {
                     self?.errorMessage = "Failed to fetch products with price: \(error.localizedDescription)"
                     print("DEBUG: Failed to fetch products with price: \(error.localizedDescription)")
                 }
-            }, receiveValue: { (response: ProductWithPriceResponse) in
-                // Log the response for now as requested
-//                self.productsWithPrice = response.products
-                print("DEBUG: Fetch products with price: \(response.products)")
+            }, receiveValue: { [weak self] (response: ProductWithPriceResponse) in
+                self?.productsWithPrice = response.products
+                print("DEBUG: Fetched products with price: \(response.products.count) items.")
             })
             .store(in: &cancellables)
     }

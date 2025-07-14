@@ -11,7 +11,7 @@ import Foundation
 
 struct ProductsView: View {
     @EnvironmentObject var regionService: RegionService
-    @StateObject var viewModel = ProductsViewModel()
+    @EnvironmentObject var viewModel: ProductsViewModel
     @State private var showingRegionSelection = false
     
     var body: some View {
