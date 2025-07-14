@@ -5,14 +5,17 @@ import Foundation
 struct ProductDetailsView: View {
     @EnvironmentObject var cartService: CartService
     @EnvironmentObject var regionService: RegionService
-    @StateObject var viewModel = ProductDetailsViewModel(allProducts: <#[ProductWithPrice]#>)
-    init(productId: String) {
-        self.productId = productId
-        _viewModel = StateObject(wrappedValue: ProductDetailsViewModel(allProducts: []))
-    }
+    @EnvironmentObject var productsViewModel: ProductsViewModel
+    @StateObject var viewModel: ProductDetailsViewModel
+    let productId: String
     
     @State private var showingAddToCartAlert = false
     @State private var selectedVariant: ProductWithPriceVariant?
+    
+    init(productId: String, productsViewModel: ProductsViewModel) {
+        self.productId = productId
+        _viewModel = StateObject(wrappedValue: ProductDetailsViewModel(allProducts: productsViewModel.products))
+    }
     
     var body: some View {
         ScrollView {
@@ -25,7 +28,7 @@ struct ProductDetailsView: View {
                 } else if let product = viewModel.product {
                     ProductImageView(thumbnail: product.thumbnail)
                     
-                    Text(product.title ?? "Unknown Product")
+                    Text(product.title)
                         .font(.largeTitle)
                         .fontWeight(.bold)
                     
@@ -47,7 +50,7 @@ struct ProductDetailsView: View {
         .navigationTitle("Product Details")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
-            viewModel.fetchProduct(withId: productId)
+            viewModel.fetchProduct(withId: self.productId)
         }
         .onChange(of: viewModel.product) {
             if let product = viewModel.product, let firstVariant = product.variants?.first {
@@ -61,4 +64,14 @@ struct ProductDetailsView: View {
         }
     }
     
+    struct ProductDetailsView_Previews: PreviewProvider {
+        static var previews: some View {
+            NavigationView {
+                ProductDetailsView(productId: "prod_01J12Y0G0G0G0G0G0G0G0G0G0G", productsViewModel: ProductsViewModel()) // Replace with a valid product ID for preview
+            }
+            .environmentObject(CartService())
+            .environmentObject(RegionService())
+            .environmentObject(ProductsViewModel())
+        }
+    }
 }
