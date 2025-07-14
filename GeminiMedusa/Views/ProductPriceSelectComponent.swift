@@ -9,18 +9,18 @@ struct ProductPriceSelectComponent: View {
     @Binding var showingAddToCartAlert: Bool
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
+//        VStack(alignment: .leading, spacing: 20) {
             if product.variants?.count ?? 0 > 1 {
                 Picker("Select Variant", selection: $selectedVariant) {
                     ForEach(product.variants ?? [], id: \.id) { variant in
-                        Text("\(variant.title ?? "Unknown Variant") - \(formatPrice(variant.calculatedPrice?.calculatedAmount ?? 0, currencyCode: regionService.selectedRegionCurrency ?? "USD"))")
-                        print("DEBUG: Formatting price - Amount: \(variant.calculatedPrice?.calculatedAmount ?? 0), Currency: \(regionService.selectedRegionCurrency ?? "USD")")
+                        ProductVariantRowView(variant: variant, currencyCode: regionService.selectedRegionCurrency ?? "GBP")
                             .tag(variant as ProductWithPriceVariant?)
                     }
                 }
                 .pickerStyle(.menu)
                 .onChange(of: selectedVariant) { newVariant in
                     // Update price display based on newVariant
+                    print(newVariant ?? "No variant selected")
                 }
             }
             
