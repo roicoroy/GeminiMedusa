@@ -20,9 +20,11 @@ class ProductService: ObservableObject {
         isLoading = true
         errorMessage = nil
         
+        let myEnd = "products/?fields=*variants.calculated_price&region_id=\(regionId)"
+        
         let endpoint = "products?fields=*variants.calculated_price&region_id=\(regionId)&limit=\(limit)&offset=\(offset)"
         
-        NetworkManager.shared.request(endpoint: endpoint)
+        NetworkManager.shared.request(endpoint: myEnd)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 self?.isLoading = false

@@ -28,7 +28,7 @@ struct ProductsView: View {
                 } else {
                     List(viewModel.products) {
                         product in
-                        NavigationLink(destination: ProductDetailsView(productId: product.id, productsViewModel: viewModel)) {
+                        NavigationLink(destination: makeProductDetailsView(for: product)) {
                             ProductRowView(product: product)
                         }
                     }
@@ -62,11 +62,16 @@ struct ProductsView: View {
             }
         }
     }
+
+    private func makeProductDetailsView(for product: ProductWithPrice) -> some View {
+        ProductDetailsView(productId: product.id, productsViewModel: viewModel)
+    }
 }
 
 struct ProductsView_Previews: PreviewProvider {
     static var previews: some View {
         ProductsView()
             .environmentObject(RegionService())
+            .environmentObject(ProductsViewModel())
     }
 }
