@@ -18,7 +18,7 @@ struct CartView: View {
                                 Spacer()
                                 Text("Quantity: \(item.quantity)")
                                 if let currencyCode = regionService.selectedRegionCurrency {
-                                    Text(formatPrice(item.unitPrice, currencyCode: currencyCode))
+                                    Text(formatPrice(item.unitPrice * item.quantity, currencyCode: currencyCode))
                                 }
                                 Button(action: {
                                     cartService.removeLineItem(lineItemId: item.id)
