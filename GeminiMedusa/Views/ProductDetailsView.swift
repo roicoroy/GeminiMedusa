@@ -61,14 +61,4 @@ struct ProductDetailsView: View {
         }
     }
     
-    struct ProductDetailsView_Previews: PreviewProvider {
-        static var previews: some View {
-            NavigationView {
-                ProductDetailsView(productId: "prod_01J12Y0G0G0G0G0G0G0G0G0G0G", productsViewModel: ProductsViewModel()) // Replace with a valid product ID for preview
-            }
-            .environmentObject(CartService())
-            .environmentObject(RegionService())
-            .environmentObject(ProductsViewModel())
-        }
-    }
 }
