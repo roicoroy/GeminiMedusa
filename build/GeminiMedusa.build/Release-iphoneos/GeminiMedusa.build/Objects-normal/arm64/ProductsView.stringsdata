@@ -1,0 +1,40 @@
+{
+  "source": "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Views/ProductsView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Products",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 37
+        }
+      },
+      {
+        "comment": "",
+        "key": "Error: %@",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 23
+        }
+      },
+      {
+        "comment": "",
+        "key": "No products found.",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 26
+        }
+      },
+      {
+        "comment": "",
+        "key": "Loading Products...",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 21
+        }
+      }
+    ]
+  },
+  "version": 1
+}

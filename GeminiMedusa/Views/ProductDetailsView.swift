@@ -32,7 +32,7 @@ struct ProductDetailsView: View {
                             .foregroundColor(.gray)
                     }
                     
-                    ProductInteractionView(product: product, selectedVariant: $selectedVariant, showingAddToCartAlert: $showingAddToCartAlert)
+                    ProductPriceSelectComponent(product: product, selectedVariant: $selectedVariant, showingAddToCartAlert: $showingAddToCartAlert)
                     
                     // Add more product details here as needed
                 } else {

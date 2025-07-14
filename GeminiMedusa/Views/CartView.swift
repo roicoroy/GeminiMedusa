@@ -1,7 +1,10 @@
 import SwiftUI
 
+import SwiftUI
+
 struct CartView: View {
     @EnvironmentObject var cartService: CartService
+    @EnvironmentObject var regionService: RegionService
 
     var body: some View {
         NavigationView {
@@ -12,6 +15,9 @@ struct CartView: View {
                             Text(item.title ?? "Unknown Item")
                             Spacer()
                             Text("Quantity: \(item.quantity)")
+                            if let currencyCode = regionService.selectedRegionCurrency {
+                                Text(formatPrice(item.unitPrice, currencyCode: currencyCode))
+                            }
                             Button(action: {
                                 cartService.removeLineItem(lineItemId: item.id)
                             }) {

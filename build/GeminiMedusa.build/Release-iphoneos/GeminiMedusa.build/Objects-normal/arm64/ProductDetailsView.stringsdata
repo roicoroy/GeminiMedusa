@@ -1,0 +1,56 @@
+{
+  "source": "/Users/ricardobento/LOCAL/GEMINI/GeminiMedusa/GeminiMedusa/Views/ProductDetailsView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Product Details",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 44
+        }
+      },
+      {
+        "comment": "",
+        "key": "Success",
+        "location": {
+          "startingColumn": 16,
+          "startingLine": 54
+        }
+      },
+      {
+        "comment": "",
+        "key": "Error: %@",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 20
+        }
+      },
+      {
+        "comment": "",
+        "key": "Product not found.",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 39
+        }
+      },
+      {
+        "comment": "",
+        "key": "OK",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 55
+        }
+      },
+      {
+        "comment": "",
+        "key": "Product added to cart!",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 57
+        }
+      }
+    ]
+  },
+  "version": 1
+}
