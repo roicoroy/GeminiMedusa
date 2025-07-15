@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @StateObject var viewModel = ProfileViewModel()
+    @EnvironmentObject var authService: AuthService
     @State private var showingEditProfileSheet = false
     @State private var showingAddAddressSheet = false
 
@@ -16,6 +17,11 @@ struct ProfileView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Edit Profile") {
                         showingEditProfileSheet = true
+                    }
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Logout") {
+                        authService.logout()
                     }
                 }
             }

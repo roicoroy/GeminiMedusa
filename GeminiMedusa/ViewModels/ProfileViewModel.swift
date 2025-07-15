@@ -57,6 +57,8 @@ class ProfileViewModel: ObservableObject {
                 self?.isLoading = false
                 if !success {
                     self?.errorMessage = message
+                } else {
+                    self?.fetchCustomerProfile() // Refresh customer data after update
                 }
             }
         }

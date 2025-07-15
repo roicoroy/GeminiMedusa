@@ -33,8 +33,8 @@ struct EditAddressView: View {
         _province = State(initialValue: viewModel.addressToEdit?.province ?? "")
         _postalCode = State(initialValue: viewModel.addressToEdit?.postalCode ?? "")
         _phone = State(initialValue: viewModel.addressToEdit?.phone ?? "")
-        _isDefaultShipping = State(initialValue: viewModel.addressToEdit?.id == viewModel.customer?.defaultShippingAddressId)
-        _isDefaultBilling = State(initialValue: viewModel.addressToEdit?.id == viewModel.customer?.defaultBillingAddressId)
+        _isDefaultShipping = State(initialValue: viewModel.addressToEdit?.isDefaultShipping ?? false)
+        _isDefaultBilling = State(initialValue: viewModel.addressToEdit?.isDefaultBilling ?? false)
     }
 
     var body: some View {
