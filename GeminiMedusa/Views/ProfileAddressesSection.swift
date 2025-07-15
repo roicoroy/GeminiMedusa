@@ -16,13 +16,26 @@ struct ProfileAddressesSection: View {
                                 .padding(.horizontal, 5)
                                 .background(Color.green.opacity(0.2))
                                 .cornerRadius(5)
+                        } else {
+                            Button("Set as Default Shipping") {
+                                viewModel.setAddressAsDefault(addressId: address.id, type: .shipping)
+                            }
+                            .font(.caption)
+                            .buttonStyle(.bordered)
                         }
+
                         if address.id == viewModel.customer?.defaultBillingAddressId {
                             Text("Default Billing")
                                 .font(.caption)
                                 .padding(.horizontal, 5)
                                 .background(Color.blue.opacity(0.2))
                                 .cornerRadius(5)
+                        } else {
+                            Button("Set as Default Billing") {
+                                viewModel.setAddressAsDefault(addressId: address.id, type: .billing)
+                            }
+                            .font(.caption)
+                            .buttonStyle(.bordered)
                         }
                     }
                 }
