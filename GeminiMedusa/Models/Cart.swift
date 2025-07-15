@@ -310,43 +310,43 @@ public struct UpdateLineItemRequest: Codable {
 // MARK: - Helper Extensions
 extension Cart {
     public func formattedTotal(currencyCode: String? = nil) -> String {
-        return formatPrice(total, currencyCode: currencyCode ?? self.currencyCode)
+        return formatPrice(Double(total) / 100.0, currencyCode: currencyCode ?? self.currencyCode)
     }
     
     public func formattedSubtotal(currencyCode: String? = nil) -> String {
-        return formatPrice(subtotal, currencyCode: currencyCode ?? self.currencyCode)
+        return formatPrice(Double(subtotal) / 100.0, currencyCode: currencyCode ?? self.currencyCode)
     }
     
     public func formattedTaxTotal(currencyCode: String? = nil) -> String {
-        return formatPrice(taxTotal, currencyCode: currencyCode ?? self.currencyCode)
+        return formatPrice(Double(taxTotal) / 100.0, currencyCode: currencyCode ?? self.currencyCode)
     }
     
     public func formattedShippingTotal(currencyCode: String? = nil) -> String {
-        return formatPrice(shippingTotal, currencyCode: currencyCode ?? self.currencyCode)
+        return formatPrice(Double(shippingTotal) / 100.0, currencyCode: currencyCode ?? self.currencyCode)
     }
     
     public func formattedDiscountTotal(currencyCode: String? = nil) -> String {
-        return formatPrice(discountTotal, currencyCode: currencyCode ?? self.currencyCode)
+        return formatPrice(Double(discountTotal) / 100.0, currencyCode: currencyCode ?? self.currencyCode)
     }
     
     public var formattedTotal: String {
-        return formatPrice(total, currencyCode: currencyCode)
+        return formatPrice(Double(total) / 100.0, currencyCode: currencyCode)
     }
     
     public var formattedSubtotal: String {
-        return formatPrice(subtotal, currencyCode: currencyCode)
+        return formatPrice(Double(subtotal) / 100.0, currencyCode: currencyCode)
     }
     
     public var formattedTaxTotal: String {
-        return formatPrice(taxTotal, currencyCode: currencyCode)
+        return formatPrice(Double(taxTotal) / 100.0, currencyCode: currencyCode)
     }
     
     public var formattedShippingTotal: String {
-        return formatPrice(shippingTotal, currencyCode: currencyCode)
+        return formatPrice(Double(shippingTotal) / 100.0, currencyCode: currencyCode)
     }
     
     public var formattedDiscountTotal: String {
-        return formatPrice(discountTotal, currencyCode: currencyCode)
+        return formatPrice(Double(discountTotal) / 100.0, currencyCode: currencyCode)
     }
     
     public var itemCount: Int {
