@@ -14,7 +14,7 @@ struct CheckoutView: View {
             Form {
                 Section(header: Text("Shipping Address")) {
                     TextField("First Name", text: Binding(get: { viewModel.shippingAddress.firstName ?? "" }, set: { viewModel.shippingAddress.firstName = $0 }))
-                    TextField("Last Name", text: Binding(get: { viewModel.shippingAddress.lastName ?? "" }, set: { viewModel.shippingAddress.lastName = $0 }))
+                    TextField("Last Name", text: Binding(get: { viewModel.shippingAddress.lastName }, set: { viewModel.shippingAddress.lastName = $0 }))
                     TextField("Address 1", text: Binding(get: { viewModel.shippingAddress.address1 ?? "" }, set: { viewModel.shippingAddress.address1 = $0 }))
                     TextField("Address 2", text: Binding(get: { viewModel.shippingAddress.address2 ?? "" }, set: { viewModel.shippingAddress.address2 = $0 }))
                     TextField("City", text: Binding(get: { viewModel.shippingAddress.city ?? "" }, set: { viewModel.shippingAddress.city = $0 }))

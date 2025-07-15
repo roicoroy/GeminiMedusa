@@ -32,137 +32,56 @@ struct Customer: Codable, Identifiable {
         case updatedAt = "updated_at"
         case deletedAt = "deleted_at"
     }
-}
-
-// Step 1: Auth Registration Payload
-struct AuthRegisterPayload: Codable {
-    let firstName: String
-    let lastName: String
-    let email: String
-    let password: String?
-    let phone: String
     
-    enum CodingKeys: String, CodingKey {
-        case email, password, phone
-        case firstName = "first_name"
-        case lastName = "last_name"
-    }
-}
-
-// Step 2: Customer Creation Payload (using JWT token)
-struct CustomerCreationPayload: Codable {
-    let email: String
-    let firstName: String
-    let lastName: String
-    let phone: String
-    
-    enum CodingKeys: String, CodingKey {
-        case email, phone
-        case firstName = "first_name"
-        case lastName = "last_name"
-    }
-}
-
-// Step 3: Login Payload
-struct CustomerLoginRequest: Codable {
-    let email: String
-    let password: String
-}
-
-struct CustomerUpdateRequest: Codable {
-    let email: String?
-    let firstName: String?
-    let lastName: String?
-    let phone: String?
-    let companyName: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case email, phone
-        case firstName = "first_name"
-        case lastName = "last_name"
-        case companyName = "company_name"
-    }
-}
-
-// Auth Response (contains JWT token)
-struct AuthRegisterResponse: Codable {
-    let token: String
-}
-
-// Customer Response
-struct CustomerResponse: Codable {
-    let customer: Customer
-}
-
-// Simplified Login Response - handles different possible response structures
-struct LoginResponse: Codable {
-    let customer: Customer?
-    let token: String?
-    
-    // Custom decoder to handle different response structures
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        // Try to decode token first
-        self.token = try? container.decodeIfPresent(String.self, forKey: .token)
-        
-        // Try to decode customer from "customer" key first
-        if let customerData = try? container.decodeIfPresent(Customer.self, forKey: .customer) {
-            self.customer = customerData
+        id = try container.decode(String.self, forKey: .id)
+        email = try container.decode(String.self, forKey: .email)
+        defaultBillingAddressId = try container.decodeIfPresent(String.self, forKey: .defaultBillingAddressId)
+        defaultShippingAddressId = try container.decodeIfPresent(String.self, forKey: .defaultShippingAddressId)
+        companyName = try container.decodeIfPresent(String.self, forKey: .companyName)
+        firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
+        lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
+        addresses = try container.decodeIfPresent([Address].self, forKey: .addresses)
+        phone = try container.decodeIfPresent(String.self, forKey: .phone)
+        createdAt = try container.decode(String.self, forKey: .createdAt)
+        updatedAt = try container.decode(String.self, forKey: .updatedAt)
+        deletedAt = try container.decodeIfPresent(String.self, forKey: .deletedAt)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(email, forKey: .email)
+        try container.encodeIfPresent(defaultBillingAddressId, forKey: .defaultBillingAddressId)
+        try container.encodeIfPresent(defaultShippingAddressId, forKey: .defaultShippingAddressId)
+        try container.encodeIfPresent(companyName, forKey: .companyName)
+        try container.encodeIfPresent(firstName, forKey: .firstName)
+        try container.encodeIfPresent(lastName, forKey: .lastName)
+        try container.encodeIfPresent(addresses, forKey: .addresses)
+        try container.encodeIfPresent(phone, forKey: .phone)
+        try container.encode(createdAt, forKey: .createdAt)
+        try container.encode(updatedAt, forKey: .updatedAt)
+        try container.encodeIfPresent(deletedAt, forKey: .deletedAt)
+    }
+    
+    var shippingAddresses: [Address] {
+        if let defaultId = defaultShippingAddressId, let defaultAddress = addresses?.first(where: { $0.id == defaultId }) {
+            var sortedAddresses = [defaultAddress]
+            sortedAddresses.append(contentsOf: addresses?.filter { $0.id != defaultId } ?? [])
+            return sortedAddresses
         } else {
-            // If that fails, try to decode the entire response as a Customer
-            self.customer = try? Customer(from: decoder)
+            return addresses ?? []
         }
     }
     
-    enum CodingKeys: String, CodingKey {
-        case customer, token
-    }
-}
-
-// Alternative response structure for cases where customer is at root level
-struct DirectCustomerResponse: Codable {
-    let id: String
-    let email: String
-    let defaultBillingAddressId: String?
-    let defaultShippingAddressId: String?
-    let companyName: String?
-    let firstName: String?
-    let lastName: String?
-    let addresses: [Address]?
-    let phone: String?
-    let createdAt: String
-    let updatedAt: String
-    let deletedAt: String?
-    let token: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case id, email, addresses, phone, token
-        case defaultBillingAddressId = "default_billing_address_id"
-        case defaultShippingAddressId = "default_shipping_address_id"
-        case companyName = "company_name"
-        case firstName = "first_name"
-        case lastName = "last_name"
-        case createdAt = "created_at"
-        case updatedAt = "updated_at"
-        case deletedAt = "deleted_at"
-    }
-    
-    // Convert to Customer
-    var asCustomer: Customer {
-        return Customer(
-            id: id,
-            email: email,
-            defaultBillingAddressId: defaultBillingAddressId,
-            defaultShippingAddressId: defaultShippingAddressId,
-            companyName: companyName,
-            firstName: firstName,
-            lastName: lastName,
-            addresses: addresses,
-            phone: phone,
-            createdAt: createdAt,
-            updatedAt: updatedAt,
-            deletedAt: deletedAt
-        )
+    var billingAddresses: [Address] {
+        if let defaultId = defaultBillingAddressId, let defaultAddress = addresses?.first(where: { $0.id == defaultId }) {
+            var sortedAddresses = [defaultAddress]
+            sortedAddresses.append(contentsOf: addresses?.filter { $0.id != defaultId } ?? [])
+            return sortedAddresses
+        } else {
+            return addresses ?? []
+        }
     }
 }

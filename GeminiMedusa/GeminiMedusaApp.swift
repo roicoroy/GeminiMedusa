@@ -43,6 +43,10 @@ struct GeminiMedusaApp: App {
                     .tabItem {
                         Label("Debug", systemImage: "ant.fill")
                     }
+                ProfileView()
+                    .tabItem {
+                        Label("Profile", systemImage: "person.fill")
+                    }
             }
             .environmentObject(regionService)
             .environmentObject(productsViewModel)

@@ -143,24 +143,66 @@ class AuthService: ObservableObject {
                 if case .failure(let error) = comp {
                     self?.errorMessage = "Login failed: \(error.localizedDescription)"
                 }
-            }, receiveValue: { [weak self] data in
+            }, receiveValue: { [weak self] (data: Data) in
                 do {
                     if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                         guard let token = json["token"] as? String else {
                             self?.errorMessage = "No token found in login response"
+                            self?.isLoading = false
                             return
                         }
+                        
                         UserDefaults.standard.set(token, forKey: "auth_token")
                         self?.fetchCustomerProfileAfterLogin()
                     } else {
                         self?.errorMessage = "Failed to parse login response"
+                        self?.isLoading = false
                     }
                 } catch {
                     self?.errorMessage = "Failed to decode login response: \(error.localizedDescription)"
+                    self?.isLoading = false
                 }
             })
             .store(in: &cancellables)
     }
+    
+//    func authenticate(email: String, password: String) {
+//        isLoading = true
+//        errorMessage = nil
+//
+//        let loginRequest = CustomerLoginRequest(email: email, password: password)
+//
+//        guard let body = try? JSONEncoder().encode(loginRequest) else {
+//            errorMessage = "Failed to encode login request"
+//            isLoading = false
+//            return
+//        }
+//
+//        NetworkManager.shared.requestData(endpoint: "auth/customer/emailpass", method: "POST", body: body)
+//            .receive(on: DispatchQueue.main)
+//            .sink(receiveCompletion: { [weak self] comp in
+//                self?.isLoading = false
+//                if case .failure(let error) = comp {
+//                    self?.errorMessage = "Login failed: \(error.localizedDescription)"
+//                }
+//            }, receiveValue: { [weak self] data in
+//                do {
+//                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+//                        guard let token = json["token"] as? String else {
+//                            self?.errorMessage = "No token found in login response"
+//                            return
+//                        }
+//                        UserDefaults.standard.set(token, forKey: "auth_token")
+//                        self?.fetchCustomerProfileAfterLogin()
+//                    } else {
+//                        self?.errorMessage = "Failed to parse login response"
+//                    }
+//                } catch {
+//                    self?.errorMessage = "Failed to decode login response: \(error.localizedDescription)"
+//                }
+//            })
+//            .store(in: &cancellables)
+//    }
 
     private func fetchCustomerProfileAfterLogin() {
         NetworkManager.shared.request(endpoint: "customers/me", requiresAuth: true)
@@ -201,6 +243,39 @@ class AuthService: ObservableObject {
                 }
                 
                 self?.errorMessage = "Failed to parse customer profile response"
+            })
+            .store(in: &cancellables)
+    }
+    
+    func updateCustomer(
+        customerId: String,
+        firstName: String,
+        lastName: String,
+        email: String,
+        phone: String,
+        completion: @escaping (Bool, String?) -> Void
+    ) {
+        let customerUpdateRequest = CustomerUpdateRequest(
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            phone: phone,
+            companyName: nil // Assuming companyName is not updated here
+        )
+        
+        guard let body = try? JSONEncoder().encode(customerUpdateRequest) else {
+            completion(false, "Failed to encode customer update request")
+            return
+        }
+        
+        NetworkManager.shared.request(endpoint: "customers/\(customerId)", method: "POST", body: body, requiresAuth: true)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completionResult in
+                if case .failure(let error) = completionResult {
+                    completion(false, "Failed to update customer: \(error.localizedDescription)")
+                }
+            }, receiveValue: { (response: CustomerResponse) in
+                completion(true, nil)
             })
             .store(in: &cancellables)
     }
@@ -249,19 +324,12 @@ class AuthService: ObservableObject {
                     
                     completion(false, "Failed to add address: \(error.localizedDescription)")
                 }
-            }, receiveValue: { [weak self] (data: Data) in
+            }, receiveValue: { [weak self] (response: AddressResponse) in
                 
-                do {
-                    let response = try JSONDecoder().decode(Address.self, from: data)
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self?.fetchCustomerProfile()
-                    }
-                    completion(true, nil)
-                } catch {
-                    
-                    completion(false, "Failed to decode address response: \(error.localizedDescription)")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self?.fetchCustomerProfile()
                 }
+                completion(true, nil)
             })
             .store(in: &cancellables)
     }
@@ -313,19 +381,12 @@ class AuthService: ObservableObject {
                     
                     completion(false, "Failed to update address: \(error.localizedDescription)")
                 }
-            }, receiveValue: { [weak self] (data: Data) in
+            }, receiveValue: { [weak self] (response: AddressResponse) in
                 
-                do {
-                    let response = try JSONDecoder().decode(AddressResponse.self, from: data)
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self?.fetchCustomerProfile()
-                    }
-                    completion(true, nil)
-                } catch {
-                    
-                    completion(false, "Failed to decode address response: \(error.localizedDescription)")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self?.fetchCustomerProfile()
                 }
+                completion(true, nil)
             })
             .store(in: &cancellables)
     }
