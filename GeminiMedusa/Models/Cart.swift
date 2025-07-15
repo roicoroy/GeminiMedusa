@@ -187,6 +187,8 @@ public struct Cart: Codable, Identifiable {
 
 // MARK: - Cart Address Model
 public struct CartAddress: Codable, Identifiable, Equatable {
+    // Dummy comment to force re-compilation
+
     public var id: String
     public var firstName: String
     public var lastName: String

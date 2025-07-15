@@ -2,15 +2,17 @@ import Foundation
 import Combine
 
 class AuthService: ObservableObject {
-    @Published var isAuthenticated = false
+    
     @Published var currentCustomer: Customer?
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var customer: Customer?
 
     private var cancellables = Set<AnyCancellable>()
+    private let authWatcher: AuthenticationWatcherService
     
-    init() {
+    init(authWatcher: AuthenticationWatcherService = AuthenticationWatcherService()) {
+        self.authWatcher = authWatcher
         checkAuthenticationStatus()
     }
     
@@ -24,7 +26,7 @@ class AuthService: ObservableObject {
            let customer = try? JSONDecoder().decode(Customer.self, from: customerData) {
             DispatchQueue.main.async { [weak self] in
                 self?.currentCustomer = customer
-                self?.isAuthenticated = true
+                
                 self?.customer = customer // Ensure @Published customer is also set on launch
                 print("AuthService: Customer loaded from UserDefaults. ID: \(customer.id)")
             }
@@ -236,10 +238,11 @@ class AuthService: ObservableObject {
             }, receiveValue: { [weak self] (response: CustomerResponse) in
                 guard let self = self else { return }
                 self.currentCustomer = response.customer
-                self.isAuthenticated = true
+                
                 self.customer = response.customer // Set the customer object
                 self.saveCustomerData(response.customer)
                 print("AuthService: Customer profile fetched and saved after login. Customer ID: \(response.customer.id)")
+                self.authWatcher.checkTokenStatus() // Notify watcher about login
             })
             .store(in: &cancellables)
     }
@@ -444,7 +447,7 @@ class AuthService: ObservableObject {
     func logout() {
         print("AuthService: Logging out...")
         DispatchQueue.main.async { [weak self] in
-            self?.isAuthenticated = false
+            
             self?.currentCustomer = nil
             self?.customer = nil // Clear the @Published customer object
             self?.errorMessage = nil
