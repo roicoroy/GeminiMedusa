@@ -19,12 +19,17 @@ class AuthService: ObservableObject {
     }
     
     private func checkAuthenticationStatus() {
+        print("AuthService: Checking authentication status...")
         if let customerData = UserDefaults.standard.data(forKey: "customer"),
            let customer = try? JSONDecoder().decode(Customer.self, from: customerData) {
             DispatchQueue.main.async { [weak self] in
                 self?.currentCustomer = customer
                 self?.isAuthenticated = true
+                self?.customer = customer // Ensure @Published customer is also set on launch
+                print("AuthService: Customer loaded from UserDefaults. ID: \(customer.id)")
             }
+        } else {
+            print("AuthService: No customer data found in UserDefaults.")
         }
     }
     
@@ -219,12 +224,14 @@ class AuthService: ObservableObject {
 //    }
 
     private func fetchCustomerProfileAfterLogin() {
+        print("AuthService: fetchCustomerProfileAfterLogin called.")
         NetworkManager.shared.request(endpoint: "customers/me", requiresAuth: true)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] comp in
                 self?.isLoading = false
                 if case .failure(let error) = comp {
                     self?.errorMessage = "Failed to fetch customer profile: \(error.localizedDescription)"
+                    print("AuthService: Failed to fetch customer profile after login: \(error.localizedDescription)")
                 }
             }, receiveValue: { [weak self] (response: CustomerResponse) in
                 guard let self = self else { return }
@@ -232,16 +239,19 @@ class AuthService: ObservableObject {
                 self.isAuthenticated = true
                 self.customer = response.customer // Set the customer object
                 self.saveCustomerData(response.customer)
+                print("AuthService: Customer profile fetched and saved after login. Customer ID: \(response.customer.id)")
             })
             .store(in: &cancellables)
     }
     
     func fetchCustomerProfile() {
+        print("AuthService: fetchCustomerProfile called.")
         NetworkManager.shared.requestData(endpoint: "customers/me", requiresAuth: true)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 if case .failure(let error) = completion {
                     self?.errorMessage = "Failed to fetch profile: \(error.localizedDescription)"
+                    print("AuthService: Failed to fetch profile: \(error.localizedDescription)")
                 }
             }, receiveValue: { [weak self] (data: Data) in
                 do {
@@ -251,10 +261,12 @@ class AuthService: ObservableObject {
                         self.currentCustomer = response.customer
                         self.customer = response.customer // Update the @Published customer property
                         self.saveCustomerData(response.customer)
+                        print("AuthService: Customer profile fetched and saved. Customer ID: \(response.customer.id)")
                     }
                     return
                 } catch {
                     // Failed to decode as CustomerResponse, error message will be set below
+                    print("AuthService: Failed to decode customer profile response: \(error.localizedDescription)")
                 }
                 
                 self?.errorMessage = "Failed to parse customer profile response"

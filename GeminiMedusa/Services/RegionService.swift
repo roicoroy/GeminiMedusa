@@ -7,7 +7,7 @@ class RegionService: ObservableObject {
     @Published var countryList: [CountrySelection] = []
     @Published var selectedCountry: CountrySelection?
     @Published var selectedRegion: Region? // Now a stored property
-
+    
     @Published var isLoading = false
     @Published var errorMessage: String?
     
@@ -71,7 +71,7 @@ class RegionService: ObservableObject {
                 )
             }
         }.flatMap { $0 }
-        .sorted { $0.label.localizedCompare($1.label) == .orderedAscending }
+            .sorted { $0.label.localizedCompare($1.label) == .orderedAscending }
         
         DispatchQueue.main.async {
             self.countryList = newCountryList
@@ -82,13 +82,13 @@ class RegionService: ObservableObject {
     private func setDefaultCountryIfNeeded() {
         guard selectedCountry == nil else { return }
         print("RegionService: Setting default country because selectedCountry is nil.")
-
+        
         if let defaultCountry = countryList.first(where: { $0.country.lowercased() == defaultCountryCode }) {
             selectCountry(defaultCountry)
             print("RegionService: Default country set to: \(defaultCountry.label)")
             return
         }
-
+        
         if let firstCountry = countryList.first {
             selectCountry(firstCountry)
             print("RegionService: First country set as default: \(firstCountry.label)")
@@ -96,7 +96,7 @@ class RegionService: ObservableObject {
             print("RegionService: No countries available to set as default.")
         }
     }
-
+    
     func selectCountry(_ country: CountrySelection) {
         DispatchQueue.main.async { [weak self] in
             self?.selectedCountry = country
@@ -105,15 +105,15 @@ class RegionService: ObservableObject {
             print("RegionService: Selected country: \(country.label), Region: \(self?.selectedRegion?.name ?? "N/A")")
         }
     }
-
+    
     func selectRegion(_ region: Region) {
         if let firstCountry = region.toCountrySelections().first {
             selectCountry(firstCountry)
         }
     }
-
+    
     // MARK: - Storage
-
+    
     private func saveSelectionToStorage() {
         if let encodedCountry = try? JSONEncoder().encode(selectedCountry) {
             UserDefaults.standard.set(encodedCountry, forKey: "medusa_country")
@@ -124,7 +124,7 @@ class RegionService: ObservableObject {
             print("RegionService: Saved selectedRegion to UserDefaults.")
         }
     }
-
+    
     private func loadSelectionFromStorage() {
         print("RegionService: Attempting to load selection from storage.")
         if let countryData = UserDefaults.standard.data(forKey: "medusa_country"),
@@ -134,7 +134,7 @@ class RegionService: ObservableObject {
         } else {
             print("RegionService: No country data found or failed to decode from storage.")
         }
-
+        
         if let regionData = UserDefaults.standard.data(forKey: "medusa_region"),
            let region = try? JSONDecoder().decode(Region.self, from: regionData) {
             selectedRegion = region
@@ -143,3 +143,36 @@ class RegionService: ObservableObject {
             print("RegionService: No region data found or failed to decode from storage.")
         }
     }
+
+    // MARK: - Utility Methods
+
+    var hasSelectedRegion: Bool {
+        return selectedCountry != nil
+    }
+
+    var selectedRegionId: String? {
+        return selectedCountry?.regionId
+    }
+
+    var selectedRegionCurrency: String? {
+        return selectedCountry?.currencyCode
+    }
+
+    func clearSelection() {
+        selectedCountry = nil
+        selectedRegion = nil
+        UserDefaults.standard.removeObject(forKey: "medusa_country")
+        UserDefaults.standard.removeObject(forKey: "medusa_region")
+    }
+
+    // MARK: - Country-specific helpers
+
+    func getCountriesForSelectedRegion() -> [Country] {
+        guard let selectedRegion = selectedRegion else { return [] }
+        return selectedRegion.countries ?? []
+    }
+
+    func hasUKInSelectedRegion() -> Bool {
+        return selectedCountry?.country.lowercased() == "gb"
+    }
+}

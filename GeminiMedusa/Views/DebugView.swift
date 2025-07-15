@@ -57,6 +57,7 @@ struct DebugView: View {
     }
 
     private func loadDebugInfo() {
+        print("DebugView: loadDebugInfo called.")
         if let cartData = UserDefaults.standard.data(forKey: "medusa_cart") {
             if let jsonString = String(data: cartData, encoding: .utf8) {
                 medusaCartContent = jsonString
@@ -80,16 +81,20 @@ struct DebugView: View {
         }
 
         if let customer = authService.customer {
+            print("DebugView: authService.customer is NOT nil. Attempting to encode customer data.")
             do {
                 let encoder = JSONEncoder()
                 encoder.outputFormatting = .prettyPrinted
                 let data = try encoder.encode(customer)
                 customerInfo = String(data: data, encoding: .utf8) ?? "Could not encode customer data."
+                print("DebugView: Customer data encoded successfully.:::: \(customerInfo)")
             } catch {
                 customerInfo = "Error encoding customer data: \(error.localizedDescription)"
+                print("DebugView: Error encoding customer data: \(error.localizedDescription)")
             }
         } else {
             customerInfo = "No customer data available."
+            print("DebugView: authService.customer is nil.")
         }
     }
 }
