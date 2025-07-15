@@ -10,8 +10,8 @@ struct ProfileAddressesSection: View {
                 VStack(alignment: .leading) {
                     Text(address.formattedAddress)
                     HStack {
-                        if address.id == viewModel.customer?.defaultShippingAddressId {
-                            Text("Default Shipping")
+                        if address.isDefaultShipping {
+                            Text("Selected (Shipping)")
                                 .font(.caption)
                                 .padding(.horizontal, 5)
                                 .background(Color.green.opacity(0.2))
@@ -24,8 +24,8 @@ struct ProfileAddressesSection: View {
                             .buttonStyle(.bordered)
                         }
 
-                        if address.id == viewModel.customer?.defaultBillingAddressId {
-                            Text("Default Billing")
+                        if address.isDefaultShipping {
+                            Text("Selected (Billing)")
                                 .font(.caption)
                                 .padding(.horizontal, 5)
                                 .background(Color.blue.opacity(0.2))

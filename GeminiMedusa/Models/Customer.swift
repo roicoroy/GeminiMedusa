@@ -47,6 +47,8 @@ struct Customer: Codable, Identifiable, Equatable {
         createdAt = try container.decode(String.self, forKey: .createdAt)
         updatedAt = try container.decode(String.self, forKey: .updatedAt)
         deletedAt = try container.decodeIfPresent(String.self, forKey: .deletedAt)
+        
+        print("Customer ID: \(id), defaultShippingAddressId: \(defaultShippingAddressId ?? "nil"), defaultBillingAddressId: \(defaultBillingAddressId ?? "nil")")
     }
     
     func encode(to encoder: Encoder) throws {

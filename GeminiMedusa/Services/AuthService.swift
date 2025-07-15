@@ -474,7 +474,11 @@ class AuthService: ObservableObject {
                 if case .failure(let error) = completionResult {
                     completion(false, "Failed to set default address: \(error.localizedDescription)")
                 }
-            }, receiveValue: { (response: CustomerResponse) in
+            }, receiveValue: { [weak self] (response: CustomerResponse) in
+                guard let self = self else { return }
+                self.customer = response.customer // Update the @Published customer property
+                self.saveCustomerData(response.customer)
+                print("AuthService: Default address set. Updated customer defaultShippingAddressId: \(response.customer.defaultShippingAddressId ?? "N/A"), defaultBillingAddressId: \(response.customer.defaultBillingAddressId ?? "N/A")")
                 completion(true, nil)
             })
             .store(in: &cancellables)

@@ -25,6 +25,29 @@ struct Address: Codable, Identifiable, Equatable {
     let phone: String?
     let createdAt: String
     let updatedAt: String
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        addressName = try container.decodeIfPresent(String.self, forKey: .addressName)
+        isDefaultShipping = try container.decode(Bool.self, forKey: .isDefaultShipping)
+        isDefaultBilling = try container.decode(Bool.self, forKey: .isDefaultBilling)
+        customerId = try container.decode(String.self, forKey: .customerId)
+        company = try container.decodeIfPresent(String.self, forKey: .company)
+        firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
+        lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
+        address1 = try container.decode(String.self, forKey: .address1)
+        address2 = try container.decodeIfPresent(String.self, forKey: .address2)
+        city = try container.decode(String.self, forKey: .city)
+        countryCode = try container.decode(String.self, forKey: .countryCode)
+        province = try container.decodeIfPresent(String.self, forKey: .province)
+        postalCode = try container.decode(String.self, forKey: .postalCode)
+        phone = try container.decodeIfPresent(String.self, forKey: .phone)
+        createdAt = try container.decode(String.self, forKey: .createdAt)
+        updatedAt = try container.decode(String.self, forKey: .updatedAt)
+
+        print("Address ID: \(id), isDefaultShipping: \(isDefaultShipping), isDefaultBilling: \(isDefaultBilling)")
+    }
     
     var formattedAddress: String {
         var components: [String] = []
