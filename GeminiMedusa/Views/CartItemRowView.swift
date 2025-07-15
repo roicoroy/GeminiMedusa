@@ -7,9 +7,17 @@ struct CartItemRowView: View {
 
     var body: some View {
         HStack {
-            Text(item.title ?? "Unknown Item")
+            VStack(alignment: .leading) {
+                Text(item.displayTitle)
+                    .font(.headline)
+                if let subtitle = item.displaySubtitle {
+                    Text(subtitle)
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                }
+                Text("Quantity: \(item.quantity)")
+            }
             Spacer()
-            Text("Quantity: \(item.quantity)")
             if let currencyCode = currencyCode {
                 Text(formatPrice(item.unitPrice * Double(item.quantity), currencyCode: currencyCode))
             }

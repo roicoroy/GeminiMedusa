@@ -25,25 +25,6 @@ struct CartView: View {
                     }
                 }
 
-//                if cartService.currentCart?.items?.isEmpty == false {
-//                    Button(action: {
-//                        cartService.completeCart()
-//                    }) {
-//                        Text("Complete Order")
-//                            .padding()
-//                            .frame(maxWidth: .infinity)
-//                            .background(Color.blue)
-//                            .foregroundColor(.white)
-//                            .cornerRadius(10)
-//                    }
-//                    .padding()
-//                }
-
-//                if let order = cartService.completedOrder {
-//                    NavigationLink(destination: OrderConfirmationView(viewModel: self.createOrderConfirmationViewModel(order: order)), isActive: $isOrderConfirmationActive) {
-//                        EmptyView()
-//                    }
-//                }
             }
             .navigationTitle("Shopping Cart")
             .toolbar {
@@ -55,11 +36,6 @@ struct CartView: View {
                     }
                 }
             }
-//            .onReceive(cartService.$completedOrder) { order in
-//                if order != nil {
-//                    isOrderConfirmationActive = true
-//                }
-//            }
         }
     }
 

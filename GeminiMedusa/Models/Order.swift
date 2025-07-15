@@ -41,30 +41,30 @@ public struct Order: Codable, Identifiable {
     public let summary: OrderSummary?
     public let createdAt: String?
     public let updatedAt: String?
-    public let originalItemTotal: Int?
-    public let originalItemSubtotal: Int?
-    public let originalItemTaxTotal: Int?
-    public let itemTotal: Int?
-    public let itemSubtotal: Int?
-    public let itemTaxTotal: Int?
-    public let originalTotal: Int?
-    public let originalSubtotal: Int?
-    public let originalTaxTotal: Int?
-    public let total: Int?
-    public let subtotal: Int?
-    public let taxTotal: Int?
-    public let discountTotal: Int?
-    public let discountTaxTotal: Int?
-    public let giftCardTotal: Int?
-    public let giftCardTaxTotal: Int?
-    public let shippingTotal: Int?
-    public let shippingSubtotal: Int?
-    public let shippingTaxTotal: Int?
-    public let originalShippingTotal: Int?
-    public let originalShippingSubtotal: Int?
-    public let originalShippingTaxTotal: Int?
+    public let originalItemTotal: Double?
+    public let originalItemSubtotal: Double?
+    public let originalItemTaxTotal: Double?
+    public let itemTotal: Double?
+    public let itemSubtotal: Double?
+    public let itemTaxTotal: Double?
+    public let originalTotal: Double?
+    public let originalSubtotal: Double?
+    public let originalTaxTotal: Double?
+    public let total: Double?
+    public let subtotal: Double?
+    public let taxTotal: Double?
+    public let discountTotal: Double?
+    public let discountTaxTotal: Double?
+    public let giftCardTotal: Double?
+    public let giftCardTaxTotal: Double?
+    public let shippingTotal: Double?
+    public let shippingSubtotal: Double?
+    public let shippingTaxTotal: Double?
+    public let originalShippingTotal: Double?
+    public let originalShippingSubtotal: Double?
+    public let originalShippingTaxTotal: Double?
     public let status: String?
-    public let creditLineTotal: Int?
+    public let creditLineTotal: Double?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -108,23 +108,23 @@ public struct Order: Codable, Identifiable {
     
     // Helper for formatted total
     public var formattedTotal: String {
-        formatPrice(Int(total ?? 0), currencyCode: currencyCode)
+        formatPrice(Double(total ?? 0) / 100.0, currencyCode: currencyCode)
     }
     
     public var formattedSubtotal: String {
-        formatPrice(Int(subtotal ?? 0), currencyCode: currencyCode)
+        formatPrice(Double(subtotal ?? 0) / 100.0, currencyCode: currencyCode)
     }
     
     public var formattedShippingTotal: String {
-        formatPrice(Int(shippingTotal ?? 0), currencyCode: currencyCode)
+        formatPrice(Double(shippingTotal ?? 0) / 100.0, currencyCode: currencyCode)
     }
     
     public var formattedTaxTotal: String {
-        formatPrice(Int(taxTotal ?? 0), currencyCode: currencyCode)
+        formatPrice(Double(taxTotal ?? 0) / 100.0, currencyCode: currencyCode)
     }
     
     public var formattedDiscountTotal: String {
-        formatPrice(Int(discountTotal ?? 0), currencyCode: currencyCode)
+        formatPrice(Double(discountTotal ?? 0) / 100.0, currencyCode: currencyCode)
     }
     
     public var displayStatus: String {
@@ -162,25 +162,25 @@ public struct OrderLineItem: Codable, Identifiable {
     public let requiresShipping: Bool
     public let isDiscountable: Bool
     public let isTaxInclusive: Bool
-    public let unitPrice: Int
+    public let unitPrice: Double
     public let quantity: Int
     public let detail: OrderLineItemDetail?
     public let createdAt: String?
     public let updatedAt: String?
     public let metadata: [String: AnyCodable]?
-    public let originalTotal: Int?
-    public let originalSubtotal: Int?
-    public let originalTaxTotal: Int?
-    public let itemTotal: Int?
-    public let itemSubtotal: Int?
-    public let itemTaxTotal: Int?
-    public let total: Int?
-    public let subtotal: Int?
-    public let taxTotal: Int?
-    public let discountTotal: Int?
-    public let discountTaxTotal: Int?
-    public let refundableTotal: Int?
-    public let refundableTotalPerUnit: Int?
+    public let originalTotal: Double?
+    public let originalSubtotal: Double?
+    public let originalTaxTotal: Double?
+    public let itemTotal: Double?
+    public let itemSubtotal: Double?
+    public let itemTaxTotal: Double?
+    public let total: Double?
+    public let subtotal: Double?
+    public let taxTotal: Double?
+    public let discountTotal: Double?
+    public let discountTaxTotal: Double?
+    public let refundableTotal: Double?
+    public let refundableTotalPerUnit: Double?
     public let productTypeId: String?
 
     enum CodingKeys: String, CodingKey {
@@ -241,25 +241,25 @@ public struct OrderLineItem: Codable, Identifiable {
         requiresShipping = try container.decode(Bool.self, forKey: .requiresShipping)
         isDiscountable = try container.decode(Bool.self, forKey: .isDiscountable)
         isTaxInclusive = try container.decode(Bool.self, forKey: .isTaxInclusive)
-        unitPrice = try container.decode(Int.self, forKey: .unitPrice)
+        unitPrice = try decodeFlexibleDouble(from: container, forKey: .unitPrice) ?? 0.0
         quantity = try container.decode(Int.self, forKey: .quantity)
         detail = try container.decodeIfPresent(OrderLineItemDetail.self, forKey: .detail)
         createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt)
         updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt)
         metadata = try container.decodeIfPresent([String: AnyCodable].self, forKey: .metadata)
-        originalTotal = try container.decodeIfPresent(Int.self, forKey: .originalTotal)
-        originalSubtotal = try container.decodeIfPresent(Int.self, forKey: .originalSubtotal)
-        originalTaxTotal = try container.decodeIfPresent(Int.self, forKey: .originalTaxTotal)
-        itemTotal = try container.decodeIfPresent(Int.self, forKey: .itemTotal)
-        itemSubtotal = try container.decodeIfPresent(Int.self, forKey: .itemSubtotal)
-        itemTaxTotal = try container.decodeIfPresent(Int.self, forKey: .itemTaxTotal)
-        total = try container.decodeIfPresent(Int.self, forKey: .total)
-        subtotal = try container.decodeIfPresent(Int.self, forKey: .subtotal)
-        taxTotal = try container.decodeIfPresent(Int.self, forKey: .taxTotal)
-        discountTotal = try container.decodeIfPresent(Int.self, forKey: .discountTotal)
-        discountTaxTotal = try container.decodeIfPresent(Int.self, forKey: .discountTaxTotal)
-        refundableTotal = try container.decodeIfPresent(Int.self, forKey: .refundableTotal)
-        refundableTotalPerUnit = try container.decodeIfPresent(Int.self, forKey: .refundableTotalPerUnit)
+        originalTotal = try decodeFlexibleDouble(from: container, forKey: .originalTotal)
+        originalSubtotal = try decodeFlexibleDouble(from: container, forKey: .originalSubtotal)
+        originalTaxTotal = try decodeFlexibleDouble(from: container, forKey: .originalTaxTotal)
+        itemTotal = try decodeFlexibleDouble(from: container, forKey: .itemTotal)
+        itemSubtotal = try decodeFlexibleDouble(from: container, forKey: .itemSubtotal)
+        itemTaxTotal = try decodeFlexibleDouble(from: container, forKey: .itemTaxTotal)
+        total = try decodeFlexibleDouble(from: container, forKey: .total)
+        subtotal = try decodeFlexibleDouble(from: container, forKey: .subtotal)
+        taxTotal = try decodeFlexibleDouble(from: container, forKey: .taxTotal)
+        discountTotal = try decodeFlexibleDouble(from: container, forKey: .discountTotal)
+        discountTaxTotal = try decodeFlexibleDouble(from: container, forKey: .discountTaxTotal)
+        refundableTotal = try decodeFlexibleDouble(from: container, forKey: .refundableTotal)
+        refundableTotalPerUnit = try decodeFlexibleDouble(from: container, forKey: .refundableTotalPerUnit)
         productTypeId = try container.decodeIfPresent(String.self, forKey: .productTypeId)
     }
     
@@ -363,19 +363,19 @@ public struct OrderShippingMethod: Codable, Identifiable {
     public let id: String
     public let orderId: String?
     public let name: String
-    public let amount: Int
+    public let amount: Double
     public let isTaxInclusive: Bool
     public let shippingOptionId: String?
     public let data: [String: AnyCodable]?
     public let metadata: [String: AnyCodable]?
-    public let originalTotal: Int?
-    public let originalSubtotal: Int?
-    public let originalTaxTotal: Int?
-    public let total: Int?
-    public let subtotal: Int?
-    public let taxTotal: Int?
-    public let discountTotal: Int?
-    public let discountTaxTotal: Int?
+    public let originalTotal: Double?
+    public let originalSubtotal: Double?
+    public let originalTaxTotal: Double?
+    public let total: Double?
+    public let subtotal: Double?
+    public let taxTotal: Double?
+    public let discountTotal: Double?
+    public let discountTaxTotal: Double?
     public let createdAt: String?
     public let updatedAt: String?
 
@@ -400,20 +400,20 @@ public struct OrderShippingMethod: Codable, Identifiable {
     public var formattedAmount: String {
         // Assuming currency code is available from the parent Order
         // For simplicity, we'll use a placeholder or require it from context
-        formatPrice(amount, currencyCode: "USD") // Placeholder, ideally from Order
+        formatPrice(amount / 100.0, currencyCode: "USD") // Placeholder, ideally from Order
     }
 }
 
 // MARK: - OrderSummary Model
 
 public struct OrderSummary: Codable {
-    public let paidTotal: Int?
-    public let refundedTotal: Int?
-    public let pendingDifference: Int?
-    public let currentOrderTotal: Int?
-    public let originalOrderTotal: Int?
-    public let transactionTotal: Int?
-    public let accountingTotal: Int?
+    public let paidTotal: Double?
+    public let refundedTotal: Double?
+    public let pendingDifference: Double?
+    public let currentOrderTotal: Double?
+    public let originalOrderTotal: Double?
+    public let transactionTotal: Double?
+    public let accountingTotal: Double?
 
     enum CodingKeys: String, CodingKey {
         case paidTotal = "paid_total"
