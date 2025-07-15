@@ -7,7 +7,7 @@ struct ShippingAddressSection: View {
         Section(header: Text("Shipping Address")) {
             Text(shippingAddress.fullName)
             Text(shippingAddress.fullAddress)
-            Text(shippingAddress.phone ?? "N/A")
+            Text(shippingAddress.phone)
         }
     }
 }

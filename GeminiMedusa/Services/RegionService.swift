@@ -138,7 +138,7 @@ class RegionService: ObservableObject {
         if let regionData = UserDefaults.standard.data(forKey: "medusa_region"),
            let region = try? JSONDecoder().decode(Region.self, from: regionData) {
             selectedRegion = region
-            print("RegionService: Loaded selectedRegion: \(region.name ?? "N/A")")
+            print("RegionService: Loaded selectedRegion: \(region.name)")
         } else {
             print("RegionService: No region data found or failed to decode from storage.")
         }

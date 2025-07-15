@@ -7,7 +7,7 @@ struct BillingAddressSection: View {
         Section(header: Text("Billing Address")) {
             Text(billingAddress.fullName)
             Text(billingAddress.fullAddress)
-            Text(billingAddress.phone ?? "N/A")
+            Text(billingAddress.phone)
         }
     }
 }
