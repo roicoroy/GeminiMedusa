@@ -16,6 +16,8 @@ struct EditProfileView: View {
         _lastName = State(initialValue: viewModel.customer?.lastName ?? "")
         _email = State(initialValue: viewModel.customer?.email ?? "")
         _phone = State(initialValue: viewModel.customer?.phone ?? "")
+        
+        print("EditProfileView Init - First Name: \(firstName), Last Name: \(lastName), Email: \(email), Phone: \(phone)")
     }
 
     var body: some View {
@@ -50,62 +52,11 @@ struct EditProfileView: View {
                         .cornerRadius(10)
                 }
                 .disabled(viewModel.isLoading)
-
-                Section(header: Text("Shipping Address")) {
-                    if let shippingAddress = viewModel.defaultShippingAddress {
-                        VStack(alignment: .leading) {
-                            Text(shippingAddress.addressName ?? "Default Shipping Address")
-                                .font(.headline)
-                            Text(shippingAddress.formattedAddress)
-                        }
-                        HStack {
-                            Button("Edit") {
-                                viewModel.addressToEdit = shippingAddress
-                                viewModel.showAddressEditSheet = true
-                            }
-                            Spacer()
-                            if shippingAddress.id != viewModel.customer?.defaultShippingAddressId {
-                                Button("Set as Default") {
-                                    viewModel.setAddressAsDefault(addressId: shippingAddress.id, type: .shipping)
-                                }
-                            }
-                        }
-                    } else {
-                        Text("No default shipping address set.")
-                    }
-                }
-
-                Section(header: Text("Billing Address")) {
-                    if let billingAddress = viewModel.defaultBillingAddress {
-                        VStack(alignment: .leading) {
-                            Text(billingAddress.addressName ?? "Default Billing Address")
-                                .font(.headline)
-                            Text(billingAddress.formattedAddress)
-                        }
-                        HStack {
-                            Button("Edit") {
-                                viewModel.addressToEdit = billingAddress
-                                viewModel.showAddressEditSheet = true
-                            }
-                            Spacer()
-                            if billingAddress.id != viewModel.customer?.defaultBillingAddressId {
-                                Button("Set as Default") {
-                                    viewModel.setAddressAsDefault(addressId: billingAddress.id, type: .billing)
-                                }
-                            }
-                        }
-                    } else {
-                        Text("No default billing address set.")
-                    }
-                }
             }
             .navigationTitle("Edit Profile")
             .navigationBarItems(leading: Button("Cancel") {
                 isShowingEditProfileSheet = false
             })
-            .sheet(isPresented: $viewModel.showAddressEditSheet) {
-                EditAddressView(viewModel: viewModel, isShowingEditAddressSheet: $viewModel.showAddressEditSheet)
-            }
         }
     }
 }

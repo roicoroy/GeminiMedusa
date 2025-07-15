@@ -283,7 +283,6 @@ class AuthService: ObservableObject {
         completion: @escaping (Bool, String?) -> Void
     ) {
         let customerUpdateRequest = CustomerUpdateRequest(
-            email: email,
             firstName: firstName,
             lastName: lastName,
             phone: phone,
@@ -292,16 +291,23 @@ class AuthService: ObservableObject {
         
         guard let body = try? JSONEncoder().encode(customerUpdateRequest) else {
             completion(false, "Failed to encode customer update request")
+            print("AuthService: Failed to encode customer update request.")
             return
         }
         
+        print("AuthService: Updating customer with ID: \(customerId), Payload: \(String(data: body, encoding: .utf8) ?? "N/A")")
         NetworkManager.shared.request(endpoint: "customers/\(customerId)", method: "POST", body: body, requiresAuth: true)
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completionResult in
+            .sink(receiveCompletion: { [weak self] completionResult in
                 if case .failure(let error) = completionResult {
                     completion(false, "Failed to update customer: \(error.localizedDescription)")
+                    print("AuthService: Customer update failed: \(error.localizedDescription)")
                 }
-            }, receiveValue: { (response: CustomerResponse) in
+            }, receiveValue: { [weak self] (response: CustomerResponse) in
+                guard let self = self else { return }
+                self.customer = response.customer // Update the @Published customer property
+                self.saveCustomerData(response.customer)
+                print("AuthService: Customer updated successfully. New customer ID: \(response.customer.id)")
                 completion(true, nil)
             })
             .store(in: &cancellables)
