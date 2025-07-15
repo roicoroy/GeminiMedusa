@@ -7,9 +7,16 @@ class ProfileViewModel: ObservableObject {
     @Published var errorMessage: String? = nil
     @Published var showAddressEditSheet = false
     @Published var addressToEdit: Address? // For editing existing address
+    @Published var defaultShippingAddress: Address?
+    @Published var defaultBillingAddress: Address?
 
     private let authService: AuthService
     private var cancellables = Set<AnyCancellable>()
+
+    enum AddressType {
+        case shipping
+        case billing
+    }
 
     init(authService: AuthService = AuthService()) {
         self.authService = authService
@@ -19,7 +26,11 @@ class ProfileViewModel: ObservableObject {
 
     private func setupBindings() {
         authService.$customer
-            .assign(to: \.customer, on: self)
+            .sink { [weak self] customer in
+                self?.customer = customer
+                self?.defaultShippingAddress = customer?.shippingAddresses.first(where: { $0.id == customer?.defaultShippingAddressId })
+                self?.defaultBillingAddress = customer?.billingAddresses.first(where: { $0.id == customer?.defaultBillingAddressId })
+            }
             .store(in: &cancellables)
 
         authService.$isLoading
@@ -93,28 +104,20 @@ class ProfileViewModel: ObservableObject {
         }
     }
 
-    func setAsDefaultShipping(addressId: String) {
-        // This logic might need to be handled by the backend or by updating the customer object directly
-        // For now, we'll simulate by updating the local customer object if possible
-        if var currentCustomer = customer {
-            if let index = currentCustomer.shippingAddresses.firstIndex(where: { $0.id == addressId }) {
-                // Logic to set as default shipping address (e.g., move to front of array or set a flag)
-                // This depends on how your backend handles default addresses
-                // For now, we'll just re-fetch the profile to reflect changes from backend
-                fetchCustomerProfile()
-            }
+    func setAddressAsDefault(addressId: String, type: AddressType) {
+        guard let customerId = customer?.id else {
+            errorMessage = "Customer ID not found."
+            return
         }
-    }
-
-    func setAsDefaultBilling(addressId: String) {
-        // This logic might need to be handled by the backend or by updating the customer object directly
-        // For now, we'll simulate by updating the local customer object if possible
-        if var currentCustomer = customer {
-            if let index = currentCustomer.billingAddresses.firstIndex(where: { $0.id == addressId }) {
-                // Logic to set as default billing address (e.g., move to front of array or set a flag)
-                // This depends on how your backend handles default addresses
-                // For now, we'll just re-fetch the profile to reflect changes from backend
-                fetchCustomerProfile()
+        isLoading = true
+        authService.setAddressAsDefault(customerId: customerId, addressId: addressId, type: type) { [weak self] success, message in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                if !success {
+                    self?.errorMessage = message
+                } else {
+                    self?.fetchCustomerProfile() // Refresh customer data after setting default
+                }
             }
         }
     }

@@ -422,6 +422,37 @@ class AuthService: ObservableObject {
         cancellables.removeAll()
     }
     
+    func setAddressAsDefault(
+        customerId: String,
+        addressId: String,
+        type: ProfileViewModel.AddressType,
+        completion: @escaping (Bool, String?) -> Void
+    ) {
+        var updateRequest: [String: Any] = [:]
+        switch type {
+        case .shipping:
+            updateRequest["default_shipping_address_id"] = addressId
+        case .billing:
+            updateRequest["default_billing_address_id"] = addressId
+        }
+
+        guard let body = try? JSONSerialization.data(withJSONObject: updateRequest, options: []) else {
+            completion(false, "Failed to encode default address update request")
+            return
+        }
+
+        NetworkManager.shared.request(endpoint: "customers/\(customerId)", method: "POST", body: body, requiresAuth: true)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completionResult in
+                if case .failure(let error) = completionResult {
+                    completion(false, "Failed to set default address: \(error.localizedDescription)")
+                }
+            }, receiveValue: { (response: CustomerResponse) in
+                completion(true, nil)
+            })
+            .store(in: &cancellables)
+    }
+
     private func saveCustomerData(_ customer: Customer) {
         if let encoded = try? JSONEncoder().encode(customer) {
             UserDefaults.standard.set(encoded, forKey: "customer")

@@ -26,6 +26,29 @@ struct Address: Codable, Identifiable {
     let createdAt: String
     let updatedAt: String
     
+    var formattedAddress: String {
+        var components: [String] = []
+        if let firstName = firstName, let lastName = lastName {
+            components.append("\(firstName) \(lastName)")
+        }
+        if let company = company, !company.isEmpty {
+            components.append(company)
+        }
+        components.append(address1)
+        if let address2 = address2, !address2.isEmpty {
+            components.append(address2)
+        }
+        components.append("\(city), \(postalCode)")
+        if let province = province, !province.isEmpty {
+            components.append(province)
+        }
+        components.append(countryCode)
+        if let phone = phone, !phone.isEmpty {
+            components.append(phone)
+        }
+        return components.joined(separator: "\n")
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id, company, city, phone
         case addressName = "address_name"

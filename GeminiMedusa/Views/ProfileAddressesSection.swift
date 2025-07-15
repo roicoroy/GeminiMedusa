@@ -8,16 +8,7 @@ struct ProfileAddressesSection: View {
         Section(header: Text("Addresses")) {
             ForEach(viewModel.customer?.addresses ?? []) { address in
                 VStack(alignment: .leading) {
-                    Text(address.firstName ?? "" + " " + (address.lastName ?? ""))
-                    Text(address.address1)
-                    if !(address.address2 ?? "").isEmpty {
-                        Text(address.address2 ?? "")
-                    }
-                    Text("\(address.city), \(address.province ?? "") \(address.postalCode)")
-                    Text(address.countryCode)
-                    if !(address.phone ?? "").isEmpty {
-                        Text(address.phone ?? "")
-                    }
+                    Text(address.formattedAddress)
                     HStack {
                         if address.id == viewModel.customer?.defaultShippingAddressId {
                             Text("Default Shipping")
