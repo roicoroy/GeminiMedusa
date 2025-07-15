@@ -442,15 +442,18 @@ class AuthService: ObservableObject {
     }
     
     func logout() {
+        print("AuthService: Logging out...")
         DispatchQueue.main.async { [weak self] in
             self?.isAuthenticated = false
             self?.currentCustomer = nil
+            self?.customer = nil // Clear the @Published customer object
+            self?.errorMessage = nil
+            self?.isLoading = false
         }
         
         UserDefaults.standard.removeObject(forKey: "customer")
         UserDefaults.standard.removeObject(forKey: "auth_token")
-        
-        
+        print("AuthService: User defaults cleared.")
         
         cancellables.removeAll()
     }
