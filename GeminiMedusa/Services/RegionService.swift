@@ -42,8 +42,13 @@ class RegionService: ObservableObject {
                     guard let self = self else { return }
                     self.regions = response.regions
                     self.processCountries(from: response.regions)
+                    self.loadSelectionFromStorage() // Load after processing countries
                     self.setDefaultCountryIfNeeded()
-                    self.loadSelectionFromStorage()
+                    
+                    // Ensure a default currency is set if none is selected
+                    if self.selectedRegionCurrency == nil {
+                        self.selectedCountry = self.countryList.first(where: { $0.currencyCode == "usd" }) ?? self.countryList.first
+                    }
                 }
             )
             .store(in: &cancellables)

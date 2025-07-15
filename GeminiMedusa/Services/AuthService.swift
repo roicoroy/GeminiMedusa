@@ -6,7 +6,8 @@ class AuthService: ObservableObject {
     @Published var currentCustomer: Customer?
     @Published var isLoading = false
     @Published var errorMessage: String?
-    
+    @Published var customer: Customer?
+
     private var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -102,69 +103,78 @@ class AuthService: ObservableObject {
                     self?.isLoading = false
                 }
             }, receiveValue: { [weak self] (data: Data) in
-                self?.handleLoginResponse(data: data)
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                        guard let token = json["token"] as? String else {
+                            self?.errorMessage = "No token found in login response"
+                            self?.isLoading = false
+                            return
+                        }
+                        UserDefaults.standard.set(token, forKey: "auth_token")
+                        self?.fetchCustomerProfileAfterLogin()
+                    } else {
+                        self?.errorMessage = "Failed to parse login response"
+                        self?.isLoading = false
+                    }
+                } catch {
+                    self?.errorMessage = "Failed to decode login response: \(error.localizedDescription)"
+                    self?.isLoading = false
+                }
             })
             .store(in: &cancellables)
     }
     
-    func login(email: String, password: String) {
+    func authenticate(email: String, password: String) {
         isLoading = true
         errorMessage = nil
-        
-        let request = CustomerLoginRequest(email: email, password: password)
-        
-        guard let body = try? JSONEncoder().encode(request) else {
-            errorMessage = "Failed to encode request"
+
+        let loginRequest = CustomerLoginRequest(email: email, password: password)
+
+        guard let body = try? JSONEncoder().encode(loginRequest) else {
+            errorMessage = "Failed to encode login request"
             isLoading = false
             return
         }
-        
+
         NetworkManager.shared.requestData(endpoint: "auth/customer/emailpass", method: "POST", body: body)
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                if case .failure(let error) = completion {
+            .sink(receiveCompletion: { [weak self] comp in
+                self?.isLoading = false
+                if case .failure(let error) = comp {
                     self?.errorMessage = "Login failed: \(error.localizedDescription)"
-                    self?.isLoading = false
                 }
-            }, receiveValue: { [weak self] (data: Data) in
-                self?.handleLoginResponse(data: data)
+            }, receiveValue: { [weak self] data in
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                        guard let token = json["token"] as? String else {
+                            self?.errorMessage = "No token found in login response"
+                            return
+                        }
+                        UserDefaults.standard.set(token, forKey: "auth_token")
+                        self?.fetchCustomerProfileAfterLogin()
+                    } else {
+                        self?.errorMessage = "Failed to parse login response"
+                    }
+                } catch {
+                    self?.errorMessage = "Failed to decode login response: \(error.localizedDescription)"
+                }
             })
             .store(in: &cancellables)
     }
-    
-    private func handleLoginResponse(data: Data) {
-        do {
-            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                guard let token = json["token"] as? String else {
-                    self.errorMessage = "No token found in login response"
-                    self.isLoading = false
-                    return
-                }
-                
-                UserDefaults.standard.set(token, forKey: "auth_token")
-                self.fetchCustomerProfileAfterLogin()
-                return
-            }
-        } catch {
-            // Failed to parse JSON, error message will be set below
-        }
-        
-        self.errorMessage = "Failed to parse login response. Please check the console for details."
-        self.isLoading = false
-    }
-    
+
     private func fetchCustomerProfileAfterLogin() {
         NetworkManager.shared.request(endpoint: "customers/me", requiresAuth: true)
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
+            .sink(receiveCompletion: { [weak self] comp in
                 self?.isLoading = false
-                if case .failure(let error) = completion {
+                if case .failure(let error) = comp {
                     self?.errorMessage = "Failed to fetch customer profile: \(error.localizedDescription)"
                 }
             }, receiveValue: { [weak self] (response: CustomerResponse) in
                 guard let self = self else { return }
                 self.currentCustomer = response.customer
                 self.isAuthenticated = true
+                self.customer = response.customer // Set the customer object
                 self.saveCustomerData(response.customer)
             })
             .store(in: &cancellables)
@@ -178,25 +188,21 @@ class AuthService: ObservableObject {
                     self?.errorMessage = "Failed to fetch profile: \(error.localizedDescription)"
                 }
             }, receiveValue: { [weak self] (data: Data) in
-                self?.handleCustomerProfileResponse(data: data)
+                do {
+                    let response = try JSONDecoder().decode(CustomerResponse.self, from: data)
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
+                        self.currentCustomer = response.customer
+                        self.saveCustomerData(response.customer)
+                    }
+                    return
+                } catch {
+                    // Failed to decode as CustomerResponse, error message will be set below
+                }
+                
+                self?.errorMessage = "Failed to parse customer profile response"
             })
             .store(in: &cancellables)
-    }
-    
-    private func handleCustomerProfileResponse(data: Data) {
-        do {
-            let response = try JSONDecoder().decode(CustomerResponse.self, from: data)
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.currentCustomer = response.customer
-                self.saveCustomerData(response.customer)
-            }
-            return
-        } catch {
-            // Failed to decode as CustomerResponse, error message will be set below
-        }
-        
-        self.errorMessage = "Failed to parse customer profile response"
     }
     
     func addAddress(

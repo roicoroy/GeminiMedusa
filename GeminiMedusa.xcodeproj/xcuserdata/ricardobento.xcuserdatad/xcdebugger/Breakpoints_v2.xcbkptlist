@@ -320,8 +320,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "69"
             endingLineNumber = "69"
-            landmarkName = "requestData(endpoint:method:body:requiresAuth:)"
-            landmarkType = "7">
+            landmarkName = "NetworkManager"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

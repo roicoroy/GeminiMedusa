@@ -4,6 +4,7 @@ struct CartView: View {
     @EnvironmentObject var cartService: CartService
     @EnvironmentObject var regionService: RegionService
     @State private var isOrderConfirmationActive = false
+    @State private var isShowingCheckout = false
 
     var body: some View {
         NavigationView {
@@ -25,6 +26,19 @@ struct CartView: View {
                     }
                 }
 
+                if cartService.currentCart?.items?.isEmpty == false {
+                    Button(action: {
+                        isShowingCheckout = true
+                    }) {
+                        Text("Proceed to Checkout")
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                    .padding()
+                }
             }
             .navigationTitle("Shopping Cart")
             .toolbar {
@@ -35,6 +49,9 @@ struct CartView: View {
                         Text("Clear Cart")
                     }
                 }
+            }
+            .sheet(isPresented: $isShowingCheckout) {
+                CheckoutView(cartService: cartService)
             }
         }
     }

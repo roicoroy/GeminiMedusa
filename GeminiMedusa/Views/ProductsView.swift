@@ -13,6 +13,7 @@ struct ProductsView: View {
     @EnvironmentObject var regionService: RegionService
     @EnvironmentObject var viewModel: ProductsViewModel
     @State private var showingRegionSelection = false
+    @State private var isShowingLogin = false
     
     var body: some View {
         NavigationView {
@@ -44,9 +45,19 @@ struct ProductsView: View {
                         Text(regionService.selectedCountry?.label ?? "Select Region")
                     }
                 }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        isShowingLogin = true
+                    }) {
+                        Text("Login")
+                    }
+                }
             }
             .sheet(isPresented: $showingRegionSelection) {
                 RegionSelectionView(regionService: regionService, isPresented: $showingRegionSelection)
+            }
+            .sheet(isPresented: $isShowingLogin) {
+                LoginView(isShowingLogin: $isShowingLogin)
             }
             .onAppear {
                 if let regionId = regionService.selectedRegionId {
