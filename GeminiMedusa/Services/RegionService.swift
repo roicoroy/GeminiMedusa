@@ -16,10 +16,7 @@ class RegionService: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
-        loadSelectionFromStorage()
-        if selectedCountry == nil || selectedRegion == nil {
-            fetchRegions()
-        }
+        fetchRegions()
     }
     
     deinit {
@@ -46,6 +43,7 @@ class RegionService: ObservableObject {
                     self.regions = response.regions
                     self.processCountries(from: response.regions)
                     self.setDefaultCountryIfNeeded()
+                    self.loadSelectionFromStorage()
                 }
             )
             .store(in: &cancellables)

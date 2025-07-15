@@ -5,7 +5,7 @@ struct OrderSummarySection: View {
     let currencyCode: String?
 
     var body: some View {
-        Section(header: Text("Order Summary")) {
+        Section(header: Text("Cart Summary")) {
             HStack {
                 Text("Subtotal:")
                 Spacer()
