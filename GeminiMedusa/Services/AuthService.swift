@@ -87,11 +87,13 @@ class AuthService: ObservableObject {
     }
     
     private func loginAfterRegistration(email: String, password: String) {
+        print("AuthService: Attempting login after registration for email: \(email)")
         let loginRequest = CustomerLoginRequest(email: email, password: password)
         
         guard let body = try? JSONEncoder().encode(loginRequest) else {
             errorMessage = "Failed to encode login request"
             isLoading = false
+            print("AuthService: Failed to encode login request for loginAfterRegistration")
             return
         }
         
@@ -101,6 +103,7 @@ class AuthService: ObservableObject {
                 if case .failure(let error) = completion {
                     self?.errorMessage = "Login after registration failed: \(error.localizedDescription)"
                     self?.isLoading = false
+                    print("AuthService: Login after registration failed: \(error.localizedDescription)")
                 }
             }, receiveValue: { [weak self] (data: Data) in
                 do {
@@ -108,23 +111,28 @@ class AuthService: ObservableObject {
                         guard let token = json["token"] as? String else {
                             self?.errorMessage = "No token found in login response"
                             self?.isLoading = false
+                            print("AuthService: No token found in login response for loginAfterRegistration")
                             return
                         }
                         UserDefaults.standard.set(token, forKey: "auth_token")
+                        print("AuthService: Token saved for loginAfterRegistration: \(token)")
                         self?.fetchCustomerProfileAfterLogin()
                     } else {
                         self?.errorMessage = "Failed to parse login response"
                         self?.isLoading = false
+                        print("AuthService: Failed to parse login response for loginAfterRegistration")
                     }
                 } catch {
                     self?.errorMessage = "Failed to decode login response: \(error.localizedDescription)"
                     self?.isLoading = false
+                    print("AuthService: Failed to decode login response for loginAfterRegistration: \(error.localizedDescription)")
                 }
             })
             .store(in: &cancellables)
     }
     
     func authenticate(email: String, password: String) {
+        print("AuthService: Attempting authentication for email: \(email)")
         isLoading = true
         errorMessage = nil
 
@@ -133,6 +141,7 @@ class AuthService: ObservableObject {
         guard let body = try? JSONEncoder().encode(loginRequest) else {
             errorMessage = "Failed to encode login request"
             isLoading = false
+            print("AuthService: Failed to encode login request for authenticate")
             return
         }
 
@@ -142,6 +151,7 @@ class AuthService: ObservableObject {
                 self?.isLoading = false
                 if case .failure(let error) = comp {
                     self?.errorMessage = "Login failed: \(error.localizedDescription)"
+                    print("AuthService: Authentication failed: \(error.localizedDescription)")
                 }
             }, receiveValue: { [weak self] (data: Data) in
                 do {
@@ -149,18 +159,22 @@ class AuthService: ObservableObject {
                         guard let token = json["token"] as? String else {
                             self?.errorMessage = "No token found in login response"
                             self?.isLoading = false
+                            print("AuthService: No token found in login response for authenticate")
                             return
                         }
                         
                         UserDefaults.standard.set(token, forKey: "auth_token")
+                        print("AuthService: Token saved for authenticate: \(token)")
                         self?.fetchCustomerProfileAfterLogin()
                     } else {
                         self?.errorMessage = "Failed to parse login response"
                         self?.isLoading = false
+                        print("AuthService: Failed to parse login response for authenticate")
                     }
                 } catch {
                     self?.errorMessage = "Failed to decode login response: \(error.localizedDescription)"
                     self?.isLoading = false
+                    print("AuthService: Failed to decode login response for authenticate: \(error.localizedDescription)")
                 }
             })
             .store(in: &cancellables)
@@ -235,6 +249,7 @@ class AuthService: ObservableObject {
                     DispatchQueue.main.async { [weak self] in
                         guard let self = self else { return }
                         self.currentCustomer = response.customer
+                        self.customer = response.customer // Update the @Published customer property
                         self.saveCustomerData(response.customer)
                     }
                     return

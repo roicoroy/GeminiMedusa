@@ -26,6 +26,7 @@ struct GeminiMedusaApp: App {
     @StateObject var cartService = CartService()
     @StateObject var regionService = RegionService()
     @StateObject var productsViewModel = ProductsViewModel()
+    @StateObject var authService = AuthService()
 
     var body: some Scene {
         WindowGroup {
@@ -51,6 +52,7 @@ struct GeminiMedusaApp: App {
             .environmentObject(regionService)
             .environmentObject(productsViewModel)
             .environmentObject(cartService)
+            .environmentObject(authService)
             .onChange(of: regionService.selectedRegionId) { newRegionId in
                 if let regionId = newRegionId {
                     productsViewModel.fetchProducts(regionId: regionId)

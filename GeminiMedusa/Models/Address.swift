@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Address: Codable, Identifiable {
+struct Address: Codable, Identifiable, Equatable {
     let id: String
     let addressName: String?
     let isDefaultShipping: Bool

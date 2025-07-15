@@ -2,9 +2,11 @@ import SwiftUI
 
 struct DebugView: View {
     @EnvironmentObject var regionService: RegionService
+    @EnvironmentObject var authService: AuthService
     @State private var medusaCartContent: String = "Loading..."
     @State private var selectedRegionInfo: String = "Not selected"
     @State private var selectedCountryInfo: String = "Not selected"
+    @State private var customerInfo: String = "Not loaded"
 
     var body: some View {
         NavigationView {
@@ -34,10 +36,23 @@ struct DebugView: View {
                     .padding()
                     .background(Color.gray.opacity(0.1))
                     .cornerRadius(8)
+
+                Text("Customer Info:")
+                    .font(.headline)
+                ScrollView {
+                    Text(customerInfo)
+                        .font(.footnote)
+                        .padding()
+                        .background(Color.gray.opacity(0.1))
+                        .cornerRadius(8)
+                }
             }
             .padding()
             .navigationTitle("Debug Info")
             .onAppear(perform: loadDebugInfo)
+            .onChange(of: authService.customer) { _ in
+                loadDebugInfo()
+            }
         }
     }
 
@@ -63,6 +78,19 @@ struct DebugView: View {
         } else {
             selectedCountryInfo = "No country selected."
         }
+
+        if let customer = authService.customer {
+            do {
+                let encoder = JSONEncoder()
+                encoder.outputFormatting = .prettyPrinted
+                let data = try encoder.encode(customer)
+                customerInfo = String(data: data, encoding: .utf8) ?? "Could not encode customer data."
+            } catch {
+                customerInfo = "Error encoding customer data: \(error.localizedDescription)"
+            }
+        } else {
+            customerInfo = "No customer data available."
+        }
     }
 }
 
@@ -70,5 +98,6 @@ struct DebugView_Previews: PreviewProvider {
     static var previews: some View {
         DebugView()
             .environmentObject(RegionService())
+            .environmentObject(AuthService())
     }
 }

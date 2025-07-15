@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Customer: Codable, Identifiable {
+struct Customer: Codable, Identifiable, Equatable {
     let id: String
     let email: String
     let defaultBillingAddressId: String?

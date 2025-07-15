@@ -16,7 +16,8 @@ class RegionService: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
-        fetchRegions()
+        loadSelectionFromStorage() // Load saved selection immediately
+        fetchRegions() // Then fetch regions from network
     }
     
     deinit {
@@ -42,8 +43,11 @@ class RegionService: ObservableObject {
                     guard let self = self else { return }
                     self.regions = response.regions
                     self.processCountries(from: response.regions)
-                    self.loadSelectionFromStorage() // Load after processing countries
-                    self.setDefaultCountryIfNeeded()
+                    
+                    // Only set default if no region was loaded from storage
+                    if self.selectedCountry == nil {
+                        self.setDefaultCountryIfNeeded()
+                    }
                     
                     // Ensure a default currency is set if none is selected
                     if self.selectedRegionCurrency == nil {
@@ -69,22 +73,27 @@ class RegionService: ObservableObject {
         }.flatMap { $0 }
         .sorted { $0.label.localizedCompare($1.label) == .orderedAscending }
         
-        DispatchQueue.main.async { [weak self] in
-            self?.countryList = newCountryList
-            self?.setDefaultCountryIfNeeded()
+        DispatchQueue.main.async {
+            self.countryList = newCountryList
+            // No need to call setDefaultCountryIfNeeded here, it's handled in fetchRegions
         }
     }
     
     private func setDefaultCountryIfNeeded() {
         guard selectedCountry == nil else { return }
+        print("RegionService: Setting default country because selectedCountry is nil.")
 
         if let defaultCountry = countryList.first(where: { $0.country.lowercased() == defaultCountryCode }) {
             selectCountry(defaultCountry)
+            print("RegionService: Default country set to: \(defaultCountry.label)")
             return
         }
 
         if let firstCountry = countryList.first {
             selectCountry(firstCountry)
+            print("RegionService: First country set as default: \(firstCountry.label)")
+        } else {
+            print("RegionService: No countries available to set as default.")
         }
     }
 
@@ -93,6 +102,7 @@ class RegionService: ObservableObject {
             self?.selectedCountry = country
             self?.selectedRegion = self?.regions.first { $0.id == country.regionId }
             self?.saveSelectionToStorage()
+            print("RegionService: Selected country: \(country.label), Region: \(self?.selectedRegion?.name ?? "N/A")")
         }
     }
 
@@ -107,57 +117,29 @@ class RegionService: ObservableObject {
     private func saveSelectionToStorage() {
         if let encodedCountry = try? JSONEncoder().encode(selectedCountry) {
             UserDefaults.standard.set(encodedCountry, forKey: "medusa_country")
+            print("RegionService: Saved selectedCountry to UserDefaults.")
         }
         if let encodedRegion = try? JSONEncoder().encode(selectedRegion) {
             UserDefaults.standard.set(encodedRegion, forKey: "medusa_region")
+            print("RegionService: Saved selectedRegion to UserDefaults.")
         }
     }
 
     private func loadSelectionFromStorage() {
+        print("RegionService: Attempting to load selection from storage.")
         if let countryData = UserDefaults.standard.data(forKey: "medusa_country"),
            let country = try? JSONDecoder().decode(CountrySelection.self, from: countryData) {
             selectedCountry = country
+            print("RegionService: Loaded selectedCountry: \(country.label)")
+        } else {
+            print("RegionService: No country data found or failed to decode from storage.")
         }
 
         if let regionData = UserDefaults.standard.data(forKey: "medusa_region"),
            let region = try? JSONDecoder().decode(Region.self, from: regionData) {
             selectedRegion = region
+            print("RegionService: Loaded selectedRegion: \(region.name ?? "N/A")")
+        } else {
+            print("RegionService: No region data found or failed to decode from storage.")
         }
     }
-
-    // MARK: - Utility Methods
-
-    func refreshRegions() {
-        fetchRegions()
-    }
-
-    var hasSelectedRegion: Bool {
-        return selectedCountry != nil
-    }
-
-    var selectedRegionId: String? {
-        return selectedCountry?.regionId
-    }
-
-    var selectedRegionCurrency: String? {
-        return selectedCountry?.currencyCode
-    }
-
-    func clearSelection() {
-        selectedCountry = nil
-        selectedRegion = nil
-        UserDefaults.standard.removeObject(forKey: "medusa_country")
-        UserDefaults.standard.removeObject(forKey: "medusa_region")
-    }
-
-    // MARK: - Country-specific helpers
-
-    func getCountriesForSelectedRegion() -> [Country] {
-        guard let selectedRegion = selectedRegion else { return [] }
-        return selectedRegion.countries ?? []
-    }
-
-    func hasUKInSelectedRegion() -> Bool {
-        return selectedCountry?.country.lowercased() == "gb"
-    }
-}

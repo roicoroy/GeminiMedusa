@@ -21,6 +21,14 @@ class LoginViewModel: ObservableObject {
             .map { $0 != nil }
             .assign(to: \.isLoggedIn, on: self)
             .store(in: &cancellables)
+
+        authService.$isLoading
+            .assign(to: \.isLoading, on: self)
+            .store(in: &cancellables)
+
+        authService.$errorMessage
+            .assign(to: \.errorMessage, on: self)
+            .store(in: &cancellables)
     }
 
     func login() {

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject var viewModel = LoginViewModel()
+    @EnvironmentObject var authService: AuthService
     @Binding var isShowingLogin: Bool
 
     var body: some View {
@@ -32,6 +33,20 @@ struct LoginView: View {
                         .cornerRadius(10)
                 }
                 .disabled(viewModel.isLoading)
+
+                Section(header: Text("Debug Info")) {
+                    if let customer = authService.customer {
+                        Text("Customer ID: \(customer.id)")
+                        Text("Customer Email: \(customer.email)")
+                        if let token = UserDefaults.standard.string(forKey: "auth_token") {
+                            Text("Auth Token Saved: Yes")
+                        } else {
+                            Text("Auth Token Saved: No")
+                        }
+                    } else {
+                        Text("No customer data after login.")
+                    }
+                }
             }
             .navigationTitle("Login")
             .toolbar {
@@ -53,5 +68,6 @@ struct LoginView: View {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView(isShowingLogin: .constant(true))
+            .environmentObject(AuthService())
     }
 }
