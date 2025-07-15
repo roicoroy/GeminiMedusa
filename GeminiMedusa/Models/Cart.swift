@@ -389,13 +389,13 @@ extension CartLineItem {
     
     public func formattedTotal(currencyCode: String) -> String {
         // Calculate total since it's not provided in the API response
-        let calculatedTotal = unitPrice * quantity
+        let calculatedTotal = unitPrice * Double(quantity)
         return formatPrice(calculatedTotal, currencyCode: currencyCode)
     }
     
     public func formattedSubtotal(currencyCode: String) -> String {
         // Calculate subtotal since it's not provided in the API response
-        let calculatedSubtotal = unitPrice * quantity
+        let calculatedSubtotal = unitPrice * Double(quantity)
         return formatPrice(calculatedSubtotal, currencyCode: currencyCode)
     }
     
@@ -405,24 +405,24 @@ extension CartLineItem {
     
     public var formattedTotal: String {
         // Calculate total since it's not provided in the API response
-        let calculatedTotal = unitPrice * quantity
+        let calculatedTotal = unitPrice * Double(quantity)
         return formatPrice(calculatedTotal, currencyCode: "USD")
     }
     
     public var formattedSubtotal: String {
         // Calculate subtotal since it's not provided in the API response
-        let calculatedSubtotal = unitPrice * quantity
+        let calculatedSubtotal = unitPrice * Double(quantity)
         return formatPrice(calculatedSubtotal, currencyCode: "USD")
     }
     
-    public var calculatedTotal: Int {
+    public var calculatedTotal: Double {
         // Calculate total since it's not provided in the API response
-        return unitPrice * quantity
+        return unitPrice * Double(quantity)
     }
     
-    public var calculatedSubtotal: Int {
+    public var calculatedSubtotal: Double {
         // Calculate subtotal since it's not provided in the API response
-        return unitPrice * quantity
+        return unitPrice * Double(quantity)
     }
     
     public var displayImage: String? {

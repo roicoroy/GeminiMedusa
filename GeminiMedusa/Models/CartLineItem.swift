@@ -22,8 +22,8 @@ public struct CartLineItem: Codable, Identifiable {
     public let updatedAt: String?
     public let title: String
     public let quantity: Int
-    public let unitPrice: Int
-    public let compareAtUnitPrice: Int?
+    public let unitPrice: Double
+    public let compareAtUnitPrice: Double?
     public let isTaxInclusive: Bool
     public let taxLines: [TaxLine]?
     public let adjustments: [Adjustment]?
@@ -67,8 +67,8 @@ public struct CartLineItem: Codable, Identifiable {
         isTaxInclusive = try container.decode(Bool.self, forKey: .isTaxInclusive)
 
         // Handle flexible numeric types for price fields
-        unitPrice = try decodeFlexibleInt(from: container, forKey: .unitPrice) ?? 0
-        compareAtUnitPrice = try decodeFlexibleInt(from: container, forKey: .compareAtUnitPrice)
+        unitPrice = try decodeFlexibleDouble(from: container, forKey: .unitPrice) ?? 0.0
+        compareAtUnitPrice = try decodeFlexibleDouble(from: container, forKey: .compareAtUnitPrice)
 
         // Optional fields
         thumbnail = try container.decodeIfPresent(String.self, forKey: .thumbnail)

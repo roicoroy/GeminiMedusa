@@ -22,3 +22,21 @@ func decodeFlexibleInt<Key: CodingKey>(from container: KeyedDecodingContainer<Ke
     }
     return nil
 }
+
+/// Decodes a double value from a decoder, handling cases where the value might be a String, Int, or Double.
+/// - Parameters:
+///   - container: The KeyedDecodingContainer to decode from.
+///   - key: The CodingKey for the value to decode.
+/// - Returns: An optional Double value.
+func decodeFlexibleDouble<Key: CodingKey>(from container: KeyedDecodingContainer<Key>, forKey key: Key) throws -> Double? {
+    if let doubleValue = try? container.decode(Double.self, forKey: key) {
+        return doubleValue
+    }
+    if let intValue = try? container.decode(Int.self, forKey: key) {
+        return Double(intValue)
+    }
+    if let stringValue = try? container.decode(String.self, forKey: key), let doubleValue = Double(stringValue) {
+        return doubleValue
+    }
+    return nil
+}
